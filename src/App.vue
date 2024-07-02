@@ -6,7 +6,6 @@
         <li><router-link to="/login">Login</router-link></li>
         <li><router-link to="/forgotPassword">ForgotPassword</router-link></li>
         <li><router-link to="/registered">registeredView</router-link></li>
-
       </ul>
     </nav>
     <router-view></router-view>
@@ -15,7 +14,7 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
 }
 </script>
 
