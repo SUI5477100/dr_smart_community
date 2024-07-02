@@ -15,12 +15,13 @@
     name: 'NavigationBar',
     data() {
       return {
-        current: 'home',
+        current: 'allProducts',
         menuItems: [
-          { key: 'home', link: '/', label: '全部商品' },
+          { key: 'allProducts', link: '/allProducts', label: '全部商品' },
           { key: 'login', link: '/login', label: '首页' },
-          { key: 'forgotPassword', link: '/forgotPassword', label: '我的订单' },
-          { key: 'registered', link: '/registered', label: '个人中心' }
+          { key: 'communityService', link: '/communityService', label: '社区服务' },
+          { key: 'orders', link: '/orders', label: '我的订单' },
+          { key: 'personalCenter', link: '/personalCenter', label: '个人中心' }
         ]
       }
     }

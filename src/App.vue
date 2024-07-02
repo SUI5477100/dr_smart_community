@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <HeaderComponents></HeaderComponents>
-    <NavigationBar></NavigationBar>
+    <HeaderComponents v-if="!$route.meta.noHeader"></HeaderComponents>
+    <NavigationBar v-if="!$route.meta.noHeader"></NavigationBar>
     <router-view></router-view>
   </div>
 </template>
@@ -9,6 +9,7 @@
 <script>
 import NavigationBar from '../src/components/homeComponents/navigationBar.vue'
 import HeaderComponents from '../src/components/homeComponents/headerComponents.vue'
+
 export default {
   name: 'App',
   components: {
@@ -19,7 +20,7 @@ export default {
 </script>
 
 <style>
-html,body,#app{
+html, body, #app {
   height: 100%;
   width: 100%;
   padding: 0;

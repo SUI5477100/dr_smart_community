@@ -1,13 +1,13 @@
 <template>
     <div class="">
-       这是Forgot Password /忘记密码界面
+       这是PersonalCenter/个人中心页面
     </div>
 </template>
 
 <script>
 
 export default {
-    name:'ForgotPassword', //导出组件名
+    name:'PersonalCenter', //导出组件名
     components: {
         
     }
