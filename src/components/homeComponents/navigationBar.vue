@@ -2,17 +2,8 @@
     <div class="navigation-container">
       <div class="menu-wrapper">
         <a-menu v-model="current" mode="horizontal" class="custom-menu">
-          <a-menu-item key="home">
-            <router-link to="/">Home</router-link>
-          </a-menu-item>
-          <a-menu-item key="login">
-            <router-link to="/login">Login</router-link>
-          </a-menu-item>
-          <a-menu-item key="forgotPassword">
-            <router-link to="/forgotPassword">Forgot Password</router-link>
-          </a-menu-item>
-          <a-menu-item key="registered">
-            <router-link to="/registered">Registered</router-link>
+          <a-menu-item v-for="item in menuItems" :key="item.key">
+            <router-link :to="item.link">{{ item.label }}</router-link>
           </a-menu-item>
         </a-menu>
       </div>
@@ -24,7 +15,13 @@
     name: 'NavigationBar',
     data() {
       return {
-        current: 'home'
+        current: 'home',
+        menuItems: [
+          { key: 'home', link: '/', label: '全部商品' },
+          { key: 'login', link: '/login', label: '首页' },
+          { key: 'forgotPassword', link: '/forgotPassword', label: '我的订单' },
+          { key: 'registered', link: '/registered', label: '个人中心' }
+        ]
       }
     }
   }
