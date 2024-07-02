@@ -1,24 +1,34 @@
 <template>
   <div id="app">
-    <!-- <Login/> -->
-    <HomeView></HomeView>
+    <nav>
+      <ul>
+        <li><router-link to="/">Home</router-link></li>
+        <li><router-link to="/login">Login</router-link></li>
+        <li><router-link to="/forgotPassword">ForgotPassword</router-link></li>
+        <li><router-link to="/registered">registeredView</router-link></li>
+
+      </ul>
+    </nav>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-// import Login from './components/loginBtuuon.vue'
-import HomeView  from './pages/hemoView.vue';
-
-
 export default {
-  name: 'App',
-  components: {
-    // Login,
-    HomeView
-  }
+  name: 'App'
 }
 </script>
 
 <style>
-
+nav {
+  margin-bottom: 20px;
+}
+nav ul {
+  list-style: none;
+  padding: 0;
+}
+nav ul li {
+  display: inline;
+  margin-right: 10px;
+}
 </style>
