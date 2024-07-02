@@ -1,6 +1,8 @@
 <template>
     <div class="">
-        <Button type="primary">234</Button>
+        <div>这是Login Button组件</div>
+        <Button type="primary">这是在LoginButton中引入的Ant Desgin组件按钮</Button>
+
     </div>
 </template>
 
