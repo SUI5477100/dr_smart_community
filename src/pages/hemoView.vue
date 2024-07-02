@@ -1,12 +1,16 @@
 <template>
-<div class=""></div>
+    <div class="">
+        <LoginButton></LoginButton>
+    </div>
 </template>
 
 <script>
-
+import LoginButton from '../components/loginButton.vue'
+export default {
+    components: {
+        LoginButton
+    }
+};
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-</style>
+<style scoped></style>
