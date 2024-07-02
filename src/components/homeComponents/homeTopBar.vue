@@ -34,7 +34,7 @@
         rightLinks: [
           { text: '欢迎您', href: '' },
           { text: '个人中心', href: '' },
-          { text: '登录', href: '' },
+          { text: '登录', href: '/login' },
         ],
       };
     },

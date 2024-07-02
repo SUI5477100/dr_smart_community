@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HomeView from '../pages/homeView.vue'
-import LoginView from '../pages/loginView.vue'
 import ForgotPassword from '../pages/forgotPassword.vue'
-import RegisteredView from '../pages/registeredView.vue'
+import UserLoginRegisterView from '../pages/userLoginRegisterView.vue'
 
 Vue.use(Router)
 
@@ -18,7 +17,7 @@ const routes = [
     // 登录页
     path: '/login',
     name: 'Login',
-    component: LoginView
+    component: UserLoginRegisterView
   },
   {
     // 忘记密码
@@ -26,12 +25,6 @@ const routes = [
     name: 'ForgotPassword',
     component: ForgotPassword
   },
-  {
-    // 注册
-    path: '/registered',
-    name: 'Registered',
-    component: RegisteredView
-  }
 ]
 
 const router = new Router({
