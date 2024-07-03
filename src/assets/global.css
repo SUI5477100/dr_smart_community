@@ -9,4 +9,8 @@ body,
     margin: auto;
     padding: 0;
     min-width: 1366px;
+
+    ul {
+        list-style-type: none;
+    }
 }

@@ -16,13 +16,15 @@ export default {
   name: 'App',
   components: {
     NavigationBar,
-    HeaderComponents
-  }
+    HeaderComponents,
+  },
 }
 </script>
 
 <style>
-html, body, #app {
+html,
+body,
+#app {
   height: 100%;
   width: 100%;
   padding: 0;

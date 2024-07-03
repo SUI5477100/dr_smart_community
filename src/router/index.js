@@ -10,8 +10,7 @@ import MyFavorites from '../components/personalCenterComponents/myFavorites.vue'
 import MyOrders from '../components/personalCenterComponents/myOrders.vue'
 import MyTransfer from '../components/personalCenterComponents/myTransfer.vue'
 import TransactionHistory from '../components/personalCenterComponents/transactionHistory.vue'
-
-
+import ProductList from '../pages/productList.vue'
 
 Vue.use(Router)
 
@@ -71,6 +70,12 @@ export default new Router({
           component: TransactionHistory,
         },
       ]
+    },
+    {
+      // 商品列表
+      path: '/productList',
+      name: 'ProductList',
+      component: ProductList
     }
   ]
 })
