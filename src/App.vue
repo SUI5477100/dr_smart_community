@@ -2,7 +2,9 @@
   <div id="app">
     <HeaderComponents v-if="!$route.meta.noHeader"></HeaderComponents>
     <NavigationBar v-if="!$route.meta.noHeader"></NavigationBar>
-    <router-view></router-view>
+    <div class="routerContainer">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
@@ -38,5 +40,9 @@ nav ul {
 nav ul li {
   display: inline;
   margin-right: 10px;
+}
+.routerContainer{
+  width: 100%;
+  height: 75%;
 }
 </style>
