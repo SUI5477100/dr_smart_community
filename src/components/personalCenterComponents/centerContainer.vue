@@ -2,10 +2,12 @@
     <!-- 个人中心 -->
     <div class="container">
         <!-- 左侧菜单栏 -->
-        <LeftMenu></LeftMenu>
+            <LeftMenu></LeftMenu>
+
         <!-- 右侧内容 -->
       <div class="router-view">
-        <router-view></router-view>
+        <router-view ></router-view>
+
       </div>
     </div>
 </template>
