@@ -12,6 +12,7 @@ import MyTransfer from '../components/personalCenterComponents/myTransfer.vue'
 import TransactionHistory from '../components/personalCenterComponents/transactionHistory.vue'
 import ProductList from '../pages/productList.vue'
 import forgetPassView from '../pages/forgetPassView.vue'
+import ProductDetails from '../pages/productDetails.vue'
 
 Vue.use(Router)
 
@@ -31,7 +32,7 @@ export default new Router({
     },
     {
       path: '/forgetPass',
-      name:'ForgetPass',
+      name: 'ForgetPass',
       component: forgetPassView
     },
     {
@@ -82,6 +83,12 @@ export default new Router({
       path: '/productList',
       name: 'ProductList',
       component: ProductList
+    },
+    {
+      // 商品详情
+      path: '/productDetails',
+      name: 'ProductDetails',
+      component: ProductDetails
     }
   ]
 })
