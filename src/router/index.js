@@ -11,6 +11,7 @@ import MyOrders from '../components/personalCenterComponents/myOrders.vue'
 import MyTransfer from '../components/personalCenterComponents/myTransfer.vue'
 import TransactionHistory from '../components/personalCenterComponents/transactionHistory.vue'
 import ProductList from '../pages/productList.vue'
+import forgetPassView from '../pages/forgetPassView.vue'
 import ProductDetails from '../pages/productDetails.vue'
 
 Vue.use(Router)
@@ -28,6 +29,11 @@ export default new Router({
       name: 'Login',
       component: UserLoginRegisterView,
       // meta: { noHeader: true } //跳转时是否为独立页面
+    },
+    {
+      path: '/forgetPass',
+      name: 'ForgetPass',
+      component: forgetPassView
     },
     {
       path: '/personalCenter',
