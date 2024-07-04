@@ -1,9 +1,13 @@
 <template>
   <div class="formContainer">
-    <a-form layout="vertical" :wrapper-col ="{span:30}" :form="form" @submit="handleSubmit" class="form">
+    <a-form-model 
+      layout="vertical" 
+      :wrapper-col ="{span:30}" 
+      :form="form" 
+      @submit="handleSubmit" class="form">
         <p v-if="isLogin == true" class="formName">用户登录</p>
         <p v-else class="formName">用户注册</p>
-        <a-form-item
+        <a-form-model-item
         :validate-status="userNameError() ? 'error' : ''"
         :help="userNameError() || ''"
         style="margin-bottom: 10px;">
@@ -21,8 +25,8 @@
               type="user" 
               style="color: rgba(0, 0, 0, 0.25)"/>
           </a-input>
-        </a-form-item>
-        <a-form-item
+        </a-form-model-item>
+        <a-form-model-item
         :validate-status="passwordError() ? 'error' : ''"
         :help="passwordError() || ''"
         style="margin-bottom: 8px;">
@@ -45,9 +49,9 @@
               type="lock"
               style="color: rgba(0, 0, 0, 0.25)"/>
           </a-input>
-        </a-form-item>
+        </a-form-model-item>
         <!-- 注册 -->
-        <a-form-item
+        <a-form-model-item
         :validate-status="checkPassError() ? 'error' : ''"
         :help="checkPassError() || ''"
         v-if="isLogin == false"
@@ -69,10 +73,10 @@
               type="lock"
               style="color: rgba(0, 0, 0, 0.25)"/>
           </a-input>
-        </a-form-item>
+        </a-form-model-item>
         <a-row v-if="isLogin == false" :gutter="[8,0]">
             <a-col :span="15" >
-              <a-form-item
+              <a-form-model-item
               :validate-status="checkCodeError() ? 'error' : ''"
               :help="checkCodeError() || ''">
                 <a-input
@@ -92,7 +96,7 @@
                   type="number"
                   style="color: rgba(0, 0, 0, 0.25)"/>
                 </a-input>
-              </a-form-item>
+              </a-form-model-item>
             </a-col>
             <a-col :span="6">
                 <a-button
@@ -103,7 +107,7 @@
                 </a-button>
             </a-col>
         </a-row>
-        <a-form-item>
+        <a-form-model-item>
           <a-button
               type="primary"
               html-type="submit"
@@ -112,10 +116,10 @@
             <span v-if="isLogin == true" class="buttonText">登录</span>
             <span v-else class="buttonText">注册</span>
           </a-button>
-        </a-form-item>
+        </a-form-model-item>
         <p v-if="isLogin == true" style="text-align: right;"><a href="#" @click="changeForm">注册</a>&nbsp;|&nbsp;<a href="#" @click="toForgetPass">忘记密码？</a></p>
         <p v-else style="text-align: right;"><a href="#" @click="changeForm">已有账号？去登陆</a></p>
-    </a-form>
+    </a-form-model>
   </div>
 </template>
 <script>
