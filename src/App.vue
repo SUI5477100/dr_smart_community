@@ -18,6 +18,7 @@ export default {
     NavigationBar,
     HeaderComponents,
   },
+  
 }
 </script>
 

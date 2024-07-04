@@ -23,7 +23,6 @@ export default {
     name: 'PersonalCenter',
     data() {
         return {
-            current: ['mail'],
             openKeys: ['sub1', 'sub2', 'sub3'],
             collapsed: false,
             menuItems: [

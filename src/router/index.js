@@ -22,6 +22,7 @@ export default new Router({
     {
       path: '/',
       name: 'Home',
+      redirect:'/productList',
       component: HomeView
     },
     {

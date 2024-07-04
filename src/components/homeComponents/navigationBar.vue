@@ -15,21 +15,29 @@ export default {
   name: 'NavigationBar',
   data() {
     return {
-      current: 'productList',
+      // 初始化时基于路由设置当前激活的菜单项
+      current: this.$route.path,
       menuItems: [
-        { key: 'productList', link: '/productList', label: '全部商品' },
-        { key: 'login', link: '/login', label: '首页' },
-        {
-          key: 'communityService',
-          link: '/communityService',
-          label: '社区服务',
-        },
-        { key: 'orders', link: '/orders', label: '我的订单' },
-        { key: 'personalCenter', link: '/personalCenter', label: '个人中心' },
+        { key: '/productList', link: '/productList', label: '全部商品' },
+        { key: '/login', link: '/login', label: '首页' },
+        { key: '/communityService', link: '/communityService', label: '社区服务' },
+        { key: '/orders', link: '/orders', label: '我的订单' },
+        { key: '/personalCenter', link: '/personalCenter', label: '个人中心' },
       ],
     }
   },
+  watch: {
+    '$route': function (newRoute) {
+      // 路由变更时更新当前激活的菜单项
+      this.current = newRoute.path;
+    }
+  },
+  created() {
+    // 确保在组件创建时从当前路由初始化状态
+    this.current = this.$route.path;
+  }
 }
+
 </script>
   
   <style scoped>
