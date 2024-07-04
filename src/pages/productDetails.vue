@@ -356,14 +356,6 @@ export default {
 .ant-carousel ::v-deep .slick-thumb li.slick-active img {
   filter: grayscale(0%);
 }
-// 走马灯下方左右箭头样式
-.ant-carousel ::v-deep .slick-slide {
-  //   text-align: center;
-  //   height: 160px;
-  //   line-height: 160px;
-  //   background: #364d79;
-  //   overflow: hidden;
-}
 
 .ant-carousel ::v-deep .custom-slick-arrow {
   width: 50px;
