@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
+  <!-- <div class="container"> -->
     <stepsBar></stepsBar>
-  </div>
+  <!-- </div> -->
 </template>
 
 <script>
