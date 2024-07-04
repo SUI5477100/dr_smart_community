@@ -113,12 +113,13 @@
             <span v-else class="buttonText">注册</span>
           </a-button>
         </a-form-item>
-        <p v-if="isLogin == true" style="text-align: right;"><a href="#" @click="changeForm">注册</a>&nbsp;|&nbsp;<a href="#">忘记密码？</a></p>
+        <p v-if="isLogin == true" style="text-align: right;"><a href="#" @click="changeForm">注册</a>&nbsp;|&nbsp;<a href="#" @click="toForgetPass">忘记密码？</a></p>
         <p v-else style="text-align: right;"><a href="#" @click="changeForm">已有账号？去登陆</a></p>
     </a-form>
   </div>
 </template>
 <script>
+import router from '@/router';
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some((field) => fieldsError[field]);
 }
@@ -166,6 +167,9 @@ export default {
     },
     changeForm(){
         this.isLogin = !this.isLogin;
+    },
+    toForgetPass(){
+      router.push('/forgetPass')
     }
   },
 };
