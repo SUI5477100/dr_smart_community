@@ -63,7 +63,10 @@ export default {
             console.log('click', e);
             const selectedItem = this.findMenuItemByKey(e.key);
             if (selectedItem) {
-                this.$router.push(selectedItem.route);
+                const targetPath = `/personalCenter/${selectedItem.route}`; // 确保路径是完整的
+                if (this.$route.path !== targetPath) {
+                    this.$router.push(targetPath);
+                }
             }
         },
         titleClick(e) {

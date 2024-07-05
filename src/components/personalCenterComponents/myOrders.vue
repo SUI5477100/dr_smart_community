@@ -1,18 +1,18 @@
 <template>
     <div>
         <OrderSearch></OrderSearch>
-        <OrderDetail></OrderDetail>
+   <OrderContainer></OrderContainer>
     </div>
 </template>
 
 <script>
 import OrderSearch from './ordersComponents/orderSearch.vue'
-import OrderDetail from './ordersComponents/orderDetail.vue'
+import OrderContainer from './ordersComponents/orderContainer.vue'
 export default {
     name: 'MyOrders', //导出组件名
     components:{
         OrderSearch,
-        OrderDetail
+       OrderContainer
     }
 };
 </script>
