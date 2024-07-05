@@ -12,7 +12,7 @@
         <nextButton v-if="current < steps.length - 1" :clickHandler="funList[current]">
           {{buttonText[current]}}
         </nextButton>
-        <nextButton v-if="current < steps.length - 1" :clickHandler="resetForm">
+        <nextButton v-if="current < steps.length - 1" :clickHandler="()=>resetForm(formList[current])">
           重置
         </nextButton>
         <!-- <a-button
@@ -29,9 +29,9 @@
     </div>
 </template>
 <script>
-import checkID from './checkIDComponents.vue';
+import checkID from './checkIdFormComponents.vue';
 import nextButton from './nextButtonComponents.vue';
-import resetPass from './resetPassComponents.vue'
+import resetPass from './resetPassFormComponents.vue'
 export default {
 name:"stepsBar",
 data() {
@@ -73,11 +73,12 @@ methods: {
     next() {
       this.current++;
     },
-    // resetForm(formName) {
-    //   this.current--;
-    //   this.$refs[formName]
-    //   console.log("this is reset function!!!!");
-    // },
+    resetForm(formName) {
+      // this.current--;
+      this.$refs[formName].resetFields();
+      console.log("this is reset function!!!!");
+      console.log(formName)
+    },
     resetPass(){
       this.current++;
       this.$message.success('Processing complete!')
