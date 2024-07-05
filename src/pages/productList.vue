@@ -65,7 +65,7 @@ export default {
       plistForm: [
         {
           id: 1,
-          src: require('../assets/taobao.png'),
+          src: require('../assets/image/milk_01.png'),
           price: '￥220.8',
           name: '蒙牛纯牛奶250ml*16',
           nameLittle: '蒙牛纯牛奶250ml*16',
@@ -73,7 +73,7 @@ export default {
         },
         {
           id: 2,
-          src: require('../assets/taobao.png'),
+          src: require('../assets/image/milk_01.png'),
           price: '￥220.8',
           name: '蒙牛纯牛奶250ml*16',
           nameLittle: '蒙牛纯牛奶250ml*16',
@@ -81,7 +81,7 @@ export default {
         },
         {
           id: 3,
-          src: require('../assets/taobao.png'),
+          src: require('../assets/image/milk_01.png'),
           price: '￥220.8',
           name: '蒙牛纯牛奶250ml*16',
           nameLittle: '蒙牛纯牛奶250ml*16',
@@ -89,7 +89,7 @@ export default {
         },
         {
           id: 4,
-          src: require('../assets/taobao.png'),
+          src: require('../assets/image/milk_01.png'),
           price: '￥220.8',
           name: '蒙牛纯牛奶250ml*16',
           nameLittle: '蒙牛纯牛奶250ml*16',
@@ -97,7 +97,7 @@ export default {
         },
         {
           id: 5,
-          src: require('../assets/taobao.png'),
+          src: require('../assets/image/milk_01.png'),
           price: '￥220.8',
           name: '蒙牛纯牛奶250ml*16',
           nameLittle: '蒙牛纯牛奶250ml*16',
@@ -105,7 +105,7 @@ export default {
         },
         {
           id: 6,
-          src: require('../assets/taobao.png'),
+          src: require('../assets/image/milk_01.png'),
           price: '￥220.8',
           name: '蒙牛纯牛奶250ml*16',
           nameLittle: '蒙牛纯牛奶250ml*16',
@@ -113,7 +113,7 @@ export default {
         },
         {
           id: 1,
-          src: require('../assets/taobao.png'),
+          src: require('../assets/image/milk_01.png'),
           price: '￥220.8',
           name: '蒙牛纯牛奶250ml*16',
           nameLittle: '蒙牛纯牛奶250ml*16',
@@ -121,7 +121,7 @@ export default {
         },
         {
           id: 2,
-          src: require('../assets/taobao.png'),
+          src: require('../assets/image/milk_01.png'),
           price: '￥220.8',
           name: '蒙牛纯牛奶250ml*16',
           nameLittle: '蒙牛纯牛奶250ml*16',
@@ -129,7 +129,7 @@ export default {
         },
         {
           id: 3,
-          src: require('../assets/taobao.png'),
+          src: require('../assets/image/milk_01.png'),
           price: '￥220.8',
           name: '蒙牛纯牛奶250ml*16',
           nameLittle: '蒙牛纯牛奶250ml*16',
@@ -137,7 +137,7 @@ export default {
         },
         {
           id: 4,
-          src: require('../assets/taobao.png'),
+          src: require('../assets/image/milk_01.png'),
           price: '￥220.8',
           name: '蒙牛纯牛奶250ml*16',
           nameLittle: '蒙牛纯牛奶250ml*16',
@@ -145,7 +145,7 @@ export default {
         },
         {
           id: 5,
-          src: require('../assets/taobao.png'),
+          src: require('../assets/image/milk_01.png'),
           price: '￥220.8',
           name: '蒙牛纯牛奶250ml*16',
           nameLittle: '蒙牛纯牛奶250ml*16',
@@ -153,7 +153,7 @@ export default {
         },
         {
           id: 6,
-          src: require('../assets/taobao.png'),
+          src: require('../assets/image/milk_01.png'),
           price: '￥220.8',
           name: '蒙牛纯牛奶250ml*16',
           nameLittle: '蒙牛纯牛奶250ml*16',

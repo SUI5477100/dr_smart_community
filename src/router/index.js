@@ -13,6 +13,7 @@ import TransactionHistory from '../components/personalCenterComponents/transacti
 import ProductList from '../pages/productList.vue'
 import forgetPassView from '../pages/forgetPassView.vue'
 import ProductDetails from '../pages/productDetails.vue'
+import MyShoppingCart from '../pages/myShoppingCart.vue'
 
 Vue.use(Router)
 
@@ -22,7 +23,7 @@ export default new Router({
     {
       path: '/',
       name: 'Home',
-      redirect:'/productList',
+      redirect: '/productList',
       component: HomeView
     },
     {
@@ -90,6 +91,13 @@ export default new Router({
       path: '/productDetails',
       name: 'ProductDetails',
       component: ProductDetails
+    },
+    {
+      // 我的购物车
+      path: '/myShoppingCart',
+      name: 'MyShoppingCart',
+      component: MyShoppingCart,
+      meta: { noHeader: true }
     }
   ]
 })
