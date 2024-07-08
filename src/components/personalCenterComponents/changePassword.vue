@@ -1,14 +1,64 @@
 <template>
-    <div>
-        密码修改
+    <div class="change-pass-page-container">
+        <titleBar>
+            密码修改
+        </titleBar>
+        <div class="change-pass-container">
+            <reset-pass ref="resetPassForm"></reset-pass>
+            <div class="button-container">
+                <next-button :clickHandler="resetPass" type="primary">
+                    修改密码
+                </next-button>
+                <next-button :clickHandler="() => resetCompForm()">
+                    重置
+                </next-button>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-
+import nextButton from '../forgetPassComponents/nextButtonComponents.vue';
+import resetPass from '../forgetPassComponents/resetPassFormComponents.vue';
+import titleBar from './memberCenterComponents/titleBar.vue';
 export default {
-    name: 'ChangePassword', //导出组件名
+    name: 'ChangePassword', //导出组件名,
+    data(){
+        return{}
+    },
+    components:{
+        resetPass,
+        nextButton,
+        titleBar
+    },
+    methods:{
+        resetCompForm() {
+            if (this.$refs.resetPassForm) {
+            this.$refs.resetPassForm.resetForm();
+            } else {
+            console.error('checkID component is not available.');
+            }
+        },
+        resetPass(){
+        }
+    }
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.change-pass-container{
+    /* background-color: aqua; */
+    /* width: 50%; */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 5%;
+}
+.button-container{
+    /* background-color: antiquewhite; */
+    width: 36%;
+    display: flex;
+    justify-content: space-between;
+    margin-left: 10%;
+}
+</style>
