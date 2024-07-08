@@ -64,7 +64,6 @@ export default {
             }
         },
         // 转账电话校验
-        // 转账电话校验
         checkPhone(rule, value, callback) {
             // 正则表达式，校验中国大陆的手机号码
             const regex = /^1[3-9]\d{9}$/;
