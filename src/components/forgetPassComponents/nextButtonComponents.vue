@@ -1,5 +1,5 @@
 <template>
-    <a-button type="primary" class="button-width" @click="handleClick">
+    <a-button :type="type" class="button-width" @click="handleClick">
         <slot></slot>
     </a-button>
 </template>
@@ -8,6 +8,10 @@
 export default {
     name:"nextButton",
     props:{
+        type:{
+            type:String,
+            default: 'default'  // 设置默认类型
+        },
         clickHandler:{
             type:Function
         }
