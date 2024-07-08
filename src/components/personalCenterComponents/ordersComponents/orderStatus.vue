@@ -31,7 +31,7 @@
 <script>
 
 export default {
-    name: 'OrderDetail', //导出组件名
+    name: 'OrderStatus', //导出组件名
     data() {
         return {
             orders: [

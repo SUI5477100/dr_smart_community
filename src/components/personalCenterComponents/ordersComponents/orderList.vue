@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="contain" v-for="goods in goodsList" :key="goods.id">
+    <div class="contain">
+        <div  v-for="goods in goodsList" :key="goods.id">
             <div class="goods">
                 <div class="goods-item">
                     <img class="goods-img" :src="goods.url">
@@ -21,9 +21,10 @@
             </div>
          
         </div>
-        <div class="total-price">
-                总价：
-            </div>
+        <div class="total-price" >
+            <div >总价：</div>
+            <div >272.00</div>
+        </div>
     </div>
 </template>
 
@@ -34,36 +35,35 @@ export default {
     data () {
         return {
             goodsList:[{
-                url:'../../../assets/taobao.png',
+                url:require('../../../assets/taobao.png'),
+                name:'强力胶水',
+                price:'34',
+                quantity:'2',
+                subtotal:'68',
+            },
+            {
+                url:require('../../../assets/taobao.png'),
                 name:'强力胶水',
                 price:'34',
                 quantity:'2',
                 subtotal:'68'
             },
             {
+                url:require('../../../assets/taobao.png'),
                 name:'强力胶水',
                 price:'34',
                 quantity:'2',
                 subtotal:'68'
             },
             {
+                url:require('../../../assets/taobao.png'),
                 name:'强力胶水',
                 price:'34',
                 quantity:'2',
                 subtotal:'68'
             },
-            {
-                name:'强力胶水',
-                price:'34',
-                quantity:'2',
-                subtotal:'68'
-            },
-            {
-                name:'强力胶水',
-                price:'34',
-                quantity:'2',
-                subtotal:'68'
-            }]
+            
+           ]
         }
     }
 };
@@ -71,12 +71,13 @@ export default {
 
 <style scoped lang="less">
 
-
-.goods {
-    display: flex;
+.contain{
     margin-left: 20px;
     margin-right: 20px;
-    border-top: 15px;
+}
+.goods {
+    display: flex;
+  
     border: 1px solid #f1f1f1;
     padding: 15px 40px 15px 30px
 }
@@ -107,7 +108,16 @@ export default {
     display: flex;
     flex: 2;
 }
-
+.total-price{
+    display: flex;
+    justify-content: end;
+    color: red;
+    font-size: large;
+    margin-top: 15px;
+    margin-bottom: 25px;
+    font-weight: 500;
+    margin-right: 15px;
+}
 .subtotal {
     display: flex;
     color: red;
