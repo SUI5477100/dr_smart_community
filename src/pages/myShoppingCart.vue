@@ -172,7 +172,7 @@ export default {
       this.checkPickupSelect(pickup)
     },
     async fetchProductPrices() {
-      // 假设我们从API获取商品价格
+      // 假设从API获取商品价格
       const response = await fetch('/api/product-prices')
       const data = await response.json()
       this.items.forEach((pickup) => {
