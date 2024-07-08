@@ -1,19 +1,25 @@
 <template>
-    <div class="stepsBarContainer">
+    <div class="steps-bar-container">
       <a-steps :current="current">
         <a-step v-for="item in steps" :key="item.title" :title="item.title" />
       </a-steps>
       <div class="steps-content">
-        <checkID v-show="current == 0"></checkID>
-        <resetPass v-show="current == 1"></resetPass>
+        <checkID v-if="current == 0" ref="checkId"></checkID>
+        <resetPass v-if="current == 1" ref="resetPass"></resetPass>
         <p v-show = "current == steps.length - 1 ">密码重置成功！</p>
       </div>
       <div class="steps-action">
-        <nextButton v-if="current < steps.length - 1" :clickHandler="funList[current]">
-          {{buttonText[current]}}
+        <nextButton 
+          v-if="current < steps.length - 1" 
+          :clickHandler="funList[current]"
+          type="primary">
+            {{buttonText[current]}}
         </nextButton>
-        <nextButton v-if="current < steps.length - 1" :clickHandler="()=>resetForm(formList[current])">
-          重置
+        <nextButton 
+          v-if="current < steps.length - 1" 
+          :clickHandler="()=>resetCompForm(componentList[current])"
+          type="primary">
+            重置
         </nextButton>
         <!-- <a-button
           v-if="current == steps.length - 1"
@@ -33,65 +39,68 @@ import checkID from './checkIdFormComponents.vue';
 import nextButton from './nextButtonComponents.vue';
 import resetPass from './resetPassFormComponents.vue'
 export default {
-name:"stepsBar",
-data() {
-    return {
-        current: 0,
-        steps: [
-            {
-            title: '验证身份',
-            },
-            {
-            title: '重置密码',
-            },
-            {
-            title: '查看结果',
-            },
-        ],
-        buttonText:[
-          "下一步",
-          "重置密码"
-        ],
-        funList:[
-          this.next,
-          this.resetPass,
-          this.done
-        ],
-        formList:[
-          'checkIdForm',
-          'resetPassFrom'
-        ]
-    };
-},
-components:{
-    checkID,
-    nextButton,
-    resetPass
-},
+  name:"stepsBar",
+  data() {
+      return {
+          current: 0,
+          steps: [
+              {
+              title: '验证身份',
+              },
+              {
+              title: '重置密码',
+              },
+              {
+              title: '查看结果',
+              },
+          ],
+          buttonText:[
+            "下一步",
+            "重置密码"
+          ],
+          funList:[
+            this.next,
+            this.resetPass,
+            this.done
+          ],
+          componentList:[
+            'checkId',
+            'resetPass'
+          ]
+      };
+  },
+  components:{
+      checkID,
+      nextButton,
+      resetPass
+  },
 
-methods: {
-    next() {
-      this.current++;
-    },
-    resetForm(formName) {
-      // this.current--;
-      this.$refs[formName].resetFields();
-      console.log("this is reset function!!!!");
-      console.log(formName)
-    },
-    resetPass(){
-      this.current++;
-      this.$message.success('Processing complete!')
-      console.log("this is resetPass function!!!")
-    },
-    done(){
-      this.current++;
-      console.log("this is done function!!!")
-    },
-    prev() {
-    this.current--;
-    },
-},
+  methods: {
+      next() {
+        this.current++;
+      },
+      resetCompForm(compName) {
+        console.log("hello~~~~~~~~")
+          if (this.$refs[compName]) {
+            this.$refs[compName].resetForm();
+          } else {
+            console.error('checkID component is not available.');
+          }
+        console.log("this is reset function!!!!");
+      },
+      resetPass(){
+        this.current++;
+        this.$message.success('Processing complete!')
+        console.log("this is resetPass function!!!")
+      },
+      done(){
+        this.current++;
+        console.log("this is done function!!!")
+      },
+      prev() {
+      this.current--;
+      },
+  },
 };
 </script>
 <style scoped>
@@ -118,7 +127,7 @@ methods: {
   padding-left: 10%;
 
 }
-.stepsBarContainer{
+.steps-bar-container{
   width: 55%;
   /* background-color: antiquewhite; */
   margin: 0 auto;

@@ -11,8 +11,10 @@
           <label for="phoneNumber">手机号码</label>
         </a-col>
         <a-col :span="19">
-          <a-form-model-item>
-            <a-input placeholder="请输入手机号码" prop="phoneNumber" v-model="checkIdForm.phoneNumber"/>
+          <a-form-model-item prop="phoneNumber" >
+            <a-input 
+              placeholder="请输入手机号码" 
+              v-model="checkIdForm.phoneNumber"/>
           </a-form-model-item>
         </a-col>
       </a-row>
@@ -21,8 +23,10 @@
           <label for="checkCode">验证码</label>
         </a-col>
         <a-col :span="13">
-          <a-form-model-item>
-            <a-input placeholder="请输入验证码" prop="checkCode" v-model="checkIdForm.checkCode"/>
+          <a-form-model-item prop="checkCode">
+            <a-input 
+              placeholder="请输入验证码" 
+              v-model="checkIdForm.checkCode"/>
           </a-form-model-item>
         </a-col>
         <a-col :span="2" :offset="1">
@@ -42,19 +46,31 @@ export default {
     name:"checkId",
     data(){
         return{
+          form: this.$form.createForm(this, { name: 'check_id_form' }),
           checkIdForm:{
             phoneNumber:'',
             checkCode:''
           },
           checkIdRules:{
             phoneNumber:[
-              { required: true, message: '手机号码必填' }
+              { required: true, message: '手机号码必填', trigger: 'blur' }
             ],
             checkCode:[
-              { required: true, message: '请输入验证码' }
+              { required: true, message: '请输入验证码', trigger: 'blur' }
             ]
           }
         }
+    },
+    mounted() {
+      this.$nextTick(() => {
+        this.form.validateFields();
+      });
+    },
+    methods:{
+      resetForm(){
+        console.log("hello!!"+this.$refs.checkIdForm)
+        this.$refs.checkIdForm.resetFields();
+      }
     }
 }
 </script>

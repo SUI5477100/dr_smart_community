@@ -10,7 +10,9 @@
       :rules="userFormRules">
         <p v-if="isLogin == true" class="formName">用户登录</p>
         <p v-else class="formName">用户注册</p>
-        <a-form-model-item style="margin-bottom: 10px;"  prop="phoneNumber">
+        <a-form-model-item 
+          style="margin-bottom: 10px;"  
+          prop="phoneNumber">
           <a-input placeholder="手机号" v-model="userForm.phoneNumber">
               <a-icon
               slot="prefix"
@@ -18,7 +20,9 @@
               style="color: rgba(0, 0, 0, 0.25)"/>
           </a-input>
         </a-form-model-item>
-        <a-form-model-item  style="margin-bottom: 8px;" prop="password">
+        <a-form-model-item  
+          style="margin-bottom: 8px;" 
+          prop="password">
           <a-input
             type="password"
             placeholder="密码"
@@ -30,7 +34,10 @@
           </a-input>
         </a-form-model-item>
         <!-- 注册 -->
-        <a-form-model-item v-if="isLogin == false"  style="margin-bottom: 8px;" prop="checkPass">
+        <a-form-model-item 
+          v-if="isLogin == false"  
+          style="margin-bottom: 8px;" 
+          prop="checkPass">
           <a-input
             type="password"
             placeholder="确认密码"
@@ -58,7 +65,6 @@
             <a-col :span="6">
                 <a-button
                 html-type="submit"
-                :disabled="hasErrors(form.getFieldsError())"
                 class="codeButton">
                 <span>发送验证码</span>
                 </a-button>
@@ -68,7 +74,7 @@
           <a-button
               type="primary"
               html-type="submit"
-              :disabled="hasErrors(form.getFieldsError())"
+              :disabled= true
               class="submitButton">
             <span v-if="isLogin == true" class="buttonText">登录</span>
             <span v-else class="buttonText">注册</span>
@@ -77,7 +83,9 @@
         <p v-if="isLogin == true" style="text-align: right;">
           <a href="#" @click="changeForm">注册</a>
           &nbsp;|&nbsp;
-          <a href="#" @click="toForgetPass">忘记密码？</a>
+          <router-link :to="{ name: 'ForgetPass' }">
+            <a href="#">忘记密码？</a>
+          </router-link>
         </p>
         <p v-else style="text-align: right;">
           <a href="#" @click="changeForm">已有账号？去登陆</a>
@@ -87,20 +95,12 @@
 </template>
 <script>
 import router from '@/router';
-function hasErrors(fieldsError) {
-  return Object.keys(fieldsError).some((field) => fieldsError[field]);
-}
+
 export default {
   name:"loginRegisterForm",
   data() {
-    let validateNumber = (rule, value, callback) => {
-      if(value === '') {
-        callback(new Error('请输入手机号'));
-      }
-      callback();
-    };
     let validatePass = (rule, value, callback) => {
-      if (value === '') {
+      if (value.trim() === '') {
         callback(new Error('请输入密码'));
       } else {
         if (this.ruleForm.checkPass !== '') {
@@ -110,7 +110,7 @@ export default {
       }
     };
     let validatePass2 = (rule, value, callback) => {
-      if (value === '') {
+      if ( value === '') {
         callback(new Error('请再次输入密码'));
       } else if (value !== this.userForm.password) {
         callback(new Error("密码与上次输入不一致"));
@@ -120,7 +120,6 @@ export default {
     };
     return {
         isLogin:false,
-        hasErrors,
         form: this.$form.createForm(this, { name: "user_form" }),
         userForm:{
           phoneNumber:'',
@@ -130,47 +129,28 @@ export default {
         },
         userFormRules:{
           phoneNumber:[
-            { required: true, message: '请输入手机号', trigger:'blur', validtor: validateNumber},
-            { min: 11, message: '请输入正确的手机号', trigger:'blur'}
+            { required: true, message: '请输入手机号', trigger:'blur' },
+            { min: 11, message: '请输入正确的手机号', trigger:'blur' }
           ],
           password:[
-            { required: true, message: '请确认密码', trigger:'blur', validtor: validatePass},
-            { min:8, message:'密码长度不小于8' }
+            { required: true, message: '请输入密码', validtor: validatePass, trigger:'blur' },
+            { min:8, message:'密码长度不小于8', trigger: 'blur' }
           ],
           checkPass:[
-            { required: true, message: '请再次输入密码', trigger:'blur', validator: validatePass2}
+            { required: true, trigger:'blur', validator: validatePass2 }
           ],
           checkCode:[
-            {  required: true, message: '请输入验证码', trigger:'blur', validtor: validateNumber}
+            { required: true, message: '请输入验证码', trigger:'blur' }
           ]
         }
     };
   },
   mounted() {
     this.$nextTick(() => {
-      // To disabled submit button at the beginning.
       this.form.validateFields();
     });
   },
   methods: {
-    // Only show error after a field is touched.
-    userNameError() {
-      const { getFieldError, isFieldTouched } = this.form;
-      return isFieldTouched("userName") && getFieldError("userName");
-    },
-    // Only show error after a field is touched.
-    passwordError() {
-      const { getFieldError, isFieldTouched } = this.form;
-      return isFieldTouched("password") && getFieldError("password");
-    },
-    checkPassError(){
-      const {getFieldError, isFieldTouched} = this.form;
-      return isFieldTouched("checkPass") && getFieldError("checkPass");
-    },
-    checkCodeError(){
-      const {getFieldError, isFieldTouched } = this.form;
-      return isFieldTouched("checkCode") && getFieldError("checkCode")
-    },
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
@@ -183,7 +163,7 @@ export default {
         this.isLogin = !this.isLogin;
     },
     toForgetPass(){
-      router.push('/forgetPass')
+      router.push( {path: '/forgetPass'} )
     }
   },
 };
@@ -221,9 +201,9 @@ export default {
   width: 100%;
   background-color: #6495ed;
 }
-.codeButton {
+/* .codeButton :disabled{
   background-color: #ecf5ff;
   border: 1px solid #6495ed;
   color: #6495ed;
-}
+} */
 </style>
