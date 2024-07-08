@@ -67,7 +67,7 @@
             <span>结算</span>
           </a-button>
         </a> -->
-        <router-link :to="{ path: '/order-info', query: { totalAmount: totalPrice.toFixed(2) }}">
+        <router-link :to="{ path: '/orderInformation', query: { totalAmount: totalPrice.toFixed(2) }}">
           <a-button type="primary" style="text-align:center;font-size:12px;width:100px;margin-right:20px">
             <span>结算</span>
           </a-button>

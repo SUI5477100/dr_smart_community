@@ -15,6 +15,7 @@ import forgetPassView from '../pages/forgetPassView.vue'
 import ProductDetails from '../pages/productDetails.vue'
 import MyShoppingCart from '../pages/myShoppingCart.vue'
 import OrderInformation from '../pages/orderInformation.vue'
+import OrderPayment from '../pages/orderPayment.vue'
 
 Vue.use(Router)
 
@@ -107,6 +108,13 @@ export default new Router({
       component: OrderInformation,
       meta: { noHeader: true },
       props: route => ({ totalAmount: route.query.totalAmount })
+    },
+    {
+      // 订单支付
+      path: '/orderPayment',
+      name: 'OrderPayment',
+      component: OrderPayment,
+      meta: { noHeader: true },
     }
   ]
 })

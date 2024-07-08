@@ -92,6 +92,7 @@ export default {
     payNow() {
       // 立即支付的逻辑
       alert('跳转到支付页面')
+      this.$router.push('/orderPayment')
     },
   },
   created() {
