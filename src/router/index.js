@@ -14,6 +14,7 @@ import ProductList from '../pages/productList.vue'
 import forgetPassView from '../pages/forgetPassView.vue'
 import ProductDetails from '../pages/productDetails.vue'
 import MyShoppingCart from '../pages/myShoppingCart.vue'
+import OrderInformation from '../pages/orderInformation.vue'
 
 Vue.use(Router)
 
@@ -98,6 +99,14 @@ export default new Router({
       name: 'MyShoppingCart',
       component: MyShoppingCart,
       meta: { noHeader: true }
+    },
+    {
+      // 订单信息
+      path: '/orderInformation',
+      name: 'OrderInformation',
+      component: OrderInformation,
+      meta: { noHeader: true },
+      props: route => ({ totalAmount: route.query.totalAmount })
     }
   ]
 })
