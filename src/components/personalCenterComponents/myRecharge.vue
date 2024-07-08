@@ -96,9 +96,11 @@ export default {
         handleSelectChange(value) {
             console.log(value);
         },
+        // 重置表单项
         handleReset() {
-            this.form.resetFields(); // 重置表单项
+            this.form.resetFields(); 
         },
+        // 控制充值弹框显隐
         showModal(e) {
             e.preventDefault();
             this.form.validateFields((err) => {
