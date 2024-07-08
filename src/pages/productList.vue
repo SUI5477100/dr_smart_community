@@ -13,43 +13,47 @@
         <!-- 价格筛选 -->
         <ul class="screen">
           <li style="margin-left:-20px">价格筛选:</li>
-          <li class="low">最低价格</li>
+          <li class="low">
+            <a-input-number v-model="priceRange.low" placeholder="最低价格" />
+          </li>
           <li>-</li>
-          <li class="high">最高价格</li>
-          <a-button type="primary">
+          <li class="high">
+            <a-input-number v-model="priceRange.high" placeholder="最高价格" />
+          </li>
+          <a-button type="primary" @click="filterByPrice">
             确定
           </a-button>
         </ul>
         <!-- 价格排序 -->
         <ul class="sort">
           <li style="margin-left:-20px">价格排序:</li>
-          <li class="price">价格<img src="../assets/image/sort.png" style="width:20px;height:20px"> </li>
-          <li class="sales">销量<img src="../assets/image/sort.png" style="width:20px;height:20px"></li>
+          <li class="price" @click="handleSort('price')">价格<img src="../assets/image/sort.png" style="width:20px;height:20px"></li>
+          <li class="sales" @click="handleSort('sales')">销量<img src="../assets/image/sort.png" style="width:20px;height:20px"></li>
         </ul>
         <!-- 商品列表外部盒子 -->
         <!-- 单个商品 -->
-        <router-link to='/productDetails' class="listWrapper">
-          <div class="plist" v-for="(item,index) in plistForm" :key="item.id">
-            <!-- <div class="productImg" style="width:240px">
-            <img :src="item.img" style="width:240px" alt="">
-          </div> -->
+        <div class="listWrapper">
+          <div class="plist" v-for="(item,index) in paginatedList" :key="item.id" @click="toProductDetails">
+            <div class="productImg" style="width:240px">
+              <img :src="item.img" style="width:240px" alt="">
+            </div>
             <img :src="item.src" :key="index" style="width:240px;height:240px" alt="">
             <!-- 商品底部详情 -->
             <ul class="plistDetail">
               <div>
-                <li>{{item.price}}</li>
+                <li>￥{{item.price}}</li>
                 <li>{{item.name}}</li>
                 <li>{{item.name}}</li>
-                <li>{{item.sort}}</li>
+                <li>销量：{{item.sort}}</li>
               </div>
             </ul>
           </div>
-        </router-link>
+        </div>
       </div>
       <!-- 页码 -->
       <div class="pagination">
         <div id="components-pagination-demo-mini">
-          <a-pagination size="small" :total="50" show-size-changer show-quick-jumper />
+          <a-pagination size="small" :total="filteredList.length" :page-size="pageSize" :current="currentPage" @change="handlePageChange" @show-size-change="handlePageSizeChange" show-size-changer show-quick-jumper />
         </div>
       </div>
 
@@ -62,105 +66,195 @@
 export default {
   data() {
     return {
+      priceRange: {
+        low: null,
+        high: null,
+      },
       plistForm: [
         {
           id: 1,
           src: require('../assets/image/milk_01.png'),
-          price: '￥220.8',
+          price: 220.8,
           name: '蒙牛纯牛奶250ml*16',
           nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: '10',
+          sort: 10,
         },
         {
           id: 2,
           src: require('../assets/image/milk_01.png'),
-          price: '￥220.8',
+          price: 120.8,
           name: '蒙牛纯牛奶250ml*16',
           nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: '10',
+          sort: 30,
         },
         {
           id: 3,
           src: require('../assets/image/milk_01.png'),
-          price: '￥220.8',
+          price: 320.8,
           name: '蒙牛纯牛奶250ml*16',
           nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: '10',
+          sort: 10,
         },
         {
           id: 4,
           src: require('../assets/image/milk_01.png'),
-          price: '￥220.8',
+          price: 220.8,
           name: '蒙牛纯牛奶250ml*16',
           nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: '10',
+          sort: 50,
         },
         {
           id: 5,
           src: require('../assets/image/milk_01.png'),
-          price: '￥220.8',
+          price: 120.8,
           name: '蒙牛纯牛奶250ml*16',
           nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: '10',
+          sort: 10,
         },
         {
           id: 6,
           src: require('../assets/image/milk_01.png'),
-          price: '￥220.8',
+          price: 320.8,
           name: '蒙牛纯牛奶250ml*16',
           nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: '10',
+          sort: 10,
         },
         {
-          id: 1,
+          id: 7,
           src: require('../assets/image/milk_01.png'),
-          price: '￥220.8',
+          price: 220.8,
           name: '蒙牛纯牛奶250ml*16',
           nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: '10',
+          sort: 100,
         },
         {
-          id: 2,
+          id: 8,
           src: require('../assets/image/milk_01.png'),
-          price: '￥220.8',
+          price: 120.8,
           name: '蒙牛纯牛奶250ml*16',
           nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: '10',
+          sort: 10,
         },
         {
-          id: 3,
+          id: 9,
           src: require('../assets/image/milk_01.png'),
-          price: '￥220.8',
+          price: 320.8,
           name: '蒙牛纯牛奶250ml*16',
           nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: '10',
+          sort: 10,
         },
         {
-          id: 4,
+          id: 10,
           src: require('../assets/image/milk_01.png'),
-          price: '￥220.8',
+          price: 220.8,
           name: '蒙牛纯牛奶250ml*16',
           nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: '10',
+          sort: 10,
         },
         {
-          id: 5,
+          id: 11,
           src: require('../assets/image/milk_01.png'),
-          price: '￥220.8',
+          price: 120.8,
           name: '蒙牛纯牛奶250ml*16',
           nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: '10',
+          sort: 10,
         },
         {
-          id: 6,
+          id: 12,
           src: require('../assets/image/milk_01.png'),
-          price: '￥220.8',
+          price: 320.8,
           name: '蒙牛纯牛奶250ml*16',
           nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: '10',
+          sort: 10,
+        },
+        {
+          id: 13,
+          src: require('../assets/image/milk_01.png'),
+          price: 320.8,
+          name: '蒙牛纯牛奶250ml*16',
+          nameLittle: '蒙牛纯牛奶250ml*16',
+          sort: 10,
+        },
+        {
+          id: 14,
+          src: require('../assets/image/milk_01.png'),
+          price: 220.8,
+          name: '蒙牛纯牛奶250ml*16',
+          nameLittle: '蒙牛纯牛奶250ml*16',
+          sort: 10,
+        },
+        {
+          id: 15,
+          src: require('../assets/image/milk_01.png'),
+          price: 120.8,
+          name: '蒙牛纯牛奶250ml*16',
+          nameLittle: '蒙牛纯牛奶250ml*16',
+          sort: 10,
+        },
+        {
+          id: 16,
+          src: require('../assets/image/milk_01.png'),
+          price: 320.8,
+          name: '蒙牛纯牛奶250ml*16',
+          nameLittle: '蒙牛纯牛奶250ml*16',
+          sort: 10,
         },
       ],
+      filteredList: [],
+      currentPage: 1,
+      pageSize: 10,
+      sortBy: null,
+      sortOrder: 'asc',
     }
+  },
+  mounted() {
+    this.filteredList = this.plistForm
+  },
+  computed: {
+    paginatedList() {
+      const start = (this.currentPage - 1) * this.pageSize
+      const end = start + this.pageSize
+      return this.filteredList.slice(start, end)
+    },
+  },
+  methods: {
+    filterByPrice() {
+      this.filteredList = this.plistForm.filter((item) => {
+        const low =
+          this.priceRange.low !== null ? this.priceRange.low : -Infinity
+        const high =
+          this.priceRange.high !== null ? this.priceRange.high : Infinity
+        return item.price >= low && item.price <= high
+      })
+      this.currentPage = 1 // 重置到第一页
+    },
+    handlePageChange(page) {
+      this.currentPage = page
+    },
+    handleSort(sortKey) {
+      if (this.sortBy === sortKey) {
+        this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc'
+      } else {
+        this.sortBy = sortKey
+        this.sortOrder = 'asc'
+      }
+      this.sortList()
+    },
+    sortList() {
+      if (this.sortBy) {
+        this.filteredList.sort((a, b) => {
+          if (this.sortOrder === 'asc') {
+            return a[this.sortBy] > b[this.sortBy] ? 1 : -1
+          } else {
+            return a[this.sortBy] < b[this.sortBy] ? 1 : -1
+          }
+        })
+      }
+    },
+    toProductDetails() {
+      // 跳转到商品详情页
+      this.$router.push('/productDetails')
+    },
   },
 }
 </script>
@@ -285,6 +379,9 @@ export default {
             }
           }
         }
+        .plist:hover {
+          cursor: pointer;
+        }
       }
     }
   }
@@ -304,7 +401,7 @@ export default {
   font-size: 14px;
 }
 .plist:last-child {
-  margin-right: auto;
-  margin-left: 20px;
+  // margin-right: auto;
+  // margin-left: 20px;
 }
 </style>

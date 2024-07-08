@@ -70,34 +70,16 @@
           <div class="selectAddressPickUpSite">
             <span>选择自提点：</span>
             <div class="address">
-              <a-select default-value="lucy" style="width: 200px" @change="handleChange">
-                <a-select-option value="jack">
+              <a-select default-value="龙湖舜山府" style="width: 200px" @change="handleChange">
+                <a-select-option value="龙湖舜山府">
                   龙湖舜山府
-                </a-select-option>
-                <a-select-option value="lucy">
-                  Lucy
-                </a-select-option>
-                <a-select-option value="disabled" disabled>
-                  Disabled
-                </a-select-option>
-                <a-select-option value="Yiminghe">
-                  yiminghe
                 </a-select-option>
               </a-select>
             </div>
             <div class="pickUpSite">
-              <a-select default-value="lucy" style="width: 200px" @change="handleChange">
-                <a-select-option value="jack">
+              <a-select default-value="自提点01" style="width: 200px" @change="handleChange">
+                <a-select-option value="自提点01">
                   自提点01
-                </a-select-option>
-                <a-select-option value="lucy">
-                  Lucy
-                </a-select-option>
-                <a-select-option value="disabled" disabled>
-                  Disabled
-                </a-select-option>
-                <a-select-option value="Yiminghe">
-                  yiminghe
                 </a-select-option>
               </a-select>
             </div>
