@@ -33,13 +33,14 @@
         <!-- 右侧商品名称、收藏按钮 -->
         <div class="pDetailHeader">
           <div class="pNameLeft">
-            <div class="pName">蒙牛纯牛奶250ml*16</div>
-            <div class="pNameSmall">蒙牛纯牛奶250ml*16</div>
+            <div class="pName">{{ product.name }}</div>
+            <div class="pNameSmall">{{ product.name }}</div>
           </div>
           <div class="pCollectRight">
-            <a-button type="primary" style="text-align:center;font-size:12px">
-              <span>已收藏</span>
-              <a-icon type="star" />
+            <a-button type="primary" style="text-align:center;font-size:12px" @click="toggleFavorite">
+              <span>{{ isFavorite ? '已收藏' : '收藏' }}</span>
+              <!-- <a-icon type="star" /> -->
+              <a-icon :type="isFavorite ? 'star' : 'star-o'" :theme="isFavorite ? 'filled' : 'outlined'" />
             </a-button>
           </div>
         </div>
@@ -48,7 +49,7 @@
           <div>
             <li>
               <span>门店价格：</span>
-              <span>￥216</span>
+              <span>￥{{ product.price }}</span>
             </li>
             <li>
               <span>市场价格：</span>
@@ -56,7 +57,7 @@
             </li>
             <li>
               <span>累计销量：</span>
-              <span>0件</span>
+              <span>{{ product.sort }}件</span>
             </li>
             <li>
               <span>收藏次数：</span>
@@ -89,7 +90,7 @@
             <span>购买数量:</span>
             <!-- 选择购买的数量 -->
             <div class="number">
-              <a-input-number :min="1" :max="100000" :default-value="3" @change="onChange" />
+              <a-input-number v-model="quantity" :min="1" @change="updateQuantity" />
             </div>
             <!-- 库存 -->
             <div class="inventory">
@@ -100,7 +101,7 @@
         </div>
         <!-- 底部加入购物车按钮 -->
         <div class="addCart">
-          <a-button type="primary" style="text-align:center;font-size:12px">
+          <a-button type="primary" style="text-align:center;font-size:12px" @click="addToCart">
             <a-icon type="shopping-cart" />
             <span>加入购物车</span>
           </a-button>
@@ -111,22 +112,38 @@
 </template>
 
 <script>
+// import { mapMutations } from 'vuex'
+import { EventBus } from '@/eventBus'
 // const baseUrl =
 //   'https://raw.githubusercontent.com/vueComponent/ant-design-vue/master/components/vc-slick/assets/img/react-slick/'
 export default {
+  props: {
+    product: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       image: [
         'local:milk_01.png',
-        // 'https://img11.360buyimg.com/n1/jfs/t1/160370/19/26506/25122/6656d955F587adf33/cbf8f048898edd59.jpg.avif',
         'https://img11.360buyimg.com/n1/jfs/t1/242644/8/5336/39975/6656d959F636bd15c/b9f5a3662593102a.jpg.avif',
         'https://img11.360buyimg.com/n1/jfs/t1/217720/34/42141/27861/6656d95aF1fbfd10f/a775be1223956938.jpg.avif',
         'https://img11.360buyimg.com/n1/jfs/t1/239185/32/9290/27551/6656d95aF44c56931/a401a85c1d83a396.jpg.avif',
       ],
-      baseUrl: 'https://example.com/images/',
+      isFavorite: false,
+      favoriteCount: 1,
+      cart: [],
     }
   },
   methods: {
+    // ...mapMutations(['addToCart']),
+    // getImgSrc(item) {
+    //   if (item.startsWith('local:')) {
+    //     return require(`../assets/image/${item.replace('local:', '')}`)
+    //   }
+    //   return item
+    // },
     getImgSrc(item) {
       if (item.startsWith('local:')) {
         return require(`../assets/image/${item.replace('local:', '')}`)
@@ -142,8 +159,26 @@ export default {
       console.log(`selected ${value}`)
     },
     // 股买数量的数字输入框
-    onChange(value) {
-      console.log('changed', value)
+    updateQuantity(value) {
+      this.quantity = value
+    },
+    toggleFavorite() {
+      this.isFavorite = !this.isFavorite
+      if (this.isFavorite) {
+        this.favoriteCount += 1
+      } else {
+        this.favoriteCount -= 1
+      }
+      console.log(`Favorite status: ${this.isFavorite}`)
+    },
+    addToCart() {
+      const product = {
+        name: '蒙牛纯牛奶250ml*16',
+        price: 216,
+        quantity: 3,
+      }
+      EventBus.$emit('add-to-cart', product)
+      console.log('Added to cart', product)
     },
   },
 }
