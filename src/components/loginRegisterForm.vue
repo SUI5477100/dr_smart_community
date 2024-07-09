@@ -74,8 +74,8 @@
           <a-button
               type="primary"
               html-type="submit"
-              :disabled= true
-              class="submitButton">
+              class="submitButton"
+              @click="testApi">
             <span v-if="isLogin == true" class="buttonText">登录</span>
             <span v-else class="buttonText">注册</span>
           </a-button>
@@ -94,7 +94,7 @@
   </div>
 </template>
 <script>
-import router from '@/router';
+import router from '../router/index';
 
 export default {
   name:"loginRegisterForm",
@@ -164,9 +164,9 @@ export default {
     },
     toForgetPass(){
       router.push( {path: '/forgetPass'} )
-    }
-  },
-};
+    },
+}
+}
 </script>
 <style scoped>
 .formContainer{
