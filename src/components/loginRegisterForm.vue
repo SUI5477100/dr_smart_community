@@ -7,7 +7,9 @@
       @submit="handleSubmit" 
       class="form"
       :model="userForm"
-      :rules="userFormRules">
+      :rules="userFormRules"
+      ref="userForm"
+      >
         <p v-if="isLogin == true" class="formName">用户登录</p>
         <p v-else class="formName">用户注册</p>
         <a-form-model-item 
@@ -75,7 +77,7 @@
               type="primary"
               html-type="submit"
               class="submitButton"
-              @click="testApi">
+              @click="loginSubmit">
             <span v-if="isLogin == true" class="buttonText">登录</span>
             <span v-else class="buttonText">注册</span>
           </a-button>
@@ -95,6 +97,7 @@
 </template>
 <script>
 import router from '../router/index';
+import api from '../api/index'
 
 export default {
   name:"loginRegisterForm",
@@ -165,6 +168,40 @@ export default {
     toForgetPass(){
       router.push( {path: '/forgetPass'} )
     },
+    loginSubmit(){
+      this.$refs['userForm'].validate((valid) => {
+        console.log("valid:~~~~~~~~~~~" + valid)
+        if(valid){
+          let loginForm = {
+            phone: this.userForm.phoneNumber,
+            password: this.userForm.password,
+            roleId:0
+          }
+          // this.testapi()
+          this.login(loginForm)
+        }
+      })
+    },
+    // async testapi(){
+    //   api.goods.goodsList(
+    //   {
+    //     page: 1,
+    //     limit: 10,
+    //     categoryId: 11,
+    //     minPrice: -1,
+    //     maxPrice: -1,
+    //     key: '',
+    //     sortByPrice: 1,
+    //     sortBySaleCnt: 0
+    //   }
+    //   ).then(res=>{
+    //     console.log("已请求：！！！！！！！！！！！res："+JSON.stringify(res))
+    // })
+    // },
+    async login(loginForm){
+      let res = await api.login_reguster.login(loginForm);
+      console.log("this is login in page......... res:" + JSON.stringify(res))
+    }
 }
 }
 </script>
