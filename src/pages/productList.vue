@@ -33,7 +33,7 @@
         <!-- 商品列表外部盒子 -->
         <!-- 单个商品 -->
         <div class="listWrapper">
-          <div class="plist" v-for="(item,index) in paginatedList" :key="item.id" @click="toProductDetails">
+          <div class="plist" v-for="(item,index) in paginatedList" :key="item.id" @click="toProductDetails(item)">
             <div class="productImg" style="width:240px">
               <img :src="item.img" style="width:240px" alt="">
             </div>
@@ -251,9 +251,8 @@ export default {
         })
       }
     },
-    toProductDetails() {
-      // 跳转到商品详情页
-      this.$router.push('/productDetails')
+    toProductDetails(item) {
+      this.$router.push({ name: 'ProductDetails', params: { product: item } })
     },
   },
 }
@@ -321,7 +320,19 @@ export default {
         height: 60px;
         background-color: white;
         border: 1px solid #f2f2f2;
-        > li {
+        li:first-child {
+          font-size: 14px;
+          color: black;
+          margin-left: 40px;
+        }
+        li:nth-child(2) {
+          cursor: pointer;
+          font-size: 14px;
+          color: black;
+          margin-left: 40px;
+        }
+        li:last-child {
+          cursor: pointer;
           font-size: 14px;
           color: black;
           margin-left: 40px;
