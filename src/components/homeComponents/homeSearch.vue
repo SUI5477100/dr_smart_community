@@ -6,7 +6,7 @@
         <div class="search">
           <a-input-search placeholder="输入搜索内容" enter-button @search="onSearch" />
         </div>
-        <a href="myShoppingCart" class="shop-car">
+        <a href="/myShoppingCart" class="shop-car">
           我的购物车
           <a-badge count="5">
             <a-icon type="shopping-cart" style="font-size: large;" />
