@@ -6,13 +6,15 @@ import article from './article_example';
 import {goods} from './goods';
 import { login_reguster } from './loginRegister';
 import { password } from './password';
+import { userInfo } from './userInfo';
 // 其他模块的接口…… 
 // 导出接口
 export default {    
     article,
     goods,
     login_reguster,
-    password
+    password,
+    userInfo
 }
 
 
