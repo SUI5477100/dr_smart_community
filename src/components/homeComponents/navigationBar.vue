@@ -20,7 +20,7 @@ export default {
       menuItems: [
         { key: '/productList', link: '/productList', label: '全部商品' },
         { key: '/login', link: '/login', label: '首页' },
-        { key: '/communityService', link: '/communityService', label: '社区服务' },
+        { key: '/goodsCategory', link: '/goodsCategory', label: '社区服务' },
         { key: '/orders', link: '/orders', label: '我的订单' },
         { key: '/personalCenter', link: '/personalCenter', label: '个人中心' },
       ],

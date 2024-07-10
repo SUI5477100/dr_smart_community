@@ -33,18 +33,18 @@
         <!-- 商品列表外部盒子 -->
         <!-- 单个商品 -->
         <div class="listWrapper">
-          <div class="plist" v-for="(item,index) in paginatedList" :key="item.id" @click="toProductDetails">
+          <div class="plist" v-for="(item,index) in paginatedList" :key="item.id" @click="toProductDetails(item)">
             <div class="productImg" style="width:240px">
-              <img :src="item.img" style="width:240px" alt="">
+              <img :src="item.homeImg" style="width:240px" alt="">
             </div>
             <img :src="item.src" :key="index" style="width:240px;height:240px" alt="">
             <!-- 商品底部详情 -->
             <ul class="plistDetail">
               <div>
                 <li>￥{{item.price}}</li>
-                <li>{{item.name}}</li>
-                <li>{{item.name}}</li>
-                <li>销量：{{item.sort}}</li>
+                <li>{{item.goodsName}}</li>
+                <li>{{item.content}}</li>
+                <li>销量：{{item.saleCnt}}</li>
               </div>
             </ul>
           </div>
@@ -63,6 +63,7 @@
 </template>
 
 <script>
+import api from '../api/index'
 export default {
   data() {
     return {
@@ -70,136 +71,7 @@ export default {
         low: null,
         high: null,
       },
-      plistForm: [
-        {
-          id: 1,
-          src: require('../assets/image/milk_01.png'),
-          price: 220.8,
-          name: '蒙牛纯牛奶250ml*16',
-          nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: 10,
-        },
-        {
-          id: 2,
-          src: require('../assets/image/milk_01.png'),
-          price: 120.8,
-          name: '蒙牛纯牛奶250ml*16',
-          nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: 30,
-        },
-        {
-          id: 3,
-          src: require('../assets/image/milk_01.png'),
-          price: 320.8,
-          name: '蒙牛纯牛奶250ml*16',
-          nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: 10,
-        },
-        {
-          id: 4,
-          src: require('../assets/image/milk_01.png'),
-          price: 220.8,
-          name: '蒙牛纯牛奶250ml*16',
-          nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: 50,
-        },
-        {
-          id: 5,
-          src: require('../assets/image/milk_01.png'),
-          price: 120.8,
-          name: '蒙牛纯牛奶250ml*16',
-          nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: 10,
-        },
-        {
-          id: 6,
-          src: require('../assets/image/milk_01.png'),
-          price: 320.8,
-          name: '蒙牛纯牛奶250ml*16',
-          nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: 10,
-        },
-        {
-          id: 7,
-          src: require('../assets/image/milk_01.png'),
-          price: 220.8,
-          name: '蒙牛纯牛奶250ml*16',
-          nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: 100,
-        },
-        {
-          id: 8,
-          src: require('../assets/image/milk_01.png'),
-          price: 120.8,
-          name: '蒙牛纯牛奶250ml*16',
-          nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: 10,
-        },
-        {
-          id: 9,
-          src: require('../assets/image/milk_01.png'),
-          price: 320.8,
-          name: '蒙牛纯牛奶250ml*16',
-          nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: 10,
-        },
-        {
-          id: 10,
-          src: require('../assets/image/milk_01.png'),
-          price: 220.8,
-          name: '蒙牛纯牛奶250ml*16',
-          nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: 10,
-        },
-        {
-          id: 11,
-          src: require('../assets/image/milk_01.png'),
-          price: 120.8,
-          name: '蒙牛纯牛奶250ml*16',
-          nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: 10,
-        },
-        {
-          id: 12,
-          src: require('../assets/image/milk_01.png'),
-          price: 320.8,
-          name: '蒙牛纯牛奶250ml*16',
-          nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: 10,
-        },
-        {
-          id: 13,
-          src: require('../assets/image/milk_01.png'),
-          price: 320.8,
-          name: '蒙牛纯牛奶250ml*16',
-          nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: 10,
-        },
-        {
-          id: 14,
-          src: require('../assets/image/milk_01.png'),
-          price: 220.8,
-          name: '蒙牛纯牛奶250ml*16',
-          nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: 10,
-        },
-        {
-          id: 15,
-          src: require('../assets/image/milk_01.png'),
-          price: 120.8,
-          name: '蒙牛纯牛奶250ml*16',
-          nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: 10,
-        },
-        {
-          id: 16,
-          src: require('../assets/image/milk_01.png'),
-          price: 320.8,
-          name: '蒙牛纯牛奶250ml*16',
-          nameLittle: '蒙牛纯牛奶250ml*16',
-          sort: 10,
-        },
-      ],
+      plistForm: [],
       filteredList: [],
       currentPage: 1,
       pageSize: 10,
@@ -208,7 +80,8 @@ export default {
     }
   },
   mounted() {
-    this.filteredList = this.plistForm
+    // this.filteredList = this.plistForm
+    this.getProductList()
   },
   computed: {
     paginatedList() {
@@ -218,6 +91,25 @@ export default {
     },
   },
   methods: {
+    async getProductList() {
+      try {
+        const res = await api.goods.goodsList({
+          page: 1,
+          limit: 10,
+          categoryId: 11,
+          minPrice: -1,
+          maxPrice: -1,
+          key: '',
+          sortByPrice: 1,
+          sortBySaleCnt: 0,
+        })
+        console.log('商品列表数据', res.page.list)
+        this.plistForm = res.page.list
+        this.filteredList = this.plistForm
+      } catch (error) {
+        console.error('获取商品列表失败', error)
+      }
+    },
     filterByPrice() {
       this.filteredList = this.plistForm.filter((item) => {
         const low =
@@ -251,9 +143,8 @@ export default {
         })
       }
     },
-    toProductDetails() {
-      // 跳转到商品详情页
-      this.$router.push('/productDetails')
+    toProductDetails(item) {
+      this.$router.push({ name: 'ProductDetails', params: { product: item } })
     },
   },
 }
@@ -321,7 +212,19 @@ export default {
         height: 60px;
         background-color: white;
         border: 1px solid #f2f2f2;
-        > li {
+        li:first-child {
+          font-size: 14px;
+          color: black;
+          margin-left: 40px;
+        }
+        li:nth-child(2) {
+          cursor: pointer;
+          font-size: 14px;
+          color: black;
+          margin-left: 40px;
+        }
+        li:last-child {
+          cursor: pointer;
           font-size: 14px;
           color: black;
           margin-left: 40px;
@@ -400,8 +303,8 @@ export default {
   color: black;
   font-size: 14px;
 }
-.plist:last-child {
-  // margin-right: auto;
-  // margin-left: 20px;
-}
+// .plist:last-child {
+//   margin-right: auto;
+//   margin-left: 20px;
+// }
 </style>

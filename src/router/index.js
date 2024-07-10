@@ -16,10 +16,11 @@ import ProductDetails from '../pages/productDetails.vue'
 import MyShoppingCart from '../pages/myShoppingCart.vue'
 import OrderInformation from '../pages/orderInformation.vue'
 import OrderPayment from '../pages/orderPayment.vue'
+import SecondLevelCategory from '../components/goodsCategoryList/secondLevelCategory.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -89,10 +90,22 @@ export default new Router({
       component: ProductList
     },
     {
+      path: '/goodsCategory',
+      name: 'HomeView',
+      component: HomeView,
+      children: [
+        {
+          path: 'getChildGoodsCategoryList',
+          name: 'SecondLevelCategory',
+          component: SecondLevelCategory,
+        },]
+    },
+    {
       // 商品详情
       path: '/productDetails',
       name: 'ProductDetails',
-      component: ProductDetails
+      component: ProductDetails,
+      props: route => ({ product: route.params.product }),
     },
     {
       // 我的购物车
@@ -118,3 +131,29 @@ export default new Router({
     }
   ]
 })
+// 全局前置守卫
+router.beforeEach((to, from, next) => {
+  const pathArr=[
+    '/',
+    '/login',
+    '/forgetPass',
+    '/productList',
+    '/productDetails',
+    '/myShoppingCart',
+    '/orderPayment'
+  ]
+  if(pathArr.indexOf(to.path) == -1){
+    // 要访问后台主页,需要判断是否有token
+    const token=localStorage.getItem('token')
+    if(token){
+      next()
+    }else{
+      next('/login')
+      alert('请先登录')
+    }
+  }else{
+    next()
+  }
+});
+
+export default router
