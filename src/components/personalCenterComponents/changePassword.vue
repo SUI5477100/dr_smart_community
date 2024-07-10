@@ -6,19 +6,19 @@
         <div class="change-pass-container">
             <reset-pass ref="resetPassForm"></reset-pass>
             <div class="button-container">
-                <next-button :clickHandler="resetPass" type="primary">
+                <nextButton :clickHandler="resetPass" type="primary">
                     修改密码
-                </next-button>
-                <next-button :clickHandler="() => resetCompForm()">
+                </nextButton>
+                <nextButton :clickHandler="() => resetCompForm()">
                     重置
-                </next-button>
+                </nextButton>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import nextButton from '../forgetPassComponents/nextButtonComponents.vue';
+import nextButton from '../buttonComponents/nextButtonComponents.vue';
 import resetPass from '../forgetPassComponents/resetPassFormComponents.vue';
 import titleBar from './memberCenterComponents/titleBar.vue';
 export default {

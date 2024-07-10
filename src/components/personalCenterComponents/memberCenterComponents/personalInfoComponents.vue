@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import nextButton from '../../forgetPassComponents/nextButtonComponents.vue';
+import nextButton from '../../buttonComponents/nextButtonComponents.vue';
 import avatarUpload from './avatarUploadComponents.vue'
 export default {
     name:'personalInfo',

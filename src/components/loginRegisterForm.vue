@@ -55,7 +55,7 @@
           </a-input>
         </a-form-model-item>
         <a-row v-if="isLogin == false" :gutter="[8,0]">
-            <a-col :span="15" >
+            <a-col :span="14" >
               <a-form-model-item prop="checkCode">
                 <a-input
                     type="text"
@@ -68,14 +68,12 @@
                 </a-input>
               </a-form-model-item>
             </a-col>
-            <a-col :span="6">
-                <a-button
-                html-type="submit"
-                class="codeButton"
-                @click="getCheckCode"
-                :disabled="isButtonDisabled">
-                <span>{{ buttonLabel }}</span>
-                </a-button>
+            <a-col :span="7">
+              <checkCodeButton
+              class="codeButton"
+              :handleClick="getCheckCode"
+              ref="checkCodeButton">
+              </checkCodeButton>
             </a-col>
         </a-row>
         <a-form-model-item>
@@ -104,7 +102,7 @@
 <script>
 import router from '../router/index';
 import api from '../api/index'
-
+import checkCodeButton from './buttonComponents/checkCodeButton.vue';
 export default {
   name:"loginRegisterForm",
   data() {
@@ -128,7 +126,7 @@ export default {
       }
     };
     return {
-        isLogin:true,
+        isLogin:false,
         isButtonDisabled:false,
         buttonLabel:'发送验证码',
         countdown:60,
@@ -157,20 +155,23 @@ export default {
         }
     };
   },
+  components:{
+    checkCodeButton
+  },
   mounted() {
     this.$nextTick(() => {
       this.form.validateFields();
     });
   },
   methods: {
-    handleSubmit(e) {
-      e.preventDefault();
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log("Received values of form: ", values);
-        }
-      });
-    },
+    // handleSubmit(e) {
+    //   e.preventDefault();
+    //   this.form.validateFields((err, values) => {
+    //     if (!err) {
+    //       console.log("Received values of form: ", values);
+    //     }
+    //   });
+    // },
     changeForm(){
         this.isLogin = !this.isLogin;
     },
@@ -192,20 +193,6 @@ export default {
         value = value.slice(0, 11); // 截断超过11位的输入
       }
       this.userForm.phoneNumber = value;
-    },
-    startCountdown() {
-      this.isButtonDisabled = true;
-      this.buttonLabel = `重新发送 ${this.countdown}s`;
-      const countdownInterval = setInterval(() => {
-        this.countdown--;
-        this.buttonLabel = `重新发送 ${this.countdown}s`;
-        if (this.countdown === 0) {
-          clearInterval(countdownInterval);
-          this.isButtonDisabled = false;
-          this.buttonLabel = '发送验证码';
-          this.countdown = 60;
-        }
-      }, 1000);
     },
     //接口
     //表单提交
@@ -252,28 +239,15 @@ export default {
         }
       });
     },
-    // async testapi(){
-    //   api.goods.goodsList(
-    //   {
-    //     page: 1,
-    //     limit: 10,
-    //     categoryId: 11,
-    //     minPrice: -1,
-    //     maxPrice: -1,
-    //     key: '',
-    //     sortByPrice: 1,
-    //     sortBySaleCnt: 0
-    //   }
-    //   ).then(res=>{
-    //     console.log("已请求：！！！！！！！！！！！res："+JSON.stringify(res))
-    // })
-    // },
     async login(loginForm){
       let res = await api.login_reguster.login(loginForm);
       console.log("this is login in page......... res:" + JSON.stringify(res))
       if(res.code == 200){
         localStorage.setItem('token',res.token)
         router.push('/')
+      }else if(res.code == 500){
+        this.userForm.password = ''
+        this.$message.error(res.msg)
       }
     },
     async register(registerForm){
@@ -283,14 +257,17 @@ export default {
         this.$message.success('注册成功！前去登录')
         localStorage.setItem('token','')
         this.isLogin = true
+      }else if(res.code == 500){
+        this.userForm.checkCode = ''
+        this.$message.error(res.msg)
       }
     },
     async getCode(checkCodeForm){
       let res = await api.login_reguster.sendCheckCode(checkCodeForm);
       console.log("this is checkcode function..........res:",JSON.stringify(res))
       if(res.code == 200){
-        this.startCountdown()
-        this.$message.info('验证码已发送')
+        this.$refs['checkCodeButton'].startCountdown()
+        this.$message.success('验证码发送成功')
       }else{
         this.$message.error('验证码发送失败')
       }
@@ -309,7 +286,7 @@ export default {
     align-items: center;
     text-align: center;
     position: absolute;
-    right: 40px;
+    right: 25%;
     top:260px;
     border-radius: 10px;
 }
@@ -331,9 +308,9 @@ export default {
   width: 100%;
   background-color: #6495ed;
 }
-/* .codeButton :disabled{
-  background-color: #ecf5ff;
-  border: 1px solid #6495ed;
-  color: #6495ed;
-} */
+.codeButton{
+
+  width: 150%;
+  /* background-color: aqua; */
+}
 </style>

@@ -5,17 +5,14 @@
 import article from './article_example';
 import {goods} from './goods';
 import { login_reguster } from './loginRegister';
-import { getParentGoodsCategoryList } from './productCategories'
-import { parentId } from './productCategories'
-
+import { password } from './password';
 // 其他模块的接口…… 
 // 导出接口
 export default {
     article,
     goods,
-    getParentGoodsCategoryList,
-    parentId,
-    login_reguster
+    login_reguster,
+    password
 }
 
 
