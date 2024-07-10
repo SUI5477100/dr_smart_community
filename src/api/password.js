@@ -4,6 +4,9 @@ export const password = {
         return requests({
             url:'/user/verifyIdentity',
             method:'post',
+            headers:{
+                'Content-Type':'application/json'
+            },
             data:JSON.stringify(data)
         })
     },
@@ -11,6 +14,19 @@ export const password = {
         return requests({
             url:'/user/findPassword',
             method:'post',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            data:JSON.stringify(data)
+        })
+    },
+    updatePassword(data){
+        return requests({
+            url:'/user/updatePassword',
+            method:'post',
+            headers:{
+                'Content-Type':'application/json'
+            },
             data:JSON.stringify(data)
         })
     }

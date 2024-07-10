@@ -1,7 +1,7 @@
 <template>
     <div class="clearfix">
       <a-upload
-        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+        action="https://smart-community.vnuo.com.cn:9926/file/cos/upload"
         list-type="picture-card"
         :file-list="fileList"
         :before-upload="beforeUpload"
@@ -33,18 +33,33 @@
     });
   }
   export default {
+    props: {
+      imgUrl: {
+        type: String,
+        default: ''
+      }
+    },
     data() {
       return {
         previewVisible: false,
         previewImage: '',
-        fileList: [
-        //   {
-        //     uid: '-5',
-        //     name: 'image.png',
-        //     status: 'error',
-        //   },
-        ],
+        fileList: [],
+        file:{}
       };
+    },
+    watch: {
+      imgUrl: {
+        immediate: true,
+        handler(newVal) {
+          this.fileList = newVal ? [{
+            uid: '-1',
+            name: 'avatar.png',
+            status: 'done',
+            url: newVal,
+          }] : [];
+          console.log('fileList updated:', this.fileList);
+        }
+      }
     },
     methods: {
       handleCancel() {
@@ -57,8 +72,15 @@
         this.previewImage = file.url || file.preview;
         this.previewVisible = true;
       },
-      handleChange({ fileList }) {
-        this.fileList = fileList;
+      handleChange(info) {
+        this.fileList = info.fileList;
+        console.log('this is uploadImg,this.fileList:',this.fileList)
+        console.log('this is uploadImg,info.file:',info.file)
+        if(info.file.status == 'done'){
+          this.file = info.file
+          console.log('-----------200------ info.file:',info.file)
+          console.log('-------------------------',this.file)
+        }
       },
       beforeUpload(file) {
         // const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
