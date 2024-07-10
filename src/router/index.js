@@ -92,7 +92,8 @@ const router = new Router({
       // 商品详情
       path: '/productDetails',
       name: 'ProductDetails',
-      component: ProductDetails
+      component: ProductDetails,
+      props: route => ({ product: route.params.product }),
     },
     {
       // 我的购物车

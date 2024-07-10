@@ -62,11 +62,6 @@
           <li>￥{{ totalPrice.toFixed(2) }}</li>
           <li>元</li>
         </ul>
-        <!-- <a href="orderInformation" class="shop-car">
-          <a-button type="primary" style="text-align:center;font-size:12px;width:100px;margin-right:20px">
-            <span>结算</span>
-          </a-button>
-        </a> -->
         <router-link :to="{ path: '/orderInformation', query: { totalAmount: totalPrice.toFixed(2) }}">
           <a-button type="primary" style="text-align:center;font-size:12px;width:100px;margin-right:20px">
             <span>结算</span>
@@ -78,6 +73,7 @@
 </template>
 
 <script>
+import { EventBus } from '@/eventBus'
 export default {
   data() {
     return {
@@ -142,13 +138,18 @@ export default {
         )
       }, 0)
     },
+    selectedItems() {
+      return this.items.flatMap((pickup) =>
+        pickup.products.filter((product) => product.checked)
+      )
+    },
   },
   methods: {
-    onChange(value) {
-      console.log('changed', value)
-    },
     updateCart() {
       this.$forceUpdate() // 强制 Vue 更新视图
+    },
+    onChange(value) {
+      console.log('changed', value)
     },
     toggleSelectAll() {
       this.items.forEach((pickup) => {
@@ -178,22 +179,33 @@ export default {
       pickup.products = pickup.products.filter((p) => p !== product)
       this.checkPickupSelect(pickup)
     },
-    async fetchProductPrices() {
-      // 假设从API获取商品价格
-      const response = await fetch('/api/product-prices')
-      const data = await response.json()
-      this.items.forEach((pickup) => {
-        pickup.products.forEach((product) => {
-          const productData = data.find((d) => d.name === product.name)
-          if (productData) {
-            product.price = productData.price
-          }
-        })
+    // async fetchProductPrices() {
+    //   // 假设从API获取商品价格
+    //   const response = await fetch('/api/product-prices')
+    //   const data = await response.json()
+    //   this.items.forEach((pickup) => {
+    //     pickup.products.forEach((product) => {
+    //       const productData = data.find((d) => d.name === product.name)
+    //       if (productData) {
+    //         product.price = productData.price
+    //       }
+    //     })
+    //   })
+    // },
+    addProductToCart(product) {
+      let pickup = this.items.find((item) => item.label === '自提点01')
+      if (!pickup) {
+        pickup = { label: '自提点01', checked: false, products: [] }
+        this.items.push(pickup)
+      }
+      pickup.products.push({
+        ...product,
+        checked: false,
       })
     },
   },
   created() {
-    this.fetchProductPrices()
+    EventBus.$on('add-to-cart', this.addProductToCart)
   },
 }
 </script>
