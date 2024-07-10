@@ -4,11 +4,13 @@
 // 文章模块接口
 import article from './article_example';
 import {goods} from './goods';
+import { login_reguster } from './loginRegister';
 // 其他模块的接口…… 
 // 导出接口
 export default {    
     article,
-    goods
+    goods,
+    login_reguster
 }
 
 

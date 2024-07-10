@@ -19,7 +19,7 @@ import OrderPayment from '../pages/orderPayment.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -119,3 +119,29 @@ export default new Router({
     }
   ]
 })
+// 全局前置守卫
+router.beforeEach((to, from, next) => {
+  const pathArr=[
+    '/',
+    '/login',
+    '/forgetPass',
+    '/productList',
+    '/productDetails',
+    '/myShoppingCart',
+    '/orderPayment'
+  ]
+  if(pathArr.indexOf(to.path) == -1){
+    // 要访问后台主页,需要判断是否有token
+    const token=localStorage.getItem('token')
+    if(token){
+      next()
+    }else{
+      next('/login')
+      alert('请先登录')
+    }
+  }else{
+    next()
+  }
+});
+
+export default router

@@ -7,16 +7,22 @@
       @submit="handleSubmit" 
       class="form"
       :model="userForm"
-      :rules="userFormRules">
+      :rules="userFormRules"
+      ref="userForm"
+      >
         <p v-if="isLogin == true" class="formName">用户登录</p>
         <p v-else class="formName">用户注册</p>
         <a-form-model-item 
           style="margin-bottom: 10px;"  
           prop="phoneNumber">
-          <a-input placeholder="手机号" v-model="userForm.phoneNumber">
+          <a-input 
+          placeholder="手机号" 
+          v-model="userForm.phoneNumber"
+          @input="validateNumber"
+          @keypress="isNumber">
               <a-icon
+              type="user"
               slot="prefix"
-              type="user" 
               style="color: rgba(0, 0, 0, 0.25)"/>
           </a-input>
         </a-form-model-item>
@@ -65,8 +71,10 @@
             <a-col :span="6">
                 <a-button
                 html-type="submit"
-                class="codeButton">
-                <span>发送验证码</span>
+                class="codeButton"
+                @click="getCheckCode"
+                :disabled="isButtonDisabled">
+                <span>{{ buttonLabel }}</span>
                 </a-button>
             </a-col>
         </a-row>
@@ -75,7 +83,7 @@
               type="primary"
               html-type="submit"
               class="submitButton"
-              @click="testApi">
+              @click="formSubmit">
             <span v-if="isLogin == true" class="buttonText">登录</span>
             <span v-else class="buttonText">注册</span>
           </a-button>
@@ -95,6 +103,7 @@
 </template>
 <script>
 import router from '../router/index';
+import api from '../api/index'
 
 export default {
   name:"loginRegisterForm",
@@ -119,7 +128,10 @@ export default {
       }
     };
     return {
-        isLogin:false,
+        isLogin:true,
+        isButtonDisabled:false,
+        buttonLabel:'发送验证码',
+        countdown:60,
         form: this.$form.createForm(this, { name: "user_form" }),
         userForm:{
           phoneNumber:'',
@@ -134,7 +146,7 @@ export default {
           ],
           password:[
             { required: true, message: '请输入密码', validtor: validatePass, trigger:'blur' },
-            { min:8, message:'密码长度不小于8', trigger: 'blur' }
+            { min:6, message:'密码长度不小于6', trigger: 'blur' }
           ],
           checkPass:[
             { required: true, trigger:'blur', validator: validatePass2 }
@@ -165,6 +177,124 @@ export default {
     toForgetPass(){
       router.push( {path: '/forgetPass'} )
     },
+    //限制电话号码只能输入数字
+    isNumber(event) {
+      const charCode = event.charCode;
+      if (charCode < 48 || charCode > 57) {
+        event.preventDefault();
+      }
+    },
+    //限制电话号码最长位11位
+    validateNumber(event) {
+      let value = event.target.value;
+      this.userForm.phoneNumber = value.replace(/\D/g, '');
+      if (value.length > 11) {
+        value = value.slice(0, 11); // 截断超过11位的输入
+      }
+      this.userForm.phoneNumber = value;
+    },
+    startCountdown() {
+      this.isButtonDisabled = true;
+      this.buttonLabel = `重新发送 ${this.countdown}s`;
+      const countdownInterval = setInterval(() => {
+        this.countdown--;
+        this.buttonLabel = `重新发送 ${this.countdown}s`;
+        if (this.countdown === 0) {
+          clearInterval(countdownInterval);
+          this.isButtonDisabled = false;
+          this.buttonLabel = '发送验证码';
+          this.countdown = 60;
+        }
+      }, 1000);
+    },
+    //接口
+    //表单提交
+    formSubmit(){
+      this.$refs['userForm'].validate((valid) => {
+        // console.log("valid:~~~~~~~~~~~" + valid)
+        //登录状态
+        if(this.isLogin){
+          if(valid){
+            let loginForm = {
+              phone: this.userForm.phoneNumber,
+              password: this.userForm.password,
+              roleId:0
+            }
+            this.login(loginForm)
+          }
+        }else{
+          //注册状态
+          if(valid){
+            let registerForm = {
+              phone: this.userForm.phoneNumber,
+              password: this.userForm.password,
+              password2: this.userForm.checkPass,
+              code: this.userForm.checkCode,
+              operate: 0
+            }
+            this.register(registerForm)
+          }
+        }
+      })
+    },
+    //发送验证码
+    getCheckCode(){
+      this.$refs['userForm'].validateField('phoneNumber', (errorMessage) => {
+        console.log("this is checkcode function,valid:",errorMessage)
+        if (!errorMessage) {
+          let checkCodeForm = {
+            phone: this.userForm.phoneNumber,
+            operate: 0
+          }
+          this.getCode(checkCodeForm)
+        } else {
+          this.$message.error('验证失败!')
+        }
+      });
+    },
+    // async testapi(){
+    //   api.goods.goodsList(
+    //   {
+    //     page: 1,
+    //     limit: 10,
+    //     categoryId: 11,
+    //     minPrice: -1,
+    //     maxPrice: -1,
+    //     key: '',
+    //     sortByPrice: 1,
+    //     sortBySaleCnt: 0
+    //   }
+    //   ).then(res=>{
+    //     console.log("已请求：！！！！！！！！！！！res："+JSON.stringify(res))
+    // })
+    // },
+    async login(loginForm){
+      let res = await api.login_reguster.login(loginForm);
+      console.log("this is login in page......... res:" + JSON.stringify(res))
+      if(res.code == 200){
+        localStorage.setItem('token',res.token)
+        router.push('/')
+      }
+    },
+    async register(registerForm){
+      let res = await api.login_reguster.register(registerForm);
+      console.log("this is register in page...........res:",JSON.stringify(res))
+      if(res.code == 200){
+        this.$message.success('注册成功！前去登录')
+        localStorage.setItem('token','')
+        this.isLogin = true
+      }
+    },
+    async getCode(checkCodeForm){
+      let res = await api.login_reguster.sendCheckCode(checkCodeForm);
+      console.log("this is checkcode function..........res:",JSON.stringify(res))
+      if(res.code == 200){
+        this.startCountdown()
+        this.$message.info('验证码已发送')
+      }else{
+        this.$message.error('验证码发送失败')
+      }
+    }
 }
 }
 </script>
