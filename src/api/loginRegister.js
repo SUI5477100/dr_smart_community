@@ -10,7 +10,24 @@ export const login_reguster ={
             data:JSON.stringify(data)
         })
     },
-    register(){
-
+    register(data){
+        return requests({
+            url:'/user/register',
+            method:'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data:JSON.stringify(data)
+        })
+    },
+    sendCheckCode(data){
+        return requests({
+            url: '/user/sendCode',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data:JSON.stringify(data)
+        })
     }
 }

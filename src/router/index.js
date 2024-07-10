@@ -130,17 +130,18 @@ router.beforeEach((to, from, next) => {
     '/myShoppingCart',
     '/orderPayment'
   ]
-    if(pathArr.indexOf(to.path) !== -1){
-      // 要访问后台主页,需要判断是否有token
-      const token=localStorage.getItem('token')
-      if(token){
-        next()
-      }else{
-        next('/login')
-      }
-    }else{
+  if(pathArr.indexOf(to.path) == -1){
+    // 要访问后台主页,需要判断是否有token
+    const token=localStorage.getItem('token')
+    if(token){
       next()
+    }else{
+      next('/login')
+      alert('请先登录')
     }
+  }else{
+    next()
+  }
 });
 
 export default router
