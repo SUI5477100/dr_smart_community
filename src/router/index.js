@@ -93,7 +93,9 @@ const router = new Router({
       path: '/productDetails',
       name: 'ProductDetails',
       component: ProductDetails,
+      // meta: { keepAlive: true },
       props: route => ({ product: route.params.product }),
+      // props: true
     },
     {
       // 我的购物车
@@ -121,7 +123,7 @@ const router = new Router({
 })
 // 全局前置守卫
 router.beforeEach((to, from, next) => {
-  const pathArr=[
+  const pathArr = [
     '/',
     '/login',
     '/forgetPass',
@@ -130,16 +132,16 @@ router.beforeEach((to, from, next) => {
     '/myShoppingCart',
     '/orderPayment'
   ]
-  if(pathArr.indexOf(to.path) == -1){
+  if (pathArr.indexOf(to.path) == -1) {
     // 要访问后台主页,需要判断是否有token
-    const token=localStorage.getItem('token')
-    if(token){
+    const token = localStorage.getItem('token')
+    if (token) {
       next()
-    }else{
+    } else {
       next('/login')
       alert('请先登录')
     }
-  }else{
+  } else {
     next()
   }
 });

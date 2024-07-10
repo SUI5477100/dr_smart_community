@@ -1,9 +1,9 @@
 import requests from "./request";
 export const goods = {
-    goodsList(params){
+    goodsList(params) {
         return requests({
-            url:"/goods/list",
-            method:'get',
+            url: "/goods/list",
+            method: 'get',
             params
         })
     }

@@ -67,14 +67,14 @@ import api from '../api/index'
 export default {
   data() {
     return {
+      plistForm: [], //商品列表数据
+      filteredList: [],
+      currentPage: 1,
+      pageSize: 10,
       priceRange: {
         low: null,
         high: null,
       },
-      plistForm: [],
-      filteredList: [],
-      currentPage: 1,
-      pageSize: 10,
       sortBy: null,
       sortOrder: 'asc',
     }
@@ -120,6 +120,12 @@ export default {
       })
       this.currentPage = 1 // 重置到第一页
     },
+    toProductDetails(item) {
+      // 将商品详情保存到 localStorage
+      localStorage.setItem('productDetails', JSON.stringify(item))
+      // 导航到商品详情页
+      this.$router.push({ name: 'ProductDetails' })
+    },
     handlePageChange(page) {
       this.currentPage = page
     },
@@ -143,9 +149,9 @@ export default {
         })
       }
     },
-    toProductDetails(item) {
-      this.$router.push({ name: 'ProductDetails', params: { product: item } })
-    },
+    // toProductDetails(item) {
+    //   this.$router.push({ name: 'ProductDetails', params: { product: item } })
+    // },
   },
 }
 </script>

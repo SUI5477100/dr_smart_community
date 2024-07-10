@@ -5,7 +5,7 @@
       <a-breadcrumb class="breadcrumbContent">
         <a-breadcrumb-item>首页</a-breadcrumb-item>
         <a-breadcrumb-item><a href="">**</a></a-breadcrumb-item>
-        <a-breadcrumb-item><a href="">蒙牛纯牛奶250ml*16</a></a-breadcrumb-item>
+        <a-breadcrumb-item><a href="">{{product.goodsName}}</a></a-breadcrumb-item>
       </a-breadcrumb>
     </div>
     <div class="productDetailsWrapper">
@@ -16,8 +16,8 @@
           <a slot="customPaging" slot-scope="props">
             <img :src="getImgUrl(props.i)" />
           </a>
-          <div v-for="(item,index) in image" :key="index">
-            <img :src="getImgSrc(item)" />
+          <div v-for="(item,index) in product.detailsImg" :key="index">
+            <img :src="item" />
           </div>
           <!-- 左右按钮切换图片 -->
           <div slot="prevArrow" class="custom-slick-arrow" style="left: 10px;zIndex: 1;">
@@ -33,14 +33,14 @@
         <!-- 右侧商品名称、收藏按钮 -->
         <div class="pDetailHeader">
           <div class="pNameLeft">
-            <div class="pName">{{ product.name }}</div>
-            <div class="pNameSmall">{{ product.name }}</div>
+            <div class="pName">{{ product.goodsName }}</div>
+            <div class="pNameSmall">{{product.goodsName}}</div>
           </div>
           <div class="pCollectRight">
             <a-button type="primary" style="text-align:center;font-size:12px" @click="toggleFavorite">
-              <span>{{ isFavorite ? '已收藏' : '收藏' }}</span>
+              <span>{{ product.isCollect ? '已收藏' : '收藏' }}</span>
               <!-- <a-icon type="star" /> -->
-              <a-icon :type="isFavorite ? 'star' : 'star-o'" :theme="isFavorite ? 'filled' : 'outlined'" />
+              <a-icon :type="product.isCollect ? 'star' : 'star-o'" :theme="product.isCollect ? 'filled' : 'outlined'" />
             </a-button>
           </div>
         </div>
@@ -49,19 +49,19 @@
           <div>
             <li>
               <span>门店价格：</span>
-              <span>￥{{ product.price }}</span>
+              <span>￥{{product.price}}</span>
             </li>
             <li>
               <span>市场价格：</span>
-              <span>￥0.00</span>
+              <span>￥{{product.price}}</span>
             </li>
             <li>
               <span>累计销量：</span>
-              <span>{{ product.sort }}件</span>
+              <span>{{product.saleCnt}}件</span>
             </li>
             <li>
               <span>收藏次数：</span>
-              <span>1次</span>
+              <span>{{product.collectCnt}}次</span>
             </li>
           </div>
         </ul>
@@ -118,22 +118,32 @@ import { EventBus } from '@/eventBus'
 //   'https://raw.githubusercontent.com/vueComponent/ant-design-vue/master/components/vc-slick/assets/img/react-slick/'
 export default {
   props: {
-    product: {
+    initialProduct: {
       type: Object,
       required: true,
     },
   },
   data() {
     return {
-      image: [
-        'local:milk_01.png',
-        'https://img11.360buyimg.com/n1/jfs/t1/242644/8/5336/39975/6656d959F636bd15c/b9f5a3662593102a.jpg.avif',
-        'https://img11.360buyimg.com/n1/jfs/t1/217720/34/42141/27861/6656d95aF1fbfd10f/a775be1223956938.jpg.avif',
-        'https://img11.360buyimg.com/n1/jfs/t1/239185/32/9290/27551/6656d95aF44c56931/a401a85c1d83a396.jpg.avif',
-      ],
-      isFavorite: false,
-      favoriteCount: 1,
-      cart: [],
+      product: { ...this.initialProduct },
+      // image: [
+      //   'local:milk_01.png',
+      //   'https://img11.360buyimg.com/n1/jfs/t1/242644/8/5336/39975/6656d959F636bd15c/b9f5a3662593102a.jpg.avif',
+      //   'https://img11.360buyimg.com/n1/jfs/t1/217720/34/42141/27861/6656d95aF1fbfd10f/a775be1223956938.jpg.avif',
+      //   'https://img11.360buyimg.com/n1/jfs/t1/239185/32/9290/27551/6656d95aF44c56931/a401a85c1d83a396.jpg.avif',
+      // ],
+      // isFavorite: false,
+      // favoriteCount: 1,
+      // cart: [],
+    }
+  },
+  created() {
+    const productData = localStorage.getItem('productDetails')
+    if (productData) {
+      this.product = JSON.parse(productData)
+    } else {
+      // 处理没有商品数据的情况
+      this.$router.push({ name: 'ProductList' })
     }
   },
   methods: {
@@ -152,7 +162,7 @@ export default {
     },
     getImgUrl(i) {
       //   return `${baseUrl}abstract0${i + 1}.jpg`
-      return this.getImgSrc(this.image[i])
+      return this.product.detailsImg[i]
     },
     // 选择自提点 下拉框
     handleChange(value) {
@@ -163,13 +173,14 @@ export default {
       this.quantity = value
     },
     toggleFavorite() {
-      this.isFavorite = !this.isFavorite
-      if (this.isFavorite) {
-        this.favoriteCount += 1
+      this.product.isCollect = !this.product.isCollect
+      if (this.product.isCollect) {
+        this.product.collectCnt += 1
       } else {
-        this.favoriteCount -= 1
+        this.product.collectCnt -= 1
       }
-      console.log(`Favorite status: ${this.isFavorite}`)
+      localStorage.setItem('productDetails', JSON.stringify(this.product))
+      console.log(`Favorite status: ${this.product.isCollect}`)
     },
     addToCart() {
       const product = {
