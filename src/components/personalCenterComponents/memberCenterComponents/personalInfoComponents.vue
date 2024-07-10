@@ -8,7 +8,7 @@
             :wrapper-col="wrapperCol"
             ref="personalInfoform">
             <a-form-model-item label="用户头像" prop="imgUrl">
-                <avatarUpload>
+                <avatarUpload :imgUrl="personalInfoform.imgUrl">
                     大小不超过3M
                 </avatarUpload>
             </a-form-model-item>
@@ -17,10 +17,10 @@
             </a-form-model-item>
             <a-form-model-item label="性别" prop="gender">
                 <a-radio-group v-model="personalInfoform.gender">
-                    <a-radio value="female">
+                    <a-radio :value = 0>
                     女
                     </a-radio>
-                    <a-radio value="male">
+                    <a-radio :value= 1>
                     男
                     </a-radio>
                 </a-radio-group>
@@ -50,23 +50,34 @@
 
 <script>
 import nextButton from '../../buttonComponents/nextButtonComponents.vue';
-import avatarUpload from './avatarUploadComponents.vue'
+import avatarUpload from './avatarUploadComponents.vue';
+import api from '../../../api/index'
+
 export default {
     name:'personalInfo',
     data() {
         return {
             form: this.$form.createForm(this, {name: "personal_info_form "}),
-            labelCol: { span: 4 },
-            wrapperCol: { span: 14 },
+            labelCol: { xs: { span: 24 }, sm: { span: 4 } },
+            wrapperCol: { xs: { span: 24 }, sm: { span: 14 } },
             personalInfoform: {
                 imgUrl:'',
                 username: '',
-                gender: '',
+                gender: -1,
                 email:'',
                 phoneNumber:''
             },
-            personalInfoRules:{
-
+            personalInfoRules: {
+                username: [
+                    { required: true, message: '请输入用户名', trigger: 'blur' }
+                ],
+                email: [
+                    { type: 'email', message: '请输入有效的邮箱地址', trigger: 'blur' }
+                ],
+                phoneNumber: [
+                    { required: true, message: '请输入手机号', trigger: 'blur' },
+                    { pattern: /^[0-9]{11}$/, message: '请输入有效的手机号', trigger: 'blur' }
+                ]
             }
         };
     },
@@ -80,8 +91,26 @@ export default {
         },
         resetForm(){
             this.$refs.personalInfoform.resetFields()
+            this.getPersonInfo()
+        },
+        async getPersonInfo(){
+            let res = await api.userInfo.getUserInfo();
+            console.log('this is personal infomation Function, res:', JSON.stringify(res))
+            if(res.code == 200){
+                let user = res.user
+                this.personalInfoform = {
+                    imgUrl: user.avatarUrl,
+                    username: user.nickname,
+                    gender: user.gender,
+                    email: user.email,
+                    phoneNumber: user.phone
+                }
+            }
         }
     },
+    mounted(){
+        this.getPersonInfo()
+    }
 
 
 }
