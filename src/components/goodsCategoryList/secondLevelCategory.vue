@@ -9,6 +9,7 @@
                     <!-- 条件渲染链接 -->
                     <a href="">{{ thirdLevelCategory.categoryName }}</a>
                 </a-breadcrumb-item>
+                <a-breadcrumb-item ><a></a></a-breadcrumb-item>
             </a-breadcrumb>
         </div>
     </div>
@@ -39,9 +40,9 @@ export default {
     },
     methods: {
         async getSecondLeveparent(parentId) {
-            // console.log('parentId at method call:', parentId);
+            console.log('parentId at method call:', parentId);
             let res = await api.parentId.parentId({ parentId });
-            // console.log('API response:', res.childGoodsCategoryList);
+            console.log('API response:', res.childGoodsCategoryList);
 
             const newChildGoodsCategory = res.childGoodsCategoryList.map(category => {
                 // console.log('二级类目:', category.id, category.categoryName);
