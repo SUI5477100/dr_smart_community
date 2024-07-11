@@ -4,7 +4,14 @@
             密码修改
         </titleBar>
         <div class="change-pass-container">
-            <reset-pass ref="resetPassComponent"></reset-pass>
+            <reset-pass ref="resetPassComponent">
+                <template slot="first">
+                    新密码
+                </template>
+                <template slot="second">
+                    重复密码
+                </template>
+            </reset-pass>
             <div class="button-container">
                 <nextButton :clickHandler="updatePass" type="primary">
                     修改密码

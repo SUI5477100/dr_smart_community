@@ -5,7 +5,14 @@
       </a-steps>
       <div class="steps-content">
         <checkID v-if="current == 0" ref="checkId"></checkID>
-        <resetPass v-if="current == 1" ref="resetPass"></resetPass>
+        <resetPass v-if="current == 1" ref="resetPass">
+          <template slot="first">
+            新密码
+          </template>
+          <template slot="second">
+            重复密码
+          </template>
+        </resetPass>
         <p v-show = "current == steps.length - 1 ">密码重置成功！</p>
       </div>
       <div class="steps-action">
@@ -34,7 +41,7 @@ export default {
   data() {
       return {
           phone:'',
-          current: 0,
+          current: 1,
           steps: [
               {
               title: '验证身份',

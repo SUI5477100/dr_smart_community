@@ -101,17 +101,19 @@ const router = new Router({
     },
     {
       // 商品详情
-      path: '/productDetails',
+      path: '/productDetails/:id',
       name: 'ProductDetails',
       component: ProductDetails,
-      props: route => ({ product: route.params.product }),
+      // meta: { keepAlive: true },
+      // props: route => ({ id: route.params.id }),
+      props: true
     },
     {
       // 我的购物车
       path: '/myShoppingCart',
       name: 'MyShoppingCart',
       component: MyShoppingCart,
-      meta: { noHeader: true }
+      // meta: { noHeader: true }
     },
     {
       // 订单信息

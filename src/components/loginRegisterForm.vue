@@ -97,12 +97,14 @@
           <a href="#" @click="changeForm">已有账号？去登陆</a>
         </p>
     </a-form-model>
+    <modalComponent ref="modal"></modalComponent>
   </div>
 </template>
 <script>
 import router from '../router/index';
 import api from '../api/index'
 import checkCodeButton from './buttonComponents/checkCodeButton.vue';
+import modalComponent from './payPassModalComponents/modalComponent.vue';
 export default {
   name:"loginRegisterForm",
   data() {
@@ -126,7 +128,7 @@ export default {
       }
     };
     return {
-        isLogin:false,
+        isLogin:true,
         isButtonDisabled:false,
         buttonLabel:'发送验证码',
         countdown:60,
@@ -156,7 +158,8 @@ export default {
     };
   },
   components:{
-    checkCodeButton
+    checkCodeButton,
+    modalComponent
   },
   mounted() {
     this.$nextTick(() => {
@@ -239,12 +242,30 @@ export default {
         }
       });
     },
+    async hasPayPass(){
+      let res = await api.userInfo.getUserInfo();
+      if(res.code == 200){
+        // console.log('this is res.user.payPass',!!res.user.payPassword)
+        return !!res.user.payPassword
+      }else{
+        this.$message.error(res.msg)
+      }
+    },
+    async toSetPayPassModal(){
+      let hasPayPass = await this.hasPayPass()
+      if(!hasPayPass){
+        this.$message.info('请先设置支付密码')
+        this.$refs['modal'].visible = true
+      }else{
+        this.$router.push('/')
+      }
+    },
     async login(loginForm){
       let res = await api.login_reguster.login(loginForm);
-      console.log("this is login in page......... res:" + JSON.stringify(res))
+      // console.log("this is login in page......... res:" + JSON.stringify(res))
       if(res.code == 200){
         localStorage.setItem('token',res.token)
-        router.push('/')
+        this.toSetPayPassModal()
       }else if(res.code == 500){
         this.userForm.password = ''
         this.$message.error(res.msg)
@@ -252,10 +273,10 @@ export default {
     },
     async register(registerForm){
       let res = await api.login_reguster.register(registerForm);
-      console.log("this is register in page...........res:",JSON.stringify(res))
+      // console.log("this is register in page...........res:",JSON.stringify(res))
       if(res.code == 200){
-        this.$message.success('注册成功！前去登录')
         localStorage.setItem('token','')
+        this.$message.success('注册成功！前去登录')
         this.isLogin = true
       }else if(res.code == 500){
         this.userForm.checkCode = ''

@@ -14,7 +14,17 @@ export const userInfo = {
             headers:{
                 'Content-Type':'multipart/form-data'
             },
-            params: file
+            data: file
+        })
+    },
+    updateUserInfo(data){
+        return requests({
+            url:'/user/updateInfo',
+            method:'post',
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            data:JSON.stringify(data)
         })
     }
 
