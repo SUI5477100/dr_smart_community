@@ -29,5 +29,15 @@ export const password = {
             },
             data:JSON.stringify(data)
         })
+    },
+    setPayPass(data){
+        return requests({
+            url: '/user/setPayPassword',
+            method:'post',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            data: JSON.stringify(data)
+        })
     }
 } 
