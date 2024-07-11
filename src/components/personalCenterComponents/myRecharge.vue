@@ -4,11 +4,12 @@
         <!-- 钱包余额 -->
         <div class="wallet">
             <div>钱包余额：</div>
-            <div>80,064.42</div>
+            <div>{{ this.getUserInf.money }}</div>
         </div>
         <!-- 充值金额 -->
         <div class="recharge-amount">
-            <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }" @submit="handleSubmit">
+            <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }" @submit="handleSubmit"
+                :key="componentKey">
                 <a-form-item label="充值金额">
                     <a-input
                         v-decorator="['rechargeAmount', { rules: [{ required: true, message: '请输入你要充值的金额!' }, { validator: this.checkAmount }] }]"
@@ -29,8 +30,8 @@
                     </a-select>
                 </a-form-item>
                 <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-                    <a-button type="primary" html-type="submit" style="width:170px;margin-right: 20px;"
-                        @click="showModal">
+                    <a-button type="primary" html-type="submit" style="width:170px;margin-right: 20px;">
+                        <!--  @click="showModal" -->
                         充值
                     </a-button>
                     <!-- 充值弹框按钮 -->
@@ -59,7 +60,7 @@
 </template>
 
 <script>
-
+import api from '../../api/index'
 export default {
     name: 'MyRecharge', //导出组件名
     data() {
@@ -67,10 +68,15 @@ export default {
             visible: false,
             formLayout: 'horizontal',
             form: this.$form.createForm(this, { name: 'coordinated' }),
+            // 用户余额
+            getUserInf: {
+                money: ''
+            },
+            money: -1,
             rechargeList: [
                 {
                     text: '充值金额：',
-                    amount: '200.00'
+                    amount: '200'
                 },
                 {
                     text: '支付方式:',
@@ -90,15 +96,23 @@ export default {
                 if (!err) {
                     console.log('Received values of form: ', values);
                     console.log('values.rechargeAmount', values.rechargeAmount)
+                    // 充值余额
+                    this.money = values.rechargeAmount
+                    // 更新弹窗中显示的金额
+                    this.rechargeList[0].amount = this.money + ' 元';  // 假设这里你想显示充值金额
+                    this.rechargeList[2].amount = (parseFloat(this.getUserInf.money) + parseFloat(this.money)).toFixed(2) + ' 元';  // 更新充值后余额
+                    this.visible = true;
                 }
             });
         },
+        // 支付方式
         handleSelectChange(value) {
             console.log(value);
         },
         // 重置表单项
         handleReset() {
-            this.form.resetFields(); 
+            this.form.resetFields();
+            this.componentKey += 1;
         },
         // 控制充值弹框显隐
         showModal(e) {
@@ -114,7 +128,10 @@ export default {
         // 充值弹框的确认按钮
         handleOk(e) {
             console.log('handleOK', e);
-            this.visible = false;
+            console.log('23456789money', this.money);
+            this.setRecharge(this.money)
+            // this.setRecharge()
+
         },
         // 充值弹框的取消按钮
         handleCancel(e) {
@@ -132,7 +149,29 @@ export default {
             } else {
                 callback();
             }
+        },
+        // 用户余额
+        async userInfo() {
+            let res = await api.userInfo.getUserInfo()
+            console.log(res)
+            this.getUserInf = {
+                money: res.user.money
+            }
+            console.log('234567890-', this.getUserInf.money);
+        },
 
+        // 充值接口
+        async setRecharge(money) {
+            // console.log('money', money);
+            let res = await api.recharge.recharge({ money})
+            console.log('res3456789', res);
+            if (res.code === 200) {
+                alert(res.msg)
+                    this.visible = false;
+
+            } else if (res.code === 500) {
+                alert(res.msg)
+            }
         },
         confirm() {
             this.$confirm({
@@ -140,6 +179,10 @@ export default {
                 cancelText: '取消',
             });
         },
+    },
+    mounted() {
+        this.userInfo()
+        // this.setRecharge()
     }
 };
 </script>

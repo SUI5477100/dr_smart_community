@@ -9,6 +9,9 @@ import { password } from './password';
 import { userInfo } from './userInfo';
 import { getParentGoodsCategoryList } from './productCategories'
 import { parentId } from './productCategories'
+import { getOtherUserByPhone } from './transfer'
+import { confirmTransferAccount } from './transfer'
+import { recharge, consumptionRecord } from './transfer'
 // 其他模块的接口…… 
 // 导出接口
 export default {
@@ -19,6 +22,10 @@ export default {
     userInfo,
     getParentGoodsCategoryList,
     parentId,
+    getOtherUserByPhone,
+    confirmTransferAccount,
+    recharge,
+    consumptionRecord
 }
 
 

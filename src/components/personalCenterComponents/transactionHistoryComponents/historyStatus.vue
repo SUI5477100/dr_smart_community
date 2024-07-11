@@ -1,94 +1,45 @@
 <template>
     <div class="status">
-        <!-- 支付状态 -->
-        <div class="payment-status">
-            <div class="payment-status-text">支付状态：</div>
-            <a-cascader :options="options" placeholder="全部" @change="onChange" />
-        </div>
         <!-- 支付类型 -->
         <div class="payment-type">
-            <div  class="payment-type-text">支付类型：</div>
-            <a-cascader :options="types" placeholder="全部" @change="onChange" />
+            <div class="payment-type-text">支付类型：</div>
+            <a-cascader :options="types" v-model="selectedType" placeholder="全部" @change="onChange" />
         </div>
         <!-- 搜索按钮 -->
-        <a-button type="primary">搜索</a-button>
+        <a-button type="primary" @click="onChange(selectedType)">搜索</a-button>
     </div>
 </template>
+
 <script>
-const options = [
-    {
-        value: 'All',
-        label: '全部',
-    },
-    {
-        value: 'Pending',
-        label: '待支付',
-    },
-    {
-        value: 'Processing',
-        label: '处理中',
-    },
-    {
-        value: 'Success',
-        label: '成功支付',
-    },
-    {
-        value: 'Failed',
-        label: '失败支付',
-    },
-    {
-        value: 'Cancelled',
-        label: '取消支付',
-    },
-    {
-        value: 'Refunded',
-        label: '仅退款',
-    },
-    {
-        value: 'Overdue',
-        label: '逾期未支付',
-    },
-];
-const types = [
-    {
-        value: 'All',
-        label: '全部',
-    },
-    {
-        value: 'Recharge',
-        label: '充值',
-    },
-    {
-        value: 'TransferIn',
-        label: '转入',
-    },
-    {
-        value: 'TransferOut',
-        label: '转入',
-    },
-    {
-        value: 'Refund',
-        label: '退款',
-    },
-    {
-        value: 'BillPayment',
-        label: '缴费支付',
-    },
-];
 export default {
     data() {
         return {
-            options,
-            types
+            types: [
+                { value: 0, label: '全部' },
+                { value: 1, label: '商品支付' },
+                { value: 2, label: '充值' },
+                { value: 3, label: '转入' },
+                { value: 4, label: '转出' },
+                { value: 5, label: '退款' },
+                { value: 6, label: '缴费支付' },
+            ],
+            selectedType: [0]  // 设置默认值为 "全部"
         };
     },
     methods: {
         onChange(value) {
-            console.log(value);
+            // console.log('Selected value:', value);
+            this.$emit('payment-type-selected', value);
+            // this.$emit('payment-type-label', label);
+
         },
     },
+    mounted() {
+        this.onChange(this.selectedType);  // 初始化时也触发一次 onChange 以应用默认值
+    }
 };
 </script>
+
 <style scoped lang="less">
 .status {
     display: flex;

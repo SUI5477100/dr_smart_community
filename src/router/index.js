@@ -17,7 +17,6 @@ import MyShoppingCart from '../pages/myShoppingCart.vue'
 import OrderInformation from '../pages/orderInformation.vue'
 import OrderPayment from '../pages/orderPayment.vue'
 import SecondLevelCategory from '../components/goodsCategoryList/secondLevelCategory.vue'
-
 Vue.use(Router)
 
 const router = new Router({
@@ -77,7 +76,7 @@ const router = new Router({
           component: MyTransfer,
         },
         {
-          path: 'transactionHistory',
+          path: 'consumptionRecord',
           name: 'TransactionHistory',
           component: TransactionHistory,
         },
@@ -133,7 +132,7 @@ const router = new Router({
 })
 // 全局前置守卫
 router.beforeEach((to, from, next) => {
-  const pathArr=[
+  const pathArr = [
     '/',
     '/login',
     '/forgetPass',
@@ -142,16 +141,16 @@ router.beforeEach((to, from, next) => {
     '/myShoppingCart',
     '/orderPayment'
   ]
-  if(pathArr.indexOf(to.path) == -1){
+  if (pathArr.indexOf(to.path) == -1) {
     // 要访问后台主页,需要判断是否有token
-    const token=localStorage.getItem('token')
-    if(token){
+    const token = localStorage.getItem('token')
+    if (token) {
       next()
-    }else{
+    } else {
       next('/login')
       alert('请先登录')
     }
-  }else{
+  } else {
     next()
   }
 });
