@@ -77,7 +77,7 @@
 
 <script>
 import api from '../api/index'
-import { EventBus } from '@/eventBus'
+// import { EventBus } from '@/eventBus'
 export default {
   data() {
     return {
@@ -266,9 +266,9 @@ export default {
       })
     },
   },
-  created() {
-    EventBus.$on('add-to-cart', this.addProductToCart)
-  },
+  // created() {
+  //   EventBus.$on('add-to-cart', this.addProductToCart)
+  // },
 }
 </script>
 

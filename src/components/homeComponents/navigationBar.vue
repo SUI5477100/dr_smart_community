@@ -9,8 +9,8 @@
     </div>
   </div>
 </template>
-  
-  <script>
+
+<script>
 export default {
   name: 'NavigationBar',
   data() {
@@ -18,9 +18,10 @@ export default {
       // 初始化时基于路由设置当前激活的菜单项
       current: this.$route.path,
       menuItems: [
-        { key: '/productList', link: '/productList', label: '全部商品' },
+        // { key: '/productList', link: '/productList', label: '全部商品' },
+        { key: '/goodsCategory', link: '/goodsCategory', label: '全部商品' },
+        { key: '/productList', link: '/productList', label: '商品列表' },
         { key: '/login', link: '/login', label: '首页' },
-        { key: '/goodsCategory', link: '/goodsCategory', label: '社区服务' },
         { key: '/orders', link: '/orders', label: '我的订单' },
         { key: '/personalCenter', link: '/personalCenter', label: '个人中心' },
       ],
@@ -39,17 +40,20 @@ export default {
 }
 
 </script>
-  
-  <style scoped>
+
+<style scoped>
 .navigation-container {
   width: 100%;
   display: flex;
-  justify-content: center; /* 使内盒子居中 */
-  background-color: #1e90ff; /* 设置背景颜色 */
+  justify-content: center;
+  /* 使内盒子居中 */
+  background-color: #1e90ff;
+  /* 设置背景颜色 */
 }
 
 .menu-wrapper {
-  width: 75%; /* 设置内盒子的宽度 */
+  width: 75%;
+  /* 设置内盒子的宽度 */
 }
 
 .ant-menu-horizontal {
@@ -61,7 +65,8 @@ export default {
 .custom-menu .ant-menu-item {
   background-color: #1e90ff !important;
   border: none !important;
-  transition: width 1s ease, background-color 1s ease; /* 添加过渡效果 */
+  transition: width 1s ease, background-color 1s ease;
+  /* 添加过渡效果 */
 }
 
 .custom-menu .ant-menu-item a {
@@ -78,11 +83,11 @@ export default {
 
 .custom-menu .ant-menu-item-selected {
   background-color: #4169e1 !important;
-  width: 240px !important; /* 设置选中时的宽度 */
+  width: 240px !important;
+  /* 设置选中时的宽度 */
 }
 
 .custom-menu .ant-menu-item-selected a {
   color: white !important;
 }
 </style>
-  
