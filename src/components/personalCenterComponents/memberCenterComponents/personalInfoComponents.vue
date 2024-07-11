@@ -8,7 +8,9 @@
             :wrapper-col="wrapperCol"
             ref="personalInfoform">
             <a-form-model-item label="用户头像" prop="imgUrl">
-                <avatarUpload :imgUrl="personalInfoform.imgUrl">
+                <avatarUpload 
+                :imgUrl="personalInfoform.imgUrl"
+                @fileUploadSuccess="updateImgUrl">
                     大小不超过3M
                 </avatarUpload>
             </a-form-model-item>
@@ -33,7 +35,7 @@
             </a-form-model-item>
             <a-form-model-item :wrapper-col="{ span: 14, offset: 4 }">
                 <nextButton 
-                    :clickHandler="()=>onSubmit()"
+                    :clickHandler="submitForm"
                     type="primary">
                         确认修改
                 </nextButton>
@@ -105,6 +107,33 @@ export default {
                     email: user.email,
                     phoneNumber: user.phone
                 }
+            }
+        },
+        updateImgUrl(newUrl) {
+            this.$set(this.personalInfoform, 'imgUrl', newUrl);
+        },
+        submitForm(){
+            this.$refs['personalInfoform'].validate((valid) => {
+                if(valid){
+                    let userInfoForm = {
+                        avatarUrl:this.personalInfoform.imgUrl,
+                        nickname: this.personalInfoform.username,
+                        gender: this.personalInfoform.gender,
+                        email: this.personalInfoform.email,
+                        phone: this.personalInfoform.phoneNumber
+                    }
+                    this.updateUserInfo(userInfoForm)
+                }
+            })
+        },
+        async updateUserInfo(userInfoForm){
+            let res = await api.userInfo.updateUserInfo(userInfoForm)
+            console.log('-------this is update userInfo,res:',res);
+            if(res.code == 200){
+                this.$message.success('修改成功')
+                this.getPersonInfo()
+            }else{
+                this.$message.error(res.msg)
             }
         }
     },

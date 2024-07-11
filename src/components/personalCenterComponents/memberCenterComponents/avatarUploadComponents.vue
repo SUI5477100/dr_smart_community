@@ -24,6 +24,7 @@
     </div>
   </template>
   <script>
+  import api from '../../../api/index';
   function getBase64(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -44,7 +45,6 @@
         previewVisible: false,
         previewImage: '',
         fileList: [],
-        file:{}
       };
     },
     watch: {
@@ -73,27 +73,44 @@
         this.previewVisible = true;
       },
       handleChange(info) {
-        this.fileList = info.fileList;
+        this.fileList = info.fileList
         console.log('this is uploadImg,this.fileList:',this.fileList)
-        console.log('this is uploadImg,info.file:',info.file)
         if(info.file.status == 'done'){
-          this.file = info.file
-          console.log('-----------200------ info.file:',info.file)
-          console.log('-------------------------',this.file)
+          this.fileUpload(info.file.originFileObj)
         }
       },
       beforeUpload(file) {
-        // const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-        // if (!isJpgOrPng) {
-        //     this.$message.error('You can only upload JPG file!');
-        // }
         const isLt3M = file.size / 1024 / 1024 < 3;
         if (!isLt3M) {
             this.$message.error('Image must smaller than 3MB!');
         }
         // return isJpgOrPng && isLt2M;
         return isLt3M;
+      },
+      async fileUpload(file) {
+        let param = new FormData(); //创建form对象
+        param.append('file', file); //通过append向form对象添加数据
+        try {
+          let res = await api.userInfo.fileUpload(param);
+          console.log('this is upload file res', res)
+          if(res.code == 200){
+            let fileForm = {
+              fileUrl: res.fileList[0].fileUrl,
+              originalFilename: res.fileList[0].originalFilename
+            }
+            this.fileList = fileForm
+            this.$emit('fileUploadSuccess', fileForm.fileUrl);
+            // this.imgUrl = fileForm.fileUrl
+            // console.log('-------------this is fileForm',fileForm)
+            // console.log('this is fileList',this.fileList)
+            this.$message.success(res.msg)
+          }else{
+            this.$message.error('图片上传失败')
+          }
+        } catch (error) {
+          console.error('Upload failed:', error);
         }
+      }
     },
   };
   </script>
