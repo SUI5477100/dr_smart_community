@@ -8,7 +8,9 @@
       :rules="resetPassRules">
       <a-row >
         <a-col :span="5">
-          <label for="newPassword">新密码</label>
+          <label for="newPassword">
+            <slot name="first"></slot>
+          </label>
         </a-col>
         <a-col :span="19">
           <a-form-model-item prop="newPassword">
@@ -22,7 +24,9 @@
       </a-row>
       <a-row>
         <a-col :span="5">
-          <label for="repeatPass">重复密码</label>
+          <label for="repeatPass">
+            <slot name="second"></slot>
+          </label>
         </a-col>
         <a-col :span="19">
           <a-form-model-item prop="repeatPass">
