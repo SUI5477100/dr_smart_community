@@ -102,17 +102,19 @@ const router = new Router({
     },
     {
       // 商品详情
-      path: '/productDetails',
+      path: '/productDetails/:id',
       name: 'ProductDetails',
       component: ProductDetails,
-      props: route => ({ product: route.params.product }),
+      // meta: { keepAlive: true },
+      // props: route => ({ id: route.params.id }),
+      props: true
     },
     {
       // 我的购物车
       path: '/myShoppingCart',
       name: 'MyShoppingCart',
       component: MyShoppingCart,
-      meta: { noHeader: true }
+      // meta: { noHeader: true }
     },
     {
       // 订单信息
@@ -133,7 +135,7 @@ const router = new Router({
 })
 // 全局前置守卫
 router.beforeEach((to, from, next) => {
-  const pathArr=[
+  const pathArr = [
     '/',
     '/login',
     '/forgetPass',
@@ -142,16 +144,16 @@ router.beforeEach((to, from, next) => {
     '/myShoppingCart',
     '/orderPayment'
   ]
-  if(pathArr.indexOf(to.path) == -1){
+  if (pathArr.indexOf(to.path) == -1) {
     // 要访问后台主页,需要判断是否有token
-    const token=localStorage.getItem('token')
-    if(token){
+    const token = localStorage.getItem('token')
+    if (token) {
       next()
-    }else{
+    } else {
       next('/login')
       alert('请先登录')
     }
-  }else{
+  } else {
     next()
   }
 });
