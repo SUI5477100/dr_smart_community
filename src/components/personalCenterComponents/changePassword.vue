@@ -4,23 +4,31 @@
             密码修改
         </titleBar>
         <div class="change-pass-container">
-            <reset-pass ref="resetPassForm"></reset-pass>
+            <reset-pass ref="resetPassComponent">
+                <template slot="first">
+                    新密码
+                </template>
+                <template slot="second">
+                    重复密码
+                </template>
+            </reset-pass>
             <div class="button-container">
-                <next-button :clickHandler="resetPass" type="primary">
+                <nextButton :clickHandler="updatePass" type="primary">
                     修改密码
-                </next-button>
-                <next-button :clickHandler="() => resetCompForm()">
+                </nextButton>
+                <nextButton :clickHandler="() => resetCompForm()">
                     重置
-                </next-button>
+                </nextButton>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import nextButton from '../forgetPassComponents/nextButtonComponents.vue';
+import nextButton from '../buttonComponents/nextButtonComponents.vue';
 import resetPass from '../forgetPassComponents/resetPassFormComponents.vue';
 import titleBar from './memberCenterComponents/titleBar.vue';
+import api from '../../api/index'
 export default {
     name: 'ChangePassword', //导出组件名,
     data(){
@@ -33,13 +41,33 @@ export default {
     },
     methods:{
         resetCompForm() {
-            if (this.$refs.resetPassForm) {
-            this.$refs.resetPassForm.resetForm();
+            if (this.$refs.resetPassComponent) {
+            this.$refs.resetPassComponent.resetForm();
             } else {
             console.error('checkID component is not available.');
             }
         },
-        resetPass(){
+        updatePass(){
+            let resetPassComponent = this.$refs['resetPassComponent']
+            let resetPassForm = resetPassComponent.resetPassForm
+            resetPassComponent.$refs['resetPassForm'].validate((valid) => {
+                if(valid){
+                    let updatePassForm = {
+                        password: resetPassForm.newPassword,
+                        password2: resetPassForm.repeatPass
+                    }
+                    this.updatePassword(updatePassForm)
+                }
+            })
+        },
+        async updatePassword(updatePassForm){
+            let res = await api.password.updatePassword(updatePassForm);
+            console.log('this is updatePassword Function,res:',res)
+            if(res.code == 200){
+                this.$message.success(res.msg)
+            }else if(res.code == 500){
+                this.$message.error(res.msg)
+            }
         }
     }
 };

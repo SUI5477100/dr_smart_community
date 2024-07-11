@@ -6,13 +6,21 @@ import article from './article_example';
 import { goods } from './goods';
 import { payment } from './payment';
 import { login_reguster } from './loginRegister';
+import { password } from './password';
+import { userInfo } from './userInfo';
+import { getParentGoodsCategoryList } from './productCategories'
+import { parentId } from './productCategories'
 // 其他模块的接口…… 
 // 导出接口
 export default {
     article,
     goods,
     payment,
-    login_reguster
+    login_reguster,
+    password,
+    userInfo,
+    getParentGoodsCategoryList,
+    parentId,
 }
 
 
@@ -35,4 +43,5 @@ export default {
 //       console.log("已请求：！！！！！！！！！！！res："+JSON.stringify(res))
 //   })
 // },
+
 

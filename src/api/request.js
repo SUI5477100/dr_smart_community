@@ -12,7 +12,9 @@ const requests = axios.create({
 
 // 请求拦截，发送数据之前
 requests.interceptors.request.use((config) => {
-  config.headers['Content-Type'] = 'application/json';
+  if (config.headers['Content-Type'] !== 'multipart/form-data') {
+    config.headers['Content-Type'] = 'application/json';
+  }
   config.headers.token = localStorage.getItem('token');
   return config;
 });

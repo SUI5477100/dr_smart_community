@@ -16,6 +16,7 @@ import ProductDetails from '../pages/productDetails.vue'
 import MyShoppingCart from '../pages/myShoppingCart.vue'
 import OrderInformation from '../pages/orderInformation.vue'
 import OrderPayment from '../pages/orderPayment.vue'
+import SecondLevelCategory from '../components/goodsCategoryList/secondLevelCategory.vue'
 
 Vue.use(Router)
 
@@ -87,6 +88,17 @@ const router = new Router({
       path: '/productList',
       name: 'ProductList',
       component: ProductList
+    },
+    {
+      path: '/goodsCategory',
+      name: 'HomeView',
+      component: HomeView,
+      children: [
+        {
+          path: 'getChildGoodsCategoryList',
+          name: 'SecondLevelCategory',
+          component: SecondLevelCategory,
+        },]
     },
     {
       // 商品详情

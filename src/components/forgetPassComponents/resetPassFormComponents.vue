@@ -8,7 +8,9 @@
       :rules="resetPassRules">
       <a-row >
         <a-col :span="5">
-          <label for="newPassword">新密码</label>
+          <label for="newPassword">
+            <slot name="first"></slot>
+          </label>
         </a-col>
         <a-col :span="19">
           <a-form-model-item prop="newPassword">
@@ -22,7 +24,9 @@
       </a-row>
       <a-row>
         <a-col :span="5">
-          <label for="repeatPass">重复密码</label>
+          <label for="repeatPass">
+            <slot name="second"></slot>
+          </label>
         </a-col>
         <a-col :span="19">
           <a-form-model-item prop="repeatPass">
@@ -70,7 +74,7 @@ export default {
           resetPassRules:{
             newPassword:[
               { required:true, message: '请输入密码', trigger: "blur" },
-              { min:8, message: '密码长度不小于8', trigger: "blur" },
+              { min:6, message: '密码长度不小于6', trigger: "blur" },
               { validator:validatePass, trigger:"blur" }
             ],
             repeatPass:[
@@ -82,7 +86,8 @@ export default {
     methods:{
       resetForm(){
         this.$refs.resetPassForm.resetFields();
-      }
+      },
+
     }
 
 }

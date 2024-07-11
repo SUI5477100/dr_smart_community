@@ -30,7 +30,7 @@
 </template>
 
 <script>
-
+// import api from '../../api/index'
 export default {
     name: 'MyTransfer', //导出组件名
     data() {

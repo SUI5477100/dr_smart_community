@@ -5,7 +5,14 @@
       </a-steps>
       <div class="steps-content">
         <checkID v-if="current == 0" ref="checkId"></checkID>
-        <resetPass v-if="current == 1" ref="resetPass"></resetPass>
+        <resetPass v-if="current == 1" ref="resetPass">
+          <template slot="first">
+            新密码
+          </template>
+          <template slot="second">
+            重复密码
+          </template>
+        </resetPass>
         <p v-show = "current == steps.length - 1 ">密码重置成功！</p>
       </div>
       <div class="steps-action">
@@ -21,28 +28,20 @@
           type="primary">
             重置
         </nextButton>
-        <!-- <a-button
-          v-if="current == steps.length - 1"
-          type="primary"
-          @click="done"
-        >
-          Done
-        </a-button> -->
-        <!-- <a-button v-if="current > 0" style="margin-left: 8px" @click="prev">
-          Previous
-        </a-button> -->
       </div>
     </div>
 </template>
 <script>
 import checkID from './checkIdFormComponents.vue';
-import nextButton from './nextButtonComponents.vue';
+import nextButton from '../buttonComponents/nextButtonComponents.vue';
 import resetPass from './resetPassFormComponents.vue'
+import api from '../../api/index'
 export default {
   name:"stepsBar",
   data() {
       return {
-          current: 0,
+          phone:'',
+          current: 1,
           steps: [
               {
               title: '验证身份',
@@ -59,9 +58,8 @@ export default {
             "重置密码"
           ],
           funList:[
-            this.next,
-            this.resetPass,
-            this.done
+            this.verifyIdentity,
+            this.verifyPass,
           ],
           componentList:[
             'checkId',
@@ -76,8 +74,41 @@ export default {
   },
 
   methods: {
-      next() {
-        this.current++;
+      //身份验证
+      verifyIdentity(){
+        let checkIdComponent = this.$refs[this.componentList[0]]
+        let checkIdForm = checkIdComponent.checkIdForm
+        checkIdComponent.$refs['checkIdForm'].validate((valid) => {
+          console.log("this is stepsBar identify Id Function, valid",valid)
+          if(valid){
+            let identifyForm = {
+              phone: checkIdForm.phoneNumber,
+              code: checkIdForm.checkCode,
+              operate: 1
+            }
+            this.phone = checkIdForm.phoneNumber
+            this.identifyId(identifyForm)
+          }else{
+            this.phone = ''
+            this.$message.error('验证失败')
+          }
+        })
+      },
+      verifyPass(){
+        let resetPassComponent = this.$refs[this.componentList[1]]
+        let resetPassForm = resetPassComponent.resetPassForm
+        resetPassComponent.$refs['resetPassForm'].validate((valid) => {
+          console.log('this is verifyResetPass Function',valid)
+          if(valid){
+            let resetPasswordForm = {
+              phone: this.phone,
+              password: resetPassForm.newPassword,
+              password2: resetPassForm.repeatPass
+            }
+            this.resetPassword(resetPasswordForm)
+            console.log("this is resetPassForm:",resetPasswordForm)
+          }
+        })
       },
       resetCompForm(compName) {
         console.log("hello~~~~~~~~")
@@ -88,18 +119,35 @@ export default {
           }
         console.log("this is reset function!!!!");
       },
-      resetPass(){
-        this.current++;
-        this.$message.success('Processing complete!')
-        console.log("this is resetPass function!!!")
+      goToLoginAfter(){
+        this.$message.info('5s后前去登录')
+        setTimeout(() => {
+          this.$router.replace('/login')
+        }, 5000)
       },
-      done(){
-        this.current++;
-        console.log("this is done function!!!")
+      async identifyId(identifyForm){
+        let res = await api.password.idIdentify(identifyForm)
+        console.log("this is identify Function, res:",JSON.stringify(res))
+        if(res.code == 200){
+          //进入修改密码界面
+          this.current++
+          console.log('hello!success')
+        }else if(res.code == 500){
+          this.phone=''
+          this.$message.error(res.msg)
+        }
       },
-      prev() {
-      this.current--;
-      },
+      async resetPassword(resetPasswordForm){
+        let res = await api.password.resetPassword(resetPasswordForm)
+        console.log('resetPassword Function,res:',res)
+        if(res.code == 200){
+          this.$message.success(res.msg)
+          this.current++
+          this.goToLoginAfter()
+        }else if (res.code == 500){
+          this.$message.error(res.msg)
+        }
+      }
   },
 };
 </script>
