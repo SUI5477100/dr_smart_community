@@ -5,7 +5,7 @@
       <a-breadcrumb class="breadcrumbContent">
         <a-breadcrumb-item>首页</a-breadcrumb-item>
         <a-breadcrumb-item><a href="">**</a></a-breadcrumb-item>
-        <a-breadcrumb-item><a href="">{{product.goodsName}}</a></a-breadcrumb-item>
+        <a-breadcrumb-item><a href="">{{goods.goodsName}}</a></a-breadcrumb-item>
       </a-breadcrumb>
     </div>
     <div class="productDetailsWrapper">
@@ -16,7 +16,7 @@
           <a slot="customPaging" slot-scope="props">
             <img :src="getImgUrl(props.i)" />
           </a>
-          <div v-for="(item,index) in product.detailsImg" :key="index">
+          <div v-for="(item,index) in goods.detailsImg" :key="index">
             <img :src="item" />
           </div>
           <!-- 左右按钮切换图片 -->
@@ -33,14 +33,14 @@
         <!-- 右侧商品名称、收藏按钮 -->
         <div class="pDetailHeader">
           <div class="pNameLeft">
-            <div class="pName">{{ product.goodsName }}</div>
-            <div class="pNameSmall">{{product.goodsName}}</div>
+            <div class="pName">{{ goods.goodsName }}</div>
+            <div class="pNameSmall">{{goods.goodsName}}</div>
           </div>
           <div class="pCollectRight">
             <a-button type="primary" style="text-align:center;font-size:12px" @click="toggleFavorite">
-              <span>{{ product.isCollect ? '已收藏' : '收藏' }}</span>
+              <span>{{ goods.isCollect ? '已收藏' : '收藏' }}</span>
               <!-- <a-icon type="star" /> -->
-              <a-icon :type="product.isCollect ? 'star' : 'star-o'" :theme="product.isCollect ? 'filled' : 'outlined'" />
+              <a-icon :type="goods.isCollect ? 'star' : 'star-o'" :theme="goods.isCollect ? 'filled' : 'outlined'" />
             </a-button>
           </div>
         </div>
@@ -49,19 +49,19 @@
           <div>
             <li>
               <span>门店价格：</span>
-              <span>￥{{product.price}}</span>
+              <span>￥{{goods.price}}</span>
             </li>
             <li>
               <span>市场价格：</span>
-              <span>￥{{product.price}}</span>
+              <span>￥{{goods.price}}</span>
             </li>
             <li>
               <span>累计销量：</span>
-              <span>{{product.saleCnt}}件</span>
+              <span>{{goods.saleCnt}}件</span>
             </li>
             <li>
               <span>收藏次数：</span>
-              <span>{{product.collectCnt}}次</span>
+              <span>{{goods.collectCnt}}次</span>
             </li>
           </div>
         </ul>
@@ -70,17 +70,19 @@
           <!-- 选择自提点部分 -->
           <div class="selectAddressPickUpSite">
             <span>选择自提点：</span>
+
             <div class="address">
-              <a-select default-value="龙湖舜山府" style="width: 200px" @change="handleChange">
+              <a-cascader :options="options" placeholder="Please select" @change="handleChange" />
+              <!-- <a-select default-value="龙湖舜山府" style="width: 200px" @change="handleChange">
                 <a-select-option value="龙湖舜山府">
                   龙湖舜山府
                 </a-select-option>
-              </a-select>
+              </a-select> -->
             </div>
             <div class="pickUpSite">
-              <a-select default-value="自提点01" style="width: 200px" @change="handleChange">
-                <a-select-option value="自提点01">
-                  自提点01
+              <a-select default-value="" style="width: 200px" @change="handleChange2">
+                <a-select-option v-for="store in storeList" :key="store.id" :value="store.id">
+                  {{store.storeName}}
                 </a-select-option>
               </a-select>
             </div>
@@ -101,7 +103,7 @@
         </div>
         <!-- 底部加入购物车按钮 -->
         <div class="addCart">
-          <a-button type="primary" style="text-align:center;font-size:12px" @click="addToCart">
+          <a-button type="primary" style="text-align:center;font-size:12px" @click="addToCart()">
             <a-icon type="shopping-cart" />
             <span>加入购物车</span>
           </a-button>
@@ -112,10 +114,7 @@
 </template>
 
 <script>
-// import { mapMutations } from 'vuex'
-import { EventBus } from '@/eventBus'
-// const baseUrl =
-//   'https://raw.githubusercontent.com/vueComponent/ant-design-vue/master/components/vc-slick/assets/img/react-slick/'
+import api from '../api/index'
 export default {
   props: {
     initialProduct: {
@@ -125,34 +124,107 @@ export default {
   },
   data() {
     return {
-      product: { ...this.initialProduct },
-      // image: [
-      //   'local:milk_01.png',
-      //   'https://img11.360buyimg.com/n1/jfs/t1/242644/8/5336/39975/6656d959F636bd15c/b9f5a3662593102a.jpg.avif',
-      //   'https://img11.360buyimg.com/n1/jfs/t1/217720/34/42141/27861/6656d95aF1fbfd10f/a775be1223956938.jpg.avif',
-      //   'https://img11.360buyimg.com/n1/jfs/t1/239185/32/9290/27551/6656d95aF44c56931/a401a85c1d83a396.jpg.avif',
-      // ],
-      // isFavorite: false,
-      // favoriteCount: 1,
-      // cart: [],
+      id: -1,
+      goods: {},
+      // goods: { ...this.initialProduct },
+      // goodsDetailForm: {
+      //   quantity,
+      // },
+      options: [
+        {
+          value: 'zhejiang',
+          label: 'Zhejiang',
+          children: [
+            {
+              value: 'hangzhou',
+              label: 'Hangzhou',
+              children: [
+                {
+                  value: 'xihu',
+                  label: 'West Lake',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      storeId: -1,
+      storeList: [],
+      selectedStore: null,
+      quantity: 0,
     }
   },
   created() {
-    const productData = localStorage.getItem('productDetails')
-    if (productData) {
-      this.product = JSON.parse(productData)
-    } else {
-      // 处理没有商品数据的情况
-      this.$router.push({ name: 'ProductList' })
-    }
+    this.id = this.$route.params.id
+    // console.log('------------id:', id)
+    // if (id) {
+    //   this.goods = JSON.parse(productData)
+    // } else {
+    //   // 处理没有商品数据的情况
+    //   this.$router.push({ name: 'ProductList' })
+    // }
+  },
+  mounted() {
+    this.getDetail()
+    this.getAreaList()
   },
   methods: {
-    // ...mapMutations(['addToCart']),
-    // getImgSrc(item) {
-    //   if (item.startsWith('local:')) {
-    //     return require(`../assets/image/${item.replace('local:', '')}`)
-    //   }
-    //   return item
+    async getAddCart() {
+      let addToCartData = {
+        goodsId: this.id,
+        storeId: this.storeId,
+        cnt: this.quantity,
+      }
+      try {
+        const res = await api.goods.addCart(addToCartData)
+        console.log('商品列表数据', JSON.stringify(res))
+        if (res.code == 200) {
+          this.$message.success('商品添加成功')
+        } else {
+          this.$message.error('商品添加失败')
+        }
+        // this.plistForm = res.page.list
+        // this.filteredList = this.plistForm
+      } catch (error) {
+        console.error('获取失败', error)
+      }
+    },
+    async getDetail() {
+      let res = await api.goods.getGoodsDetail(this.id)
+      if (res.code == 200) {
+        this.goods = res.goods
+      }
+      console.log(res)
+    },
+    addToCart() {
+      this.getAddCart()
+    },
+    // 获取区域列表数据
+    async getAreaList() {
+      try {
+        const res = await api.goods.areaList()
+        if (res.code == 200) {
+          this.options = this.transformAreaData(res.all)
+        }
+        console.log('区域列表数据', res.all)
+        // this.options = res.all
+      } catch (error) {
+        console.error('获取失败', error)
+      }
+    },
+    transformAreaData(data) {
+      return data.map((area) => {
+        return {
+          value: area.id,
+          label: area.areaName,
+          children: area.childAreaList
+            ? this.transformAreaData(area.childAreaList)
+            : null,
+        }
+      })
+    },
+    // onChange(value) {
+    //   console.log(value)
     // },
     getImgSrc(item) {
       if (item.startsWith('local:')) {
@@ -162,35 +234,52 @@ export default {
     },
     getImgUrl(i) {
       //   return `${baseUrl}abstract0${i + 1}.jpg`
-      return this.product.detailsImg[i]
+      return this.goods.detailsImg[i]
     },
     // 选择自提点 下拉框
     handleChange(value) {
-      console.log(`selected ${value}`)
+      console.log(`selected ${value[2]}`)
+      let areaId = value[2]
+      console.log('this is store id---', areaId)
+      let data = {
+        areaId: areaId,
+        goodsId: this.id,
+      }
+      this.getStoreInfo(data)
     },
-    // 股买数量的数字输入框
+    handleChange2(value) {
+      this.storeId = value
+      // console.log('this is toCartGoods---', toCartGoods)
+    },
+    // 数量的数字输入框
     updateQuantity(value) {
       this.quantity = value
+      console.log('qunatity value:------', this.quantity)
+      console.log(value)
     },
     toggleFavorite() {
-      this.product.isCollect = !this.product.isCollect
-      if (this.product.isCollect) {
-        this.product.collectCnt += 1
+      this.goods.isCollect = !this.goods.isCollect
+      if (this.goods.isCollect) {
+        this.goods.collectCnt += 1
       } else {
-        this.product.collectCnt -= 1
+        this.goods.collectCnt -= 1
       }
-      localStorage.setItem('productDetails', JSON.stringify(this.product))
-      console.log(`Favorite status: ${this.product.isCollect}`)
+      localStorage.setItem('productDetails', JSON.stringify(this.goods))
+      console.log(`Favorite status: ${this.goods.isCollect}`)
     },
-    addToCart() {
-      const product = {
-        name: '蒙牛纯牛奶250ml*16',
-        price: 216,
-        quantity: 3,
+    async getStoreInfo(data) {
+      let res = await api.goods.storeList(data)
+      console.log('this is ---------res:', res)
+      if (res.code == 200) {
+        this.storeList = res.storeList
+        console.log('this is storeList--------------', this.storeList)
+      } else {
+        this.$message.error(res.msg)
       }
-      EventBus.$emit('add-to-cart', product)
-      console.log('Added to cart', product)
     },
+    // updateQuantity(value) {
+    //   this.quantity = value
+    // },
   },
 }
 </script>

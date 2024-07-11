@@ -96,7 +96,7 @@ export default {
         const res = await api.goods.goodsList({
           page: 1,
           limit: 10,
-          categoryId: 11,
+          categoryId: 31,
           minPrice: -1,
           maxPrice: -1,
           key: '',
@@ -121,10 +121,12 @@ export default {
       this.currentPage = 1 // 重置到第一页
     },
     toProductDetails(item) {
+      console.log('-------------item:', item)
+
       // 将商品详情保存到 localStorage
-      localStorage.setItem('productDetails', JSON.stringify(item))
+      // localStorage.setItem('productDetails', JSON.stringify(item))
       // 导航到商品详情页
-      this.$router.push({ name: 'ProductDetails' })
+      this.$router.push({ path: `/productDetails/${item.id}` })
     },
     handlePageChange(page) {
       this.currentPage = page
