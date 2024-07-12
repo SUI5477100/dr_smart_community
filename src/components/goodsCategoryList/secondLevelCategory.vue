@@ -6,10 +6,12 @@
                 <!-- 循环每个二级类目 -->
                 <a-breadcrumb-item v-for="thirdLevelCategory in item.childGoodsCategoryList"
                     :key="thirdLevelCategory.id">
-                    <!-- 条件渲染链接 -->
-                    <a href="">{{ thirdLevelCategory.categoryName }}</a>
+                    <!-- 使用 span 标签 -->
+                    <a @click="handleThirdLevelClick(thirdLevelCategory.id)">
+                        {{ thirdLevelCategory.categoryName }}
+                    </a>
                 </a-breadcrumb-item>
-                <a-breadcrumb-item ><a></a></a-breadcrumb-item>
+                <a-breadcrumb-item><a></a></a-breadcrumb-item>
             </a-breadcrumb>
         </div>
     </div>
@@ -60,6 +62,11 @@ export default {
                 };
             });
             this.childGoodsCategory = newChildGoodsCategory;
+        },
+        handleThirdLevelClick(id) {
+            console.log('Clicked third level category id:', id);
+            // 这里可以处理点击事件，例如导航到一个新的页面或发起 API 请求
+            this.$router.push({ name: 'ProductList', params: { id: id }});
         }
     },
     mounted() {
@@ -69,10 +76,18 @@ export default {
 </script>
 
 <style scoped lang="less">
-.custom-breadcrumb-item a {
-    color: rgba(0, 0, 0, 0.65);
+.custom-breadcrumb-item a,
+.custom-breadcrumb-item span {
+    color: rgba(150, 34, 34, 0.65);
+    cursor: pointer !important;
+    /* 添加鼠标指针样式 */
 }
 
+.custom-breadcrumb-item span:hover {
+    color: rgba(199, 27, 27, 0.65) !important;
+    cursor: pointer !important;
+    /* 添加鼠标指针样式 */
+}
 
 .custom-breadcrumb {
     margin-left: 20px;
