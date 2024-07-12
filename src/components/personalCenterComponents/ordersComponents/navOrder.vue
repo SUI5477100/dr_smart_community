@@ -1,102 +1,65 @@
 <template>
     <div class="contain">
-        <div v-for="goods in goodsList" :key="goods.id">
-            <div class="goods">
-                <div class="goods-item">
-                    <img class="goods-img" :src="goods.url">
-                    <div class="goods-name">{{ goods.name }}</div>
-                </div>
-                <div class="price">
-                    <div>￥</div>
-                    <div class="price-item">{{ goods.price }}</div>
-                </div>
-                <div class="quantity">
-                    <div>x</div>
-                    <div class="quantity-item">{{ goods.quantity }}</div>
-                </div>
-                <div class="subtotal">
-                    <div>￥</div>
-                    <div class="subtotal-item">{{ goods.subtotal }}</div>
+        <div v-for="order in all" :key="order.id">
+            <p>订单号: {{ order.orderNo }}</p>
+            <div v-for="orderDetail in order.goodsOrderDetailList" :key="orderDetail.id">
+                <div class="goods">
+                    <div class="goods-item">
+                        <img class="goods-img" :src="orderDetail.goodsHomeUrl">
+                        <div class="goods-name">{{ orderDetail.goodsName }}</div>
+                    </div>
+                    <div class="price">
+                        <div>￥</div>
+                        <div class="price-item">{{ orderDetail.singlePrice }}</div>
+                    </div>
+                    <div class="quantity">
+                        <div>x</div>
+                        <div class="quantity-item">{{ orderDetail.cnt }}</div>
+                    </div>
+                    <div class="subtotal">
+                        <div>￥</div>
+                        <div class="subtotal-item">{{ orderDetail.totalPrice }}</div>
+                    </div>
                 </div>
             </div>
-
         </div>
-        <div class="total-price">
+        <!-- <div class="total-price">
             <div>总价：</div>
             <div>272.00</div>
-        </div>
+        </div> -->
     </div>
 </template>
 
 <script>
 import api from '../../../api/index'
 export default {
-    name: 'navOrder', //导出组件名
+    name: 'navOrder',
     data() {
         return {
-            goodsList: [
+            all:[
                 {
-                    url: require('../../../assets/taobao.png'),
-                    name: '强力胶水',
-                    price: '38097',
-                    quantity: '2',
-                    subtotal: '68',
+                    goodsOrderDetailList: []
                 },
-                {
-                    url: require('../../../assets/taobao.png'),
-                    name: '强力胶水',
-                    price: '34',
-                    quantity: '2',
-                    subtotal: '68',
-                },
-                {
-                    url: require('../../../assets/taobao.png'),
-                    name: '强力胶水',
-                    price: '34',
-                    quantity: '2',
-                    subtotal: '68',
-                },
-                {
-                    url: require('../../../assets/taobao.png'),
-                    name: '强力胶水',
-                    price: '34',
-                    quantity: '2',
-                    subtotal: '68',
-                },
-            ],
-            methods: {
-                async getGoodList() {
-                    const params = {
-                        status: -1,
-                        // orderNo:'1720',
-                        // startTime:'2024-07-11',
-                        // endTime:'2024-07-11 18:00:00'
-                    };
-                    // console.log('param', params.status);
-                    let res = await api.goodsOrderList.goodsOrderList(params);
-
-                    // // 检查 res.all 和 res.all.goodsOrderDetailList 是否存在并且是数组
-                    // if (res && res.all && Array.isArray(res.all.goodsOrderDetailList)) {
-                    //     this.goodsList = res.all.goodsOrderDetailList.map(goods => {
-                    //         console.log('fgdhjslagfg', goods.id);
-                    //         return {
-                    //             id: goods.id
-                    //         };
-                    //     });
-                    // } else {
-                    //     console.log('res.all.goodsOrderDetailList is undefined or not an array');
-                    //     this.goodsList = [];  // Ensure goodsList is always an array to prevent UI errors.
-                    // }
-
-                    console.log('res', res);
-                },
-            },
-            mounted() {
-                this.getGoodList()
-            },
-        }
+            ]
+        };
+    },
+    methods: {
+        async getGoodList() {
+            const params = {
+                status: -1,
+                // 添加其他需要的参数
+            };
+            let res = await api.goodsOrderList.goodsOrderList(params);
+            // 检查 res.all 和 res.all.goodsOrderDetailList 是否存在并且是数组
+            this.all = res.all
+            console.log('res', res);
+        },
+    },
+    mounted() {
+        this.getGoodList();
     },
 }
+
 </script>
 
 <style scoped lang="less">

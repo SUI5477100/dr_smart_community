@@ -1,18 +1,15 @@
 <template>
     <div class="orders-container ">
-        <OrderStatus></OrderStatus>
         <NavOrder></NavOrder>
        
     </div>
 </template>
 
 <script>
-import OrderStatus from './orderStatus.vue'
 import NavOrder from './navOrder.vue'
 export default {
     name: 'OrderContainer',
     components: {
-        OrderStatus,
         NavOrder
     }
 };
