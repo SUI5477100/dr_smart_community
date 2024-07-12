@@ -98,7 +98,7 @@ const router = new Router({
       name: 'ProductList',
       component: ProductList
     },
-    
+
     {
       path: '/goodsCategory',
       name: 'HomeView',
@@ -112,7 +112,7 @@ const router = new Router({
     },
     {
       // 商品详情
-      path: '/productDetails',
+      path: '/productDetails/:id',
       name: 'ProductDetails',
       component: ProductDetails,
       // meta: { keepAlive: true },

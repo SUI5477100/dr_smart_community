@@ -1,20 +1,19 @@
 <template>
     <div class="orders-container ">
         <OrderStatus></OrderStatus>
-        <OrderList></OrderList>
-        <OrderStatus></OrderStatus>
-        <OrderList></OrderList>
+        <NavOrder></NavOrder>
+       
     </div>
 </template>
 
 <script>
 import OrderStatus from './orderStatus.vue'
-import OrderList from './orderList.vue'
+import NavOrder from './navOrder.vue'
 export default {
     name: 'OrderContainer',
     components: {
         OrderStatus,
-        OrderList
+        NavOrder
     }
 };
 </script>
