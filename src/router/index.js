@@ -90,11 +90,15 @@ const router = new Router({
       ]
     },
     {
-      // 商品列表
+      path: '/productList',
+      redirect: '/productList/12'
+    },
+    {
       path: '/productList/:id/:key?',
       name: 'ProductList',
       component: ProductList
     },
+    
     {
       path: '/goodsCategory',
       name: 'HomeView',
