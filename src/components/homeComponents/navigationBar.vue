@@ -22,7 +22,7 @@ export default {
         { key: '/goodsCategory', link: '/goodsCategory', label: '全部商品' },
         { key: '/productList', link: '/productList', label: '商品列表' },
         { key: '/login', link: '/login', label: '首页' },
-        { key: '/orders', link: '/orders', label: '我的订单' },
+        { key: '/navOrders', link: '/navOrders', label: '我的订单' },
         { key: '/personalCenter', link: '/personalCenter', label: '个人中心' },
       ],
     }

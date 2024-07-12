@@ -71,6 +71,7 @@ export default {
   data() {
     return {
       categoryId: 12,
+      key:'',
       plistForm: [], //商品列表数据
       filteredList: [],
       currentPage: 1,
@@ -89,6 +90,8 @@ export default {
   },
   created() {
     console.log('Product ID:', this.$route.params.id);
+    console.log('Product key:', this.$route.params.key);
+    this.key = this.$route.params.key || ''; // 初始化 key 值
   },
   computed: {
     paginatedList() {
@@ -96,6 +99,15 @@ export default {
       const end = start + this.pageSize
       return this.filteredList.slice(start, end)
     },
+  },
+  watch: {
+    // 监视路由参数 key 的变化
+    '$route.params.key': function (newValue, oldValue) {
+      if (newValue !== oldValue) {
+        this.key = newValue || ''; // 更新 key
+        this.getProductList(); // 重新调用 getProductList
+      }
+    }
   },
   methods: {
     async getProductList() {
@@ -106,7 +118,7 @@ export default {
           categoryId: this.$route.params.id,
           minPrice: -1,
           maxPrice: -1,
-          key: '',
+          key:this.key,
           sortByPrice: 1,
           sortBySaleCnt: 0,
         })

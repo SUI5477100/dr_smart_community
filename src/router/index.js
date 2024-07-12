@@ -17,6 +17,7 @@ import MyShoppingCart from '../pages/myShoppingCart.vue'
 import OrderInformation from '../pages/orderInformation.vue'
 import OrderPayment from '../pages/orderPayment.vue'
 import SecondLevelCategory from '../components/goodsCategoryList/secondLevelCategory.vue'
+import NavOrders from '../components/personalCenterComponents/navOrders.vue'
 Vue.use(Router)
 
 const router = new Router({
@@ -38,6 +39,11 @@ const router = new Router({
       path: '/forgetPass',
       name: 'ForgetPass',
       component: forgetPassView
+    },
+    {
+      path: '/navOrders',
+      name: 'NavOrders',
+      component: NavOrders
     },
     {
       path: '/personalCenter',
@@ -84,7 +90,7 @@ const router = new Router({
     },
     {
       // 商品列表
-      path: '/productList/:id',
+      path: '/productList/:id/:key?',
       name: 'ProductList',
       component: ProductList
     },

@@ -43,3 +43,14 @@ export const consumptionRecord = {
         })
     }
 }
+
+// /goodsOrder/all?status=-1&orderNo=1720&startTime=2024-07-11&endTime=2024-07-11 18:00:00
+export const goodsOrderList = {
+    goodsOrderList(data) {
+        return requests({
+            url: '/goodsOrder/all',
+            method: 'post',
+            params: data
+        })
+    }
+}
