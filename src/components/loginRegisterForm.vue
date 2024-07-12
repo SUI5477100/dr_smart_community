@@ -307,7 +307,7 @@ export default {
     align-items: center;
     text-align: center;
     position: absolute;
-    right: 25%;
+    right: 10%;
     top:260px;
     border-radius: 10px;
 }

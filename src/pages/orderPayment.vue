@@ -26,7 +26,7 @@
       </div>
       <ul class="orderNumber">
         <li>订单号：</li>
-        <li>123456789</li>
+        <li>{{orderNo}}</li>
       </ul>
       <div class="msgTittle">
         <div class="left">商品信息</div>
@@ -36,14 +36,17 @@
           <li>小计</li>
         </ul>
       </div>
-      <OrderList></OrderList>
-
+      <OrderList :goodsOrder="goodsOrder"></OrderList>
     </div>
     <div class="bottomPay">
       <span>选择支付方式</span>
       <div class="btn">
-        <a-button style="width:200px;height:80px;" theme="filled">
+        <a-button style="width:200px;height:80px;" theme="filled" @click="showModal">
           <a-icon type="pay-circle" theme="filled" style="color:#ffae27;fontSize:24px" />余额支付
+          <a-modal title="输入支付密码" :visible="visible" :confirm-loading="confirmLoading" @ok="handleOk" @cancel="handleCancel">
+            <p>钱包余额：{{userInfo.money}}</p>
+            <a-input-password @change="inputPayPwd" v-model="payPassword" placeholder="请输入支付密码" />
+          </a-modal>
         </a-button>
         <a-button style="width:200px;height:80px">
           <a-icon type="wechat" style="color:#22ad38;fontSize:24px" />微信支付
@@ -57,14 +60,23 @@
 </template>
 
 <script>
+import api from '../api/index'
 // 引入组件
 import OrderList from '../components/personalCenterComponents/ordersComponents/orderList.vue'
 export default {
-  name: 'OrderSteps', // 确保组件名是多字词
+  // name: 'OrderSteps', // 确保组件名是多字词
   components: { OrderList },
   data() {
     return {
+      ModalText: 'Content of the modal',
+      userPwd: '',
+      visible: false,
+      confirmLoading: false,
+      orderNo: '',
+      payPassword: '',
       current: 0,
+      goodsOrder: {},
+      userInfo: {},
       steps: [
         {
           title: '选择支付方式',
@@ -77,7 +89,100 @@ export default {
       ],
     }
   },
+  mounted() {
+    console.log(api)
+    if (this.$route.query.orderNo) {
+      this.orderNo = this.$route.query.orderNo
+      console.log('订单号:', this.orderNo)
+      this.getPaymentDetail()
+    } else {
+      console.warn('未找到订单号')
+    }
+  },
   methods: {
+    inputPayPwd(value) {
+      this.userPwd = value
+      console.log('this.userPwd:------', this.userPwd)
+      // this.getUserInfo()
+    },
+    showModal() {
+      this.getUserInfo()
+      this.visible = true
+    },
+    async handleOk(e) {
+      console.log(e)
+      this.confirmLoading = true
+      let paymentOrder = {
+        orderNo: this.orderNo,
+        payPassword: this.payPassword,
+      }
+      try {
+        const res = await api.payment.payOrder(paymentOrder)
+        console.log('this is paymentOrder', paymentOrder)
+        console.log('----------', res)
+        if (res.code == 200) {
+          this.$message.success('支付成功')
+          this.current = 1 // 更新步骤条到第二步
+          setTimeout(() => {
+            this.$router.push({
+              path: '/paymentSuccess',
+            })
+          }, 500)
+          // this.getProductList()
+          // this.goodsOrder = res.goodsOrder
+          // console.log('this.goodsOrder', this.goodsOrder)
+        } else {
+          this.$message.error('支付失败')
+        }
+      } catch (error) {
+        console.error('支付失败', error)
+      }
+      setTimeout(() => {
+        this.visible = false
+        this.confirmLoading = false
+      }, 2000)
+    },
+    handleCancel(e) {
+      console.log('Clicked cancel button', e)
+      this.visible = false
+    },
+    async getPaymentDetail() {
+      let goodsOrderNo = {
+        orderNo: this.orderNo,
+      }
+      try {
+        const res = await api.payment.paymentDetail(goodsOrderNo)
+        console.log('this is goodsOrderNo', goodsOrderNo)
+        console.log('获取商品详情', res.goodsOrder)
+        if (res.code == 200) {
+          this.$message.success('获取商品详情成功')
+          // this.getProductList()
+          this.goodsOrder = res.goodsOrder
+          console.log('this.goodsOrder', this.goodsOrder)
+        } else {
+          this.$message.error('获取商品详情失败')
+        }
+      } catch (error) {
+        console.error('获取失败', error)
+      }
+    },
+    // 获取当前用户信息
+    async getUserInfo() {
+      try {
+        const res = await api.payment.userInfo()
+        console.log('获取当前用户信息', res.user)
+        if (res.code == 200) {
+          this.$message.success('获取当前用户信息成功')
+          // this.getProductList()
+          this.userInfo = res.user
+          console.log('this.userInfo', this.userInfo)
+        } else {
+          this.$message.error('获取当前用户信息失败')
+        }
+      } catch (error) {
+        console.error('获取失败', error)
+      }
+    },
     next() {
       if (this.current < this.steps.length - 1) {
         this.current++

@@ -1,29 +1,28 @@
 <template>
   <div class="contain">
-    <div v-for="goods in goodsList" :key="goods.id">
+    <div v-for="goods in goodsOrder.goodsOrderDetailList" :key="goods.id">
       <div class="goods">
         <div class="goods-item">
-          <img class="goods-img" :src="goods.url">
-          <div class="goods-name">{{ goods.name }}</div>
+          <img class="goods-img" :src="goods.goodsHomeUrl">
+          <div class="goods-name">{{ goods.goodsName }}</div>
         </div>
         <div class="price">
           <div>￥</div>
-          <div class="price-item">{{ goods.price }}</div>
+          <div class="price-item">{{ goods.singlePrice }}</div>
         </div>
         <div class="quantity">
           <div>x</div>
-          <div class="quantity-item">{{ goods.quantity }}</div>
+          <div class="quantity-item">{{ goods.cnt }}</div>
         </div>
         <div class="subtotal">
           <div>￥</div>
-          <div class="subtotal-item">{{ goods.subtotal }}</div>
+          <div class="subtotal-item">{{ goods.totalPrice }}</div>
         </div>
       </div>
-
     </div>
     <div class="total-price">
       <div>总价：</div>
-      <div>272.00</div>
+      <div>{{goodsOrder.totalPrice}}</div>
     </div>
   </div>
 </template>
@@ -31,39 +30,50 @@
 <script>
 export default {
   name: 'OrderList', //导出组件名
+  props: {
+    goodsOrder: {
+      // type: String,
+      // default: '我是默认内容',
+      type: Object,
+      default: () => ({ goodsOrderDetailList: [] }),
+    },
+  },
   data() {
     return {
-      goodsList: [
-        {
-          url: require('../../../assets/taobao.png'),
-          name: '强力胶水',
-          price: '34',
-          quantity: '2',
-          subtotal: '68',
-        },
-        {
-          url: require('../../../assets/taobao.png'),
-          name: '强力胶水',
-          price: '34',
-          quantity: '2',
-          subtotal: '68',
-        },
-        {
-          url: require('../../../assets/taobao.png'),
-          name: '强力胶水',
-          price: '34',
-          quantity: '2',
-          subtotal: '68',
-        },
-        {
-          url: require('../../../assets/taobao.png'),
-          name: '强力胶水',
-          price: '34',
-          quantity: '2',
-          subtotal: '68',
-        },
-      ],
+      // goodsList: [
+      //   {
+      //     url: require('../../../assets/taobao.png'),
+      //     name: '强力胶水',
+      //     price: '34',
+      //     quantity: '2',
+      //     subtotal: '68',
+      //   },
+      //   {
+      //     url: require('../../../assets/taobao.png'),
+      //     name: '强力胶水',
+      //     price: '34',
+      //     quantity: '2',
+      //     subtotal: '68',
+      //   },
+      //   {
+      //     url: require('../../../assets/taobao.png'),
+      //     name: '强力胶水',
+      //     price: '34',
+      //     quantity: '2',
+      //     subtotal: '68',
+      //   },
+      //   {
+      //     url: require('../../../assets/taobao.png'),
+      //     name: '强力胶水',
+      //     price: '34',
+      //     quantity: '2',
+      //     subtotal: '68',
+      //   },
+      // ],
     }
+  },
+  mounted() {
+    console.log('this.goodsOrder', this.goodsOrder)
   },
 }
 </script>

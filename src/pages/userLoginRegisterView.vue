@@ -1,5 +1,6 @@
 <template>
     <div id="container">
+        <span class="logo">welcome to <br>Smart Community!</span>
         <loginRegisterForm></loginRegisterForm>
     </div>
 </template>
@@ -19,6 +20,11 @@ export default {
     height: 100%;
     background-color: #f3f3f3;
     display: flex;
+    align-items: center;
 }
-
+.logo{
+    font-size: 65px;
+    margin-left: 15%;
+    padding-bottom: 10%;
+}
 </style>
