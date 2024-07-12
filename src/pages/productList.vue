@@ -2,14 +2,14 @@
   <div class="productList">
     <div class="productListWrapper">
       <div class="productListContent">
-        <!-- 面包屑 -->
+        <!-- 面包屑
         <div class="breadcrumb">
           <a-breadcrumb class="breadcrumbContent">
             <a-breadcrumb-item>营养膳食</a-breadcrumb-item>
             <a-breadcrumb-item><a href="">营养早餐</a></a-breadcrumb-item>
             <a-breadcrumb-item><a href="">牛奶</a></a-breadcrumb-item>
           </a-breadcrumb>
-        </div>
+        </div> -->
         <!-- 价格筛选 -->
         <ul class="screen">
           <li style="margin-left:-20px">价格筛选:</li>
@@ -27,13 +27,15 @@
         <!-- 价格排序 -->
         <ul class="sort">
           <li style="margin-left:-20px">价格排序:</li>
-          <li class="price" @click="handleSort('price')">价格<img src="../assets/image/sort.png" style="width:20px;height:20px"></li>
-          <li class="sales" @click="handleSort('sales')">销量<img src="../assets/image/sort.png" style="width:20px;height:20px"></li>
+          <li class="price" @click="handleSort('price')">价格<img src="../assets/image/sort.png"
+              style="width:20px;height:20px"></li>
+          <li class="sales" @click="handleSort('sales')">销量<img src="../assets/image/sort.png"
+              style="width:20px;height:20px"></li>
         </ul>
         <!-- 商品列表外部盒子 -->
         <!-- 单个商品 -->
         <div class="listWrapper">
-          <div class="plist" v-for="(item,index) in paginatedList" :key="item.id" @click="toProductDetails(item)">
+          <div class="plist" v-for="(item, index) in paginatedList" :key="item.id" @click="toProductDetails(item)">
             <div class="productImg" style="width:240px">
               <img :src="item.homeImg" style="width:240px" alt="">
             </div>
@@ -41,10 +43,10 @@
             <!-- 商品底部详情 -->
             <ul class="plistDetail">
               <div>
-                <li>￥{{item.price}}</li>
-                <li>{{item.goodsName}}</li>
-                <li>{{item.content}}</li>
-                <li>销量：{{item.saleCnt}}</li>
+                <li>￥{{ item.price }}</li>
+                <li>{{ item.goodsName }}</li>
+                <li>{{ item.content }}</li>
+                <li>销量：{{ item.saleCnt }}</li>
               </div>
             </ul>
           </div>
@@ -53,7 +55,8 @@
       <!-- 页码 -->
       <div class="pagination">
         <div id="components-pagination-demo-mini">
-          <a-pagination size="small" :total="filteredList.length" :page-size="pageSize" :current="currentPage" @change="handlePageChange" @show-size-change="handlePageSizeChange" show-size-changer show-quick-jumper />
+          <a-pagination size="small" :total="filteredList.length" :page-size="pageSize" :current="currentPage"
+            @change="handlePageChange" @show-size-change="handlePageSizeChange" show-size-changer show-quick-jumper />
         </div>
       </div>
 
@@ -67,6 +70,8 @@ import api from '../api/index'
 export default {
   data() {
     return {
+      categoryId: 12,
+      key:'',
       plistForm: [], //商品列表数据
       filteredList: [],
       currentPage: 1,
@@ -83,6 +88,11 @@ export default {
     // this.filteredList = this.plistForm
     this.getProductList()
   },
+  created() {
+    console.log('Product ID:', this.$route.params.id);
+    console.log('Product key:', this.$route.params.key);
+    this.key = this.$route.params.key || ''; // 初始化 key 值
+  },
   computed: {
     paginatedList() {
       const start = (this.currentPage - 1) * this.pageSize
@@ -90,16 +100,25 @@ export default {
       return this.filteredList.slice(start, end)
     },
   },
+  watch: {
+    // 监视路由参数 key 的变化
+    '$route.params.key': function (newValue, oldValue) {
+      if (newValue !== oldValue) {
+        this.key = newValue || ''; // 更新 key
+        this.getProductList(); // 重新调用 getProductList
+      }
+    }
+  },
   methods: {
     async getProductList() {
       try {
         const res = await api.goods.goodsList({
           page: 1,
           limit: 10,
-          categoryId: 11,
+          categoryId: this.$route.params.id,
           minPrice: -1,
           maxPrice: -1,
-          key: '',
+          key:this.key,
           sortByPrice: 1,
           sortBySaleCnt: 0,
         })
@@ -160,19 +179,24 @@ export default {
 
 <style lang="less" scoped>
 .productList {
+
   // 列表内容和页码的外部大盒子
   .productListWrapper {
+
     // 商品列表内容
     .productListContent {
       width: 1440px;
       margin: auto;
+
       .breadcrumb {
         margin-top: 5px;
-        .breadcrumbContent ant-breadcrumb > span > ant-breadcrumb-link {
+
+        .breadcrumbContent ant-breadcrumb>span>ant-breadcrumb-link {
           font-weight: 700;
           color: black;
         }
       }
+
       .screen {
         margin-top: 20px;
         margin-bottom: 0px;
@@ -182,12 +206,14 @@ export default {
         height: 60px;
         background-color: white;
         border: 1px solid #f2f2f2;
-        > li {
+
+        >li {
           font-size: 14px;
           color: black;
           padding: 0;
           margin-left: 40px;
         }
+
         .low,
         .high {
           // text-align: center;
@@ -199,6 +225,7 @@ export default {
           background-color: white;
           color: #ceccce;
         }
+
         button {
           width: 72px;
           height: 40px;
@@ -211,6 +238,7 @@ export default {
           background-color: #1e90ff;
         }
       }
+
       .sort {
         margin-top: 0px;
         margin-top: -1px;
@@ -220,17 +248,20 @@ export default {
         height: 60px;
         background-color: white;
         border: 1px solid #f2f2f2;
+
         li:first-child {
           font-size: 14px;
           color: black;
           margin-left: 40px;
         }
+
         li:nth-child(2) {
           cursor: pointer;
           font-size: 14px;
           color: black;
           margin-left: 40px;
         }
+
         li:last-child {
           cursor: pointer;
           font-size: 14px;
@@ -238,6 +269,7 @@ export default {
           margin-left: 40px;
         }
       }
+
       .listWrapper {
         display: flex;
         flex-direction: row;
@@ -264,25 +296,30 @@ export default {
             height: 200px;
             margin-top: 20px;
             padding: 0;
+
             // background-color: #ceccce;
             div {
               display: flex;
               flex-direction: column;
               row-gap: 5px;
+
               li:first-child {
                 color: red;
                 font-size: 24px;
                 font-weight: 500;
               }
+
               li:last-child {
                 color: black;
                 font-weight: 500;
               }
+
               li:nth-child(2) {
                 color: black;
                 font-weight: 500;
                 font-size: 16px;
               }
+
               li:nth-child(3) {
                 color: #9b9c9c;
                 font-size: 12px;
@@ -290,12 +327,14 @@ export default {
             }
           }
         }
+
         .plist:hover {
           cursor: pointer;
         }
       }
     }
   }
+
   // 页码
   .pagination {
     width: 1440px;
@@ -304,15 +343,16 @@ export default {
     padding: 50px 0;
   }
 }
+
 .ant-breadcrumb,
 .ant-breadcrumb-link,
 .ant-breadcrumb a,
-.ant-breadcrumb > span:last-child a {
+.ant-breadcrumb>span:last-child a {
   color: black;
   font-size: 14px;
 }
+
 // .plist:last-child {
 //   margin-right: auto;
 //   margin-left: 20px;
-// }
-</style>
+// }</style>

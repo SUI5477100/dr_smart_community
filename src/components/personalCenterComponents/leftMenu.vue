@@ -33,7 +33,7 @@ export default {
                     items: [
                         { key: '1', title: '个人资料', route: 'myInformation' },
                         { key: '2', title: '密码修改', route: 'changePassword' },
-                        { key: '3', title: '我的收藏', route: 'myFavorites' },
+                        // { key: '3', title: '我的收藏', route: 'myFavorites' },
                     ],
                 },
                 {
@@ -51,7 +51,7 @@ export default {
                     items: [
                         { key: '5', title: '充值', route: 'myRecharge' },
                         { key: '6', title: '转账', route: 'myTransfer' },
-                        { key: '7', title: '消费记录', route: 'transactionHistory' },
+                        { key: '7', title: '消费记录', route: 'consumptionRecord' },
                     ],
                 },
             ],

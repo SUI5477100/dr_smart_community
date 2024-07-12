@@ -18,7 +18,7 @@ import OrderInformation from '../pages/orderInformation.vue'
 import OrderPayment from '../pages/orderPayment.vue'
 import PaymentSuccess from '../pages/paymentSuccess.vue'
 import SecondLevelCategory from '../components/goodsCategoryList/secondLevelCategory.vue'
-
+import NavOrders from '../components/personalCenterComponents/navOrders.vue'
 Vue.use(Router)
 
 const router = new Router({
@@ -27,7 +27,7 @@ const router = new Router({
     {
       path: '/',
       name: 'Home',
-      redirect: '/productList',
+      redirect: '/goodsCategory',
       component: HomeView
     },
     {
@@ -40,6 +40,11 @@ const router = new Router({
       path: '/forgetPass',
       name: 'ForgetPass',
       component: forgetPassView
+    },
+    {
+      path: '/navOrders',
+      name: 'NavOrders',
+      component: NavOrders
     },
     {
       path: '/personalCenter',
@@ -78,18 +83,22 @@ const router = new Router({
           component: MyTransfer,
         },
         {
-          path: 'transactionHistory',
+          path: 'consumptionRecord',
           name: 'TransactionHistory',
           component: TransactionHistory,
         },
       ]
     },
     {
-      // 商品列表
       path: '/productList',
+      redirect: '/productList/12'
+    },
+    {
+      path: '/productList/:id/:key?',
       name: 'ProductList',
       component: ProductList
     },
+    
     {
       path: '/goodsCategory',
       name: 'HomeView',
@@ -103,7 +112,7 @@ const router = new Router({
     },
     {
       // 商品详情
-      path: '/productDetails/:id',
+      path: '/productDetails',
       name: 'ProductDetails',
       component: ProductDetails,
       // meta: { keepAlive: true },
