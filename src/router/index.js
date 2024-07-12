@@ -16,6 +16,7 @@ import ProductDetails from '../pages/productDetails.vue'
 import MyShoppingCart from '../pages/myShoppingCart.vue'
 import OrderInformation from '../pages/orderInformation.vue'
 import OrderPayment from '../pages/orderPayment.vue'
+import PaymentSuccess from '../pages/paymentSuccess.vue'
 import SecondLevelCategory from '../components/goodsCategoryList/secondLevelCategory.vue'
 
 Vue.use(Router)
@@ -130,6 +131,13 @@ const router = new Router({
       name: 'OrderPayment',
       component: OrderPayment,
       meta: { noHeader: true },
+    },
+    {
+      // 支付成功
+      path: '/paymentSuccess',
+      name: 'PaymentSuccess',
+      component: PaymentSuccess,
+      // meta: { noHeader: true },
     }
   ]
 })
@@ -142,7 +150,8 @@ router.beforeEach((to, from, next) => {
     '/productList',
     '/productDetails',
     '/myShoppingCart',
-    '/orderPayment'
+    '/orderPayment',
+    '/paymentSuccess'
   ]
   if (pathArr.indexOf(to.path) == -1) {
     // 要访问后台主页,需要判断是否有token

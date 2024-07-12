@@ -85,6 +85,7 @@ export default {
       items: [],
       cartList: [],
       checkedId: [],
+      goodsOrder: {},
     }
   },
   computed: {
@@ -195,16 +196,26 @@ export default {
     },
     // 创建订单
     async getGoodsPayment(cartItems) {
+      let createOrderPO = {
+        cartList: cartItems,
+      }
       // this.getProductList()
       try {
-        const res = await api.payment.createPayment({ cartItems })
+        const res = await api.payment.createPayment(createOrderPO)
+        console.log('createOrderPO', createOrderPO)
         console.log('创建订单', JSON.stringify(res))
         if (res.code == 200) {
           this.$message.success('创建订单成功')
-          this.getProductList()
+          // this.getProductList()
+          this.goodsOrder = res.goodsOrder
+          console.log(this.goodsOrder)
           this.$router.push({
             path: '/orderInformation',
-            query: { totalAmount: this.totalPrice.toFixed(2) },
+            query: {
+              totalAmount: this.totalPrice.toFixed(2),
+              selectedItems: JSON.stringify(this.selectedItems),
+              goodsOrder: this.goodsOrder,
+            },
           })
         } else {
           this.$message.error('创建订单失败')
@@ -215,19 +226,8 @@ export default {
     },
     // 结算按钮
     toCreatePayment() {
-      // const selectedItems = this.cartList.filter((item) => item.checked)
-      // console.log('selectedItems:', selectedItems)
-      // this.getGoodsPayment(selectedItems)
-      this.getProductList()
       console.log('selectedItems:', this.selectedItems)
       this.getGoodsPayment(this.selectedItems)
-      // const selectedItems = this.selectedItems.map((item) => ({
-      //   id: item.id,
-      //   cnt: item.cnt,
-      //   price: item.price,
-      // }))
-      // console.log('发送的购物车数据', { cartList: selectedItems })
-      // this.getGoodsPayment()
     },
     toggleSelectAll() {
       this.items.forEach((pickup) => {
@@ -289,8 +289,6 @@ export default {
       align-items: center;
       justify-content: space-between;
       font-weight: 500;
-      span {
-      }
     }
   }
   .myShoppingCartWrapper {

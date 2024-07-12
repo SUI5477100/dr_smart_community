@@ -96,7 +96,7 @@ export default {
         const res = await api.goods.goodsList({
           page: 1,
           limit: 10,
-          categoryId: 31,
+          categoryId: 11,
           minPrice: -1,
           maxPrice: -1,
           key: '',
