@@ -14,21 +14,25 @@
       <div class="msg">
         <ul>
           <li>订单号：</li>
-          <li>{{orderNumber}}</li>
+          <li>{{goodsOrder.orderNo}}</li>
         </ul>
         <ul>
           <li>订单总金额：</li>
-          <li>{{totalAmount}}</li>
+          <li>{{goodsOrder.totalPrice}}</li>
         </ul>
         <ul>
           <li>订单状态：</li>
-          <li><a-tag color="blue">
-              待支付
-            </a-tag></li>
+          <li>
+            <a-tag v-if="goodsOrder.orderStatus === 0" color="red">支付失败</a-tag>
+            <a-tag v-else-if="goodsOrder.orderStatus === 1" color="blue">待支付</a-tag>
+            <a-tag v-else-if="goodsOrder.orderStatus === 2" color="green">支付成功</a-tag>
+            <!-- <a-tag v-else>未知状态</a-tag> -->
+            <!-- {{goodsOrder.orderStatus}} -->
+          </li>
         </ul>
         <ul>
           <li>订单创建时间：</li>
-          <li>{{creationTime}}</li>
+          <li>{{goodsOrder.createTime}}</li>
         </ul>
       </div>
       <div class="btn">
@@ -43,61 +47,68 @@
 
 <script>
 export default {
-  props: {
-    totalAmount: {
-      type: String,
-      required: true,
-    },
-  },
   data() {
     return {
       orderNumber: '',
       creationTime: '',
+      goodsOrder: {},
     }
   },
+  mounted() {
+    // // this.totalAmount = this.$route.query.totalAmount
+    // this.goodsOrder = this.$route.query.goodsOrder
+    // // console.log(this.totalAmount)
+    // // this.selectedItems = JSON.parse(this.$route.query.selectedItems)
+    // console.log(this.goodsOrder)
+    if (this.$route.query.goodsOrder) {
+      try {
+        // Check if it's already an object, otherwise parse JSON
+        if (typeof this.$route.query.goodsOrder === 'object') {
+          this.goodsOrder = this.$route.query.goodsOrder
+        } else {
+          this.goodsOrder = JSON.parse(this.$route.query.goodsOrder)
+        }
+        console.log('goodsOrder:', this.goodsOrder)
+      } catch (error) {
+        console.error('获取失败:', error)
+      }
+    } else {
+      console.warn('获取失败.')
+    }
+    // if (this.$route.query.goodsOrder) {
+    //   try {
+    //     this.goodsOrder = JSON.parse(this.$route.query.goodsOrder)
+    //     console.log('Parsed goodsOrder:', this.goodsOrder)
+    //   } catch (error) {
+    //     console.error('Error parsing goodsOrder:', error)
+    //   }
+    // } else {
+    //   console.warn('No goodsOrder found in route query.')
+    // }
+  },
   methods: {
-    generateOrderNumber() {
-      const now = new Date()
-      const dateStr =
-        now.getFullYear().toString() +
-        (now.getMonth() + 1).toString().padStart(2, '0') +
-        now.getDate().toString().padStart(2, '0') +
-        now.getHours().toString().padStart(2, '0') +
-        now.getMinutes().toString().padStart(2, '0') +
-        now.getSeconds().toString().padStart(2, '0')
-      const randomStr = Math.random().toString().substr(2, 5)
-      return dateStr + randomStr
-    },
-
-    generateCreationTime() {
-      const now = new Date()
-      return (
-        now.getFullYear() +
-        '-' +
-        (now.getMonth() + 1).toString().padStart(2, '0') +
-        '-' +
-        now.getDate().toString().padStart(2, '0') +
-        ' ' +
-        now.getHours().toString().padStart(2, '0') +
-        ':' +
-        now.getMinutes().toString().padStart(2, '0') +
-        ':' +
-        now.getSeconds().toString().padStart(2, '0')
-      )
-    },
     goHome() {
       // 跳转到首页的逻辑
       this.$router.push('/')
     },
+    // payNow() {
+    //   // 立即支付的逻辑
+    //   alert('跳转到支付页面')
+    //   this.$router.push('/orderPayment')
+    // },
     payNow() {
       // 立即支付的逻辑
-      alert('跳转到支付页面')
-      this.$router.push('/orderPayment')
+      // 提取订单号
+      const orderNo = this.goodsOrder.orderNo
+      alert('跳转到支付页面，订单号：' + orderNo)
+      // 跳转并传递订单号
+      this.$router.push({
+        path: '/orderPayment',
+        query: {
+          orderNo: orderNo,
+        },
+      })
     },
-  },
-  created() {
-    this.orderNumber = this.generateOrderNumber()
-    this.creationTime = this.generateCreationTime()
   },
 }
 </script>
