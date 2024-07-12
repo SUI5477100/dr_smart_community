@@ -40,7 +40,14 @@ export default {
   },
   data() {
     return {
-      // goodsList: [
+      goodsList: [
+        {
+          url: require('../../../assets/taobao.png'),
+          name: '强力胶水',
+          price: '34',
+          quantity: '2',
+          subtotal: '68',
+        },
       //   {
       //     url: require('../../../assets/taobao.png'),
       //     name: '强力胶水',
@@ -62,14 +69,7 @@ export default {
       //     quantity: '2',
       //     subtotal: '68',
       //   },
-      //   {
-      //     url: require('../../../assets/taobao.png'),
-      //     name: '强力胶水',
-      //     price: '34',
-      //     quantity: '2',
-      //     subtotal: '68',
-      //   },
-      // ],
+      ],
     }
   },
   mounted() {
