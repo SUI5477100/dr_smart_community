@@ -20,7 +20,7 @@ export default {
     /* margin-left: 20px;
     margin-right: 20px; */
     /* background-color: red; */
-    max-height: 350px;
+    max-height: 450px;
     /* 设置一个最大高度 */
     overflow-y: auto;
     /* 设置滚动条 */

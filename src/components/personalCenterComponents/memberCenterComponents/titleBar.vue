@@ -8,20 +8,22 @@
 
 <script>
 export default {
-    name:"titleBar"
+    name: "titleBar"
 }
 </script>
 
 <style>
-.title{
+.title {
     width: 50%;
     height: 60px;
     /* background-color: aquamarine; */
     margin-left: 2%;
     border-bottom: 1px solid #f1f1f1;
     padding-top: 10px;
+    margin-top: 15px;
 }
-.inner-box{
+
+.inner-box {
     /* background-color: blue; */
     height: 28px;
     width: 120px;
@@ -31,5 +33,4 @@ export default {
     line-height: 28px;
     /* background-color: bisque; */
 }
-
 </style>
