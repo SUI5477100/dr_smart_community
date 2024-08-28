@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- <OrderSearch></OrderSearch> -->
-        <OrderContainer></OrderContainer>
+        <OrderContainer class="center"></OrderContainer>
     </div>
 </template>
 
@@ -17,4 +17,11 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.center {
+    margin-top: 30px;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+</style>
