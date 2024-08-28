@@ -8,14 +8,14 @@
                 <!-- 状态搜索 -->
                 <a-cascader :options="options" placeholder="全部订单" @change="onChange" style="width: 120px" />
                 <!-- 订单号搜索 -->
-                <a-input placeholder="请输入订单号" @input="debounceInput" style="width: 250px" />
+                <a-input placeholder="请输入订单号" @input="inputContent" style="width: 250px" />
                 <!-- 日期搜索 -->
                 <div class="form-data">
                     <a-date-picker style="width: calc(50% - 12px)" />
                     <span style="width: 24px; text-align: center">-</span>
                     <a-date-picker style="width: calc(50% - 12px)" />
                 </div>
-                <a-button type="primary">搜索</a-button>
+                <!-- <a-button type="primary">搜索</a-button> -->
             </div>
         </div>
         <div class="contain">
@@ -64,20 +64,36 @@ export default {
                 },
             ],
             options: [
-                { value: 'allOrders', label: '全部订单' },
-                { value: 'refundOrders', label: '退货订单' },
-                { value: 'pendingShipmentOrders', label: '待发货订单' },
-                { value: 'unpaidOrder', label: '未支付订单' },
-                { value: 'ordersAwaitingReceipt', label: '待收货订单' },
+                { value: -1, label: '全部订单' },
+                { value: 0, label: '支付失败' },
+                { value: 1, label: '待支付订单' },
+                { value: 2, label: '支付成功' },//有商品
+                { value: 5, label: '待发货订单' },
+                { value: 6, label: '已发货订单' },
+                { value: 7, label: '已签收订单' },
+
             ],
-            debounceInput: null, // 存储防抖函数引用
+            selectedStatus: -1,
+            orderID: ''
         };
     },
     methods: {
+        onChange(goodStatus) {
+            console.log("Selected value:", goodStatus[0]);
+            this.selectedStatus = goodStatus[0]
+            this.getGoodList()
+        },
+        inputContent(event) {
+            this.orderID = event.target.value
+            console.log('orderID', this.orderID);
+            this.getGoodList()
+
+        },
+
         async getGoodList() {
             const params = {
-                status: -1,
-                // orderNo: 1720,
+                status: this.selectedStatus,
+                orderNo: this.orderID,
                 // startTime: '2024-07-11',
                 // endTime: '2024-07-13'
             };
@@ -86,27 +102,12 @@ export default {
             this.all = res.all
             console.log('res', res);
         },
-        onChange(value) {
-            console.log("Selected value:", value);
-        },
-        onChangeID(event) {
-            console.log("Input value:", event.target.value);
-        },
-        debounce(fn, delay) {
-            let timer = null;
-            return function (...args) {
-                clearTimeout(timer);
-                timer = setTimeout(() => {
-                    fn.apply(this, args);
-                }, delay);
-            };
-        },
-        created() {
-            this.debounceInput = this.debounce(this.onChangeID, 1000);
-        }
+
+
     },
     mounted() {
-        this.getGoodList();
+        this.getGoodList();  // 加载订单列表
+
     },
 }
 

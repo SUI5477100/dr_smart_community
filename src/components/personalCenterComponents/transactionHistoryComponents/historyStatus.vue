@@ -6,7 +6,7 @@
             <a-cascader :options="types" v-model="selectedType" placeholder="全部" @change="onChange" />
         </div>
         <!-- 搜索按钮 -->
-        <a-button type="primary" @click="onChange(selectedType)">搜索</a-button>
+        <!-- <a-button type="primary" @click="onChange(selectedType)">搜索</a-button> -->
     </div>
 </template>
 

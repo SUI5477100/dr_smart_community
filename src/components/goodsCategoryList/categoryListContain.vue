@@ -6,7 +6,6 @@
         <!-- 右侧内容 -->
         <div class="router-view">
             <router-view></router-view>
-
         </div>
     </div>
 </template>
