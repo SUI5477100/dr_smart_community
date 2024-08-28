@@ -1,7 +1,7 @@
 <template>
     <div class="center">
-        <a-menu style="width: 256px;top: 0;" mode="vertical">
-            <a-menu-item @click="handleClick" v-for="dropdown in dropdownList" :key="dropdown.key">
+        <a-menu style="width: 256px; top: 0;" mode="vertical" v-model="selectedKey">
+            <a-menu-item v-for="dropdown in dropdownList" :key="dropdown.key" @click="handleClick(dropdown)">
                 {{ dropdown.content }}
             </a-menu-item>
         </a-menu>
@@ -11,15 +11,16 @@
 <script>
 import api from '../../api/index'
 export default {
-    name: 'LeftCategoryList', //导出组件名
+    name: 'LeftCategoryList',
     data() {
         return {
-            dropdownList: []
+            dropdownList: [],
+            selectedKey: null,  // 用于存储当前选中的菜单项的 key
         }
     },
     methods: {
         handleClick(dropdown) {
-            // console.log('dropdown.key',typeof dropdown.key);
+            this.selectedKey = dropdown.key;
             this.$router.push({ name: 'SecondLevelCategory', query: { parentId: dropdown.key } });
         },
         async getParentGoodsCategoryList() {
@@ -29,11 +30,12 @@ export default {
                 if (res.parentGoodsCategoryList.length > 0) {
                     const newDropdownList = res.parentGoodsCategoryList.map(category => {
                         return {
-                            key: category.id,
+                            key: category.id.toString(),  // 确保 key 是字符串
                             content: category.categoryName,
                         };
                     });
                     this.dropdownList = newDropdownList;
+                    this.selectedKey = newDropdownList[0].key;  // 默认选择第一项
                 } else {
                     console.log('No categories found');
                 }
@@ -43,7 +45,7 @@ export default {
         },
     },
     mounted() {
-        this.getParentGoodsCategoryList()
+        this.getParentGoodsCategoryList();
     }
 };
 </script>
