@@ -172,7 +172,7 @@ export default {
     display: flex;
     justify-content: center;
     align-content: center;
-    max-height: 270px;
+    height: 270px;
     /* 设置一个最大高度 */
     overflow-y: auto;
 }

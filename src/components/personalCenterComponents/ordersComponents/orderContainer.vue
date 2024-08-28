@@ -17,8 +17,8 @@ export default {
 
 <style scoped>
 .orders-container {
-    margin-left: 20px;
-    margin-right: 20px;
+    /* margin-left: 20px;
+    margin-right: 20px; */
     /* background-color: red; */
     max-height: 350px;
     /* 设置一个最大高度 */

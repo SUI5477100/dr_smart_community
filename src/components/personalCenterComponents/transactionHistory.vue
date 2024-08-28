@@ -1,6 +1,8 @@
 <template>
     <div>
-        <a-page-header style="border: 1px solid rgb(235, 237, 240)" title="钱包转账" />
+        <titleBar>
+            消费记录
+        </titleBar>
         <HistoryStatus @payment-type-selected="handlePaymentTypeChange"></HistoryStatus>
         <HistoryList :selected-type="selectedPaymentType"></HistoryList>
     </div>
@@ -9,8 +11,10 @@
 <script>
 import HistoryList from './transactionHistoryComponents/historyList.vue';
 import HistoryStatus from './transactionHistoryComponents/historyStatus.vue';
+import titleBar from '../personalCenterComponents/memberCenterComponents/titleBar.vue';
+
 export default {
-    components: { HistoryList, HistoryStatus },
+    components: { HistoryList, HistoryStatus, titleBar },
     name: 'TransactionHistory', //导出组件名
     data() {
         return {
@@ -18,11 +22,11 @@ export default {
         };
     },
     methods: {
-    handlePaymentTypeChange(type) {
-        // console.log('type',type);
-      this.selectedPaymentType = type;
+        handlePaymentTypeChange(type) {
+            // console.log('type',type);
+            this.selectedPaymentType = type;
+        }
     }
-  }
 };
 </script>
 

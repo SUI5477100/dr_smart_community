@@ -1,6 +1,9 @@
 <template>
     <div>
-        <a-page-header style="border: 1px solid rgb(235, 237, 240)" title="钱包充值" />
+       
+        <titleBar>
+            充值
+        </titleBar>
         <!-- 钱包余额 -->
         <div class="wallet">
             <div>钱包余额：</div>
@@ -61,8 +64,12 @@
 
 <script>
 import api from '../../api/index'
+import titleBar from '../personalCenterComponents/memberCenterComponents/titleBar.vue';
 export default {
-    name: 'MyRecharge', //导出组件名
+    name: 'MyRecharge', 
+    components:{
+        titleBar
+    },
     data() {
         return {
             visible: false,
