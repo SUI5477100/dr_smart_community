@@ -1,6 +1,8 @@
 <template>
     <div>
-        <a-page-header style="border: 1px solid rgb(235, 237, 240)" title="钱包转账" />
+        <titleBar>
+            钱包转账
+        </titleBar>
         <div class="wallet">
             <div>钱包余额：</div>
             <div>{{ personInfo.money }}</div>
@@ -74,11 +76,14 @@
 
 <script>
 import checkCodeButton from '../../components/buttonComponents/checkCodeButton.vue'
+import titleBar from '../personalCenterComponents/memberCenterComponents/titleBar.vue';
+
 import api from '../../api/index'
 export default {
     name: 'MyTransfer', //导出组件名
     components: {
-        checkCodeButton
+        checkCodeButton,
+        titleBar
     },
     data() {
         return {

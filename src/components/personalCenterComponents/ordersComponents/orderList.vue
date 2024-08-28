@@ -1,4 +1,5 @@
 <template>
+  <!-- 订单支付页面的商品列表 -->
   <div class="contain">
     <div v-for="goods in goodsOrder.goodsOrderDetailList" :key="goods.id">
       <div class="goods">
@@ -32,8 +33,6 @@ export default {
   name: 'OrderList', //导出组件名
   props: {
     goodsOrder: {
-      // type: String,
-      // default: '我是默认内容',
       type: Object,
       default: () => ({ goodsOrderDetailList: [] }),
     },
@@ -48,27 +47,6 @@ export default {
           quantity: '2',
           subtotal: '68',
         },
-      //   {
-      //     url: require('../../../assets/taobao.png'),
-      //     name: '强力胶水',
-      //     price: '34',
-      //     quantity: '2',
-      //     subtotal: '68',
-      //   },
-      //   {
-      //     url: require('../../../assets/taobao.png'),
-      //     name: '强力胶水',
-      //     price: '34',
-      //     quantity: '2',
-      //     subtotal: '68',
-      //   },
-      //   {
-      //     url: require('../../../assets/taobao.png'),
-      //     name: '强力胶水',
-      //     price: '34',
-      //     quantity: '2',
-      //     subtotal: '68',
-      //   },
       ],
     }
   },
