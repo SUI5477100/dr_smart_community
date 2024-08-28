@@ -1,13 +1,15 @@
 <template>
-    <div>
-        <div>
-            <titleBar >
+    <div class="parent">
+        <div class="search">
+            <titleBar>
                 我的订单
             </titleBar>
-            <!-- <a-page-header title="我的订单" /> -->
             <div class="order-search">
+                <!-- 状态搜索 -->
                 <a-cascader :options="options" placeholder="全部订单" @change="onChange" style="width: 120px" />
+                <!-- 订单号搜索 -->
                 <a-input placeholder="请输入订单号" @input="debounceInput" style="width: 250px" />
+                <!-- 日期搜索 -->
                 <div class="form-data">
                     <a-date-picker style="width: calc(50% - 12px)" />
                     <span style="width: 24px; text-align: center">-</span>
@@ -75,31 +77,29 @@ export default {
         async getGoodList() {
             const params = {
                 status: -1,
-                orderNo: 1720,
-                startTime: '2024-07-11',
-                endTime: '2024-07-13'
+                // orderNo: 1720,
+                // startTime: '2024-07-11',
+                // endTime: '2024-07-13'
             };
             let res = await api.goodsOrderList.goodsOrderList(params);
             // 检查 res.all 和 res.all.goodsOrderDetailList 是否存在并且是数组
             this.all = res.all
             console.log('res', res);
         },
-        methods: {
-            onChange(value) {
-                console.log("Selected value:", value);
-            },
-            onChangeID(event) {
-                console.log("Input value:", event.target.value);
-            },
-            debounce(fn, delay) {
-                let timer = null;
-                return function (...args) {
-                    clearTimeout(timer);
-                    timer = setTimeout(() => {
-                        fn.apply(this, args);
-                    }, delay);
-                };
-            }
+        onChange(value) {
+            console.log("Selected value:", value);
+        },
+        onChangeID(event) {
+            console.log("Input value:", event.target.value);
+        },
+        debounce(fn, delay) {
+            let timer = null;
+            return function (...args) {
+                clearTimeout(timer);
+                timer = setTimeout(() => {
+                    fn.apply(this, args);
+                }, delay);
+            };
         },
         created() {
             this.debounceInput = this.debounce(this.onChangeID, 1000);
@@ -175,6 +175,21 @@ export default {
     justify-content: space-between;
     align-items: center;
     margin: 30px 20px;
+}
+
+.parent {
+    min-height: 100vh;
+    /* 使得父元素足够高，可以滚动 */
+}
+
+.search {
+    position: sticky;
+    top: 0;
+    /* 在距离视口顶部 0px 时开始固定 */
+    background-color: white;
+    /* 可能需要设置背景色以覆盖下面的内容 */
+    z-index: 1000;
+    /* 确保这个元素在滚动时保持在顶层 */
 }
 
 .form-data {
