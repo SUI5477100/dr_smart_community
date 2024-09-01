@@ -8,9 +8,9 @@
         </div>
         <a href="/myShoppingCart" class="shop-car">
           我的购物车
-          <a-badge count="5">
+          <!-- <a-badge count="5"> -->
             <a-icon type="shopping-cart" style="font-size: large;" />
-          </a-badge>
+          <!-- </a-badge> -->
         </a>
       </div>
     </div>
@@ -22,7 +22,7 @@ export default {
   name: 'HomeSearch',
   data() {
     return {
-      logos: ['智慧社区LOGO'],
+      logos: ['购物商城LOGO'],
     }
   },
   methods: {

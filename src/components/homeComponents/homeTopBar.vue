@@ -26,7 +26,7 @@
     data() {
       return {
         leftLinks: [
-          { text: '商城首页', href: '/goodsCategory' },
+          { text: '商城首页', href: '/goodsCategory/getChildGoodsCategoryList?parentId=1' },
           { text: '联系方式', href: '' },
           { text: '关于我们', href: '' },
           { text: '北京', href: '', class: 'region', icon: 'environment' },

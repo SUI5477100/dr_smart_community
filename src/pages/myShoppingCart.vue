@@ -48,7 +48,7 @@
                 <a-input-number :min="1" :max="100000" v-model="product.cnt" @change="updateCart(product)" />
               </div>
               <span class="sum">￥{{ (product.cnt * product.price).toFixed(2) }}</span>
-              <span @click="removeProduct(pickup, product)">移除</span>
+              <span @click="removeProduct(pickup, product)" style="cursor: pointer;">移除</span>
             </div>
           </div>
         </div>
@@ -67,7 +67,8 @@
             <span>结算</span>
           </a-button>
         </router-link> -->
-        <a-button @click="toCreatePayment()" type="primary" style="text-align:center;font-size:12px;width:100px;margin-right:20px">
+        <a-button @click="toCreatePayment()" type="primary"
+          style="text-align:center;font-size:12px;width:100px;margin-right:20px">
           <span>结算</span>
         </a-button>
       </div>
@@ -132,7 +133,7 @@ export default {
             products: store.cartList.map((product) => ({
               ...product,
               checked: false,
-              cnt: product.cnt,
+              cnt: product.cnt || 1,
               price: product.storeGoods ? product.storeGoods.price : 0,
             })),
           }))
@@ -218,7 +219,7 @@ export default {
             },
           })
         } else {
-          this.$message.error('创建订单失败')
+          this.$message.error('创建订单失败，请选择自提点！')
         }
       } catch (error) {
         console.error('获取失败', error)
@@ -276,12 +277,14 @@ export default {
 .myShoppingCart {
   width: 1440px;
   margin: auto;
+
   .tittleWrapper {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 48px;
     background-color: #f5f7fa;
+
     .tittle {
       color: black;
       display: flex;
@@ -291,28 +294,33 @@ export default {
       font-weight: 500;
     }
   }
+
   .myShoppingCartWrapper {
     display: flex;
     margin-top: 4px;
     height: 48px;
     background-color: white;
     flex-direction: column;
+
     .cartHeadler {
       display: flex;
       align-items: center;
       width: 1440px;
       background-color: #f5f5f5;
       padding: 20px;
+
       .headlerLeft {
         display: flex;
         width: 160px;
         justify-content: space-around;
         color: black;
         font-size: 12px;
+
         span {
           margin-left: 80px;
         }
       }
+
       .headlerRight {
         display: flex;
         width: 600px;
@@ -322,13 +330,16 @@ export default {
         font-size: 12px;
       }
     }
+
     .cartMiddle {
       display: flex;
       flex-direction: column;
       width: 1280px;
       margin: 20px auto;
+
       .pickUpSite {
         margin-top: 20px;
+
         .productWrapper {
           display: flex;
           align-items: center;
@@ -336,31 +347,38 @@ export default {
           margin-top: 20px;
           padding: 10px;
           border: 1px solid #f5f5f5;
+
           .leftName {
             width: 500px;
+
             img {
               width: 44px;
               margin-left: 20px;
             }
+
             span {
               color: black;
               font-weight: 500;
             }
           }
+
           .rightMsg {
             display: flex;
             margin-left: 50px;
             justify-content: space-around;
             align-items: center;
             width: 580px;
+
             // background-color: pink;
             span:first-child {
               font-weight: 500;
             }
+
             .sum {
               color: black;
               font-weight: 700;
             }
+
             span:last-child {
               color: #cf3142;
               font-weight: 500;
@@ -369,6 +387,7 @@ export default {
         }
       }
     }
+
     .cartBottom {
       display: flex;
       align-items: center;
@@ -376,12 +395,14 @@ export default {
       background-color: #f5f5f5;
       padding: 20px;
       justify-content: flex-end;
+
       ul {
         display: flex;
         align-items: center;
         margin: 0;
         margin-right: 20px;
         font-size: 14px;
+
         li:nth-child(2),
         li:nth-child(4) {
           color: #cf3142;
