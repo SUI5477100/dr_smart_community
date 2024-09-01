@@ -22,7 +22,7 @@ export default {
   name: 'HomeSearch',
   data() {
     return {
-      logos: ['智慧社区LOGO'],
+      logos: ['购物商城LOGO'],
     }
   },
   methods: {
