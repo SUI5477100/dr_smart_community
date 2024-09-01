@@ -19,6 +19,7 @@ import OrderPayment from '../pages/orderPayment.vue'
 import PaymentSuccess from '../pages/paymentSuccess.vue'
 import SecondLevelCategory from '../components/goodsCategoryList/secondLevelCategory.vue'
 import NavOrders from '../components/personalCenterComponents/navOrders.vue'
+import BrowsingHistory from '../components/personalCenterComponents/browsingHistory.vue'
 Vue.use(Router)
 
 const router = new Router({
@@ -62,6 +63,11 @@ const router = new Router({
           path: 'myRecharge',
           name: 'MyRecharge',
           component: MyRecharge,
+        },
+        {
+          path: 'browsingHistory',
+          name: 'BrowsingHistory',
+          component: BrowsingHistory,
         },
         {
           path: 'myInformation',

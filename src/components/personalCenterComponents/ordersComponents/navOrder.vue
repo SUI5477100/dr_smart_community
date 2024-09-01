@@ -21,7 +21,12 @@
         <div class="contain">
 
             <div v-for="order in all" :key="order.id">
-                <p>订单号: {{ order.orderNo }}</p>
+                <div class="del-but">
+                    <div style="text-align: center;">订单号: {{ order.orderNo }}</div>
+                    <a-button type="danger" @click="delClick([order.orderNo])">
+                        删除订单
+                    </a-button>
+                </div>
                 <div v-for="orderDetail in order.goodsOrderDetailList" :key="orderDetail.id">
                     <div class="goods">
                         <div class="goods-item">
@@ -74,7 +79,8 @@ export default {
 
             ],
             selectedStatus: -1,
-            orderID: ''
+            orderID: '',
+
         };
     },
     methods: {
@@ -89,7 +95,13 @@ export default {
             this.getGoodList()
 
         },
+        async delClick(orderID) {
+            // 获取订单号，删除操作
+            console.log('orderID', orderID);
+            this.delOrderList(orderID)
 
+
+        },
         async getGoodList() {
             const params = {
                 status: this.selectedStatus,
@@ -103,7 +115,14 @@ export default {
             console.log('res', res);
         },
 
-
+        async delOrderList(orderID) {
+            let delRes = await api.delOrderList.delOrderList(orderID)
+            console.log('del', delRes);
+            if (delRes.code == 200) {
+                this.$message.success('删除成功')
+                this.getGoodList()
+            }
+        }
     },
     mounted() {
         this.getGoodList();  // 加载订单列表
@@ -207,5 +226,19 @@ export default {
     width: 24px;
     text-align: center;
     line-height: 32px;
+}
+
+.del-but {
+    display: flex;
+    justify-content: space-between;
+    /* 水平居中对齐 */
+    align-items: center;
+    /* 垂直居中对齐 */
+    padding-top: 15px;
+    color: #000;
+    margin-bottom: 15px;
+    font-weight: 600;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 </style>

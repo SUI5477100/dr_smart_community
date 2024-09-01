@@ -219,7 +219,7 @@ export default {
             },
           })
         } else {
-          this.$message.error('创建订单失败，请选择自提点！')
+          this.$message.error('创建订单失败')
         }
       } catch (error) {
         console.error('获取失败', error)
