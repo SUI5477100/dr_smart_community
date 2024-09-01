@@ -26,16 +26,22 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'Home',
-      redirect: '/goodsCategory',
-      component: HomeView
+      name: 'Login',
+      redirect: '/login',
+      component: UserLoginRegisterView,
+      // meta: { noHeader: true } //跳转时是否为独立页面
     },
     {
       path: '/login',
       name: 'Login',
       component: UserLoginRegisterView,
-      // meta: { noHeader: true } //跳转时是否为独立页面
     },
+    {
+      name: 'Home',
+      path: '/goodsCategory',
+      component: HomeView
+    },
+
     {
       path: '/forgetPass',
       name: 'ForgetPass',
@@ -155,6 +161,7 @@ router.beforeEach((to, from, next) => {
   const pathArr = [
     '/',
     '/login',
+    '/goodsCategory',
     '/forgetPass',
     '/productList',
     '/productDetails',
@@ -175,5 +182,17 @@ router.beforeEach((to, from, next) => {
     next()
   }
 });
+const originalPush = Router.prototype.push;
+Router.prototype.push = function push(location, onResolve, onReject) {
+  if (onResolve || onReject) {
+    return originalPush.call(this, location, onResolve, onReject);
+  }
+  return originalPush.call(this, location).catch(err => {
+    // 如果错误不是 NavigationDuplicated，抛出错误
+    if (err.name !== 'NavigationDuplicated') {
+      throw err;
+    }
+  });
+};
 
 export default router

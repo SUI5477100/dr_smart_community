@@ -19,9 +19,9 @@ export default {
       current: this.$route.path,
       menuItems: [
         // { key: '/productList', link: '/productList', label: '全部商品' },
-        { key: '/goodsCategory', link: '/goodsCategory/getChildGoodsCategoryList?parentId=1', label: '全部商品' },
-        { key: '/productList', link: '/productList', label: '商品列表' },
         { key: '/login', link: '/login', label: '首页' },
+        { key: '/productList', link: '/productList', label: '商品列表' },
+        { key: '/goodsCategory', link: '/goodsCategory/getChildGoodsCategoryList?parentId=1', label: '全部商品' },
         { key: '/navOrders', link: '/navOrders', label: '我的订单' },
         { key: '/personalCenter', link: '/personalCenter', label: '个人中心' },
       ],

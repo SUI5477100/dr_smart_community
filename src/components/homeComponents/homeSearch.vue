@@ -8,9 +8,9 @@
         </div>
         <a href="/myShoppingCart" class="shop-car">
           我的购物车
-          <a-badge count="5">
+          <!-- <a-badge count="5"> -->
             <a-icon type="shopping-cart" style="font-size: large;" />
-          </a-badge>
+          <!-- </a-badge> -->
         </a>
       </div>
     </div>
