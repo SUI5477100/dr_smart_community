@@ -18,7 +18,7 @@ export default {
     height: 60px;
     /* background-color: aquamarine; */
     margin-left: 2%;
-    border-bottom: 1px solid #f1f1f1;
+    /* border-bottom: 1px solid #f1f1f1; */
     padding-top: 10px;
     margin-top: 15px;
 }

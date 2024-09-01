@@ -54,3 +54,13 @@ export const goodsOrderList = {
         })
     }
 }
+
+export const delOrderList = {
+    delOrderList(data) {
+        return requests({
+            url: '/goodsOrder/delete',
+            method: 'post',
+            data: data
+        })
+    }
+}

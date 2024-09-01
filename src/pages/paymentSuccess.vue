@@ -13,7 +13,7 @@
           <a-button @click="toHomePage" type="primary">
             返回首页
           </a-button>
-          <a-button>订单管理</a-button>
+          <a-button @click="goToOrderManagement" >订单管理</a-button>
         </div>
       </div>
     </div>
@@ -38,6 +38,9 @@ export default {
     }
   },
   methods: {
+    goToOrderManagement() {
+        this.$router.push('/navOrders');
+    },
     toHomePage() {
       this.$router.push({
         path: '/productList',

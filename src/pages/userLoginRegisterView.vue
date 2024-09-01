@@ -1,6 +1,6 @@
 <template>
     <div id="container">
-        <span class="logo">welcome to <br>Smart Community!</span>
+        <span class="logo">Welcome to <br>Mall Online!</span>
         <loginRegisterForm></loginRegisterForm>
     </div>
 </template>

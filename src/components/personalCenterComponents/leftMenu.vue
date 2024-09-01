@@ -42,6 +42,7 @@ export default {
                     title: '订单中心',
                     items: [
                         { key: '4', title: '我的订单', route: 'myOrders' },
+                        { key: '8', title: '浏览历史', route: 'browsingHistory' },
                     ],
                 },
                 {
