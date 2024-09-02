@@ -24,12 +24,7 @@
                         <a-select-option value="vx">
                             微信支付
                         </a-select-option>
-                        <a-select-option value="zfb">
-                            支付宝支付
-                        </a-select-option>
-                        <a-select-option value="balance">
-                            余额支付
-                        </a-select-option>
+                   
                     </a-select>
                 </a-form-item>
                 <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
