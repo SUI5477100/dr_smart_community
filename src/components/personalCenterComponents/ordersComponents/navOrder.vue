@@ -1,9 +1,7 @@
 <template>
     <div class="parent">
         <div class="search">
-            <titleBar>
-                我的订单
-            </titleBar>
+            <titleBar>我的订单</titleBar>
             <div class="order-search">
                 <!-- 状态搜索 -->
                 <a-cascader :options="options" placeholder="全部订单" @change="onChange" style="width: 120px" />
@@ -11,15 +9,14 @@
                 <a-input placeholder="请输入订单号" @input="inputContent" style="width: 250px" />
                 <!-- 日期搜索 -->
                 <div class="form-data">
-                    <a-date-picker style="width: calc(50% - 12px)" />
+                    <a-date-picker style="width: calc(50% - 12px)" v-model="startDate" @change="panelStartChange" />
                     <span style="width: 24px; text-align: center">-</span>
-                    <a-date-picker style="width: calc(50% - 12px)" />
+                    <a-date-picker style="width: calc(50% - 12px)" v-model="endDate" @change="panelEndChange" />
                 </div>
                 <!-- <a-button type="primary">搜索</a-button> -->
             </div>
         </div>
         <div class="contain">
-
             <div v-for="order in all" :key="order.id">
                 <div class="del-but">
                     <div style="text-align: center;">订单号: {{ order.orderNo }}</div>
@@ -30,7 +27,7 @@
                 <div v-for="orderDetail in order.goodsOrderDetailList" :key="orderDetail.id">
                     <div class="goods">
                         <div class="goods-item">
-                            <img class="goods-img" :src="orderDetail.goodsHomeUrl">
+                            <img class="goods-img" :src="orderDetail.goodsHomeUrl" />
                             <div class="goods-name">{{ orderDetail.goodsName }}</div>
                         </div>
                         <div class="price">
@@ -48,89 +45,107 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </template>
 
 <script>
-import api from '../../../api/index'
+import api from '../../../api/index';
 import titleBar from '../memberCenterComponents/titleBar.vue';
+
 export default {
     name: 'navOrder',
     components: {
-        titleBar
+        titleBar,
     },
     data() {
         return {
             all: [
                 {
-                    goodsOrderDetailList: []
+                    goodsOrderDetailList: [],
                 },
             ],
             options: [
                 { value: -1, label: '全部订单' },
                 { value: 0, label: '支付失败' },
                 { value: 1, label: '待支付订单' },
-                { value: 2, label: '支付成功' },//有商品
+                { value: 2, label: '支付成功' }, // 有商品
                 { value: 5, label: '待发货订单' },
                 { value: 6, label: '已发货订单' },
                 { value: 7, label: '已签收订单' },
-
             ],
             selectedStatus: -1,
             orderID: '',
-
+            startDate: null, // 添加开始日期
+            endDate: null, // 添加结束日期
         };
     },
     methods: {
         onChange(goodStatus) {
             console.log("Selected value:", goodStatus[0]);
-            this.selectedStatus = goodStatus[0]
-            this.getGoodList()
+            this.selectedStatus = goodStatus[0];
+            this.getGoodList();
         },
         inputContent(event) {
-            this.orderID = event.target.value
+            this.orderID = event.target.value;
             console.log('orderID', this.orderID);
-            this.getGoodList()
-
+            this.getGoodList();
         },
         async delClick(orderID) {
             // 获取订单号，删除操作
             console.log('orderID', orderID);
-            this.delOrderList(orderID)
-
-
+            this.delOrderList(orderID);
         },
         async getGoodList() {
             const params = {
                 status: this.selectedStatus,
                 orderNo: this.orderID,
-                // startTime: '2024-07-11',
-                // endTime: '2024-07-13'
+                startTime: this.startDate ? this.formatDateForDatabase(new Date(this.startDate)) : null,
+                endTime: this.endDate ? this.formatDateForDatabase(new Date(this.endDate)) : null,
             };
             let res = await api.goodsOrderList.goodsOrderList(params);
             // 检查 res.all 和 res.all.goodsOrderDetailList 是否存在并且是数组
-            this.all = res.all
+            this.all = res.all;
             console.log('res', res);
         },
 
+        panelStartChange(mode) {
+            this.startDate = mode
+            console.log('Selected Start Date:', this.startDate);
+            this.getGoodList(); // 在日期变化后调用 getGoodList
+        },
+
+        panelEndChange(mode) {
+            this.endDate = mode
+            console.log('Selected End Date:', this.endDate);
+            this.getGoodList(); // 在日期变化后调用 getGoodList
+        },
+        formatDateForDatabase(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+            return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        },
+
+
         async delOrderList(orderID) {
-            let delRes = await api.delOrderList.delOrderList(orderID)
+            let delRes = await api.delOrderList.delOrderList(orderID);
             console.log('del', delRes);
             if (delRes.code == 200) {
-                this.$message.success('删除成功')
-                this.getGoodList()
+                this.$message.success('删除成功');
+                this.getGoodList();
             }
-        }
+        },
     },
     mounted() {
-        this.getGoodList();  // 加载订单列表
-
+        this.getGoodList(); // 加载订单列表
     },
-}
-
+};
 </script>
+
 
 <style scoped lang="less">
 .contain {

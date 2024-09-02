@@ -13,7 +13,7 @@ import { parentId } from './productCategories'
 import { getOtherUserByPhone } from './transfer'
 import { confirmTransferAccount } from './transfer'
 import { recharge, consumptionRecord, goodsOrderList, delOrderList } from './transfer'
-import { browsList } from './browsingHistory'
+import { browsList, setBrows } from './browsingHistory'
 // 其他模块的接口…… 
 // 导出接口
 export default {
@@ -31,7 +31,8 @@ export default {
     consumptionRecord,
     goodsOrderList,
     delOrderList,
-    browsList
+    browsList,
+    setBrows
 
 }
 

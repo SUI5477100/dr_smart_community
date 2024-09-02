@@ -67,7 +67,7 @@ export default {
     justify-content: space-start;
     gap: 16px;
     /* 卡片之间的间距 */
-    max-height: 450px;
+    max-height: 420px;
     /* 设置最大高度 */
     overflow-y: auto;
     /* 超过最大高度时显示滚动条 */

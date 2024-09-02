@@ -8,3 +8,14 @@ export const browsList = {
         })
     }
 }
+export const setBrows = {
+    setBrows(params){
+        return requests({
+            url:'/goods/browse',
+            method:'get',
+            params: {
+                goodsId: params.goodsId
+            }
+        })
+    }
+}
